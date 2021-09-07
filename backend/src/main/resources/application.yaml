@@ -23,6 +23,4 @@ server:
     context-path: "/api/${spring.application.name}"
 
 
-security:
-  jwt:
-    secret: "8cqtQd2SZm4DdBWwpmaWvm5Cjj23yLYFdjsesREsVkFDCZLUey"
+
