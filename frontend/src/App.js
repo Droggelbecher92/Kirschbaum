@@ -1,14 +1,15 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Login from './Pages/Login'
+import AuthProvider from './Auth/AuthProvider'
 
-function App() {
+export default function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/login" component={Login} />
-      </Switch>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+        </Switch>
+      </Router>
+    </AuthProvider>
   )
 }
-
-export default App
