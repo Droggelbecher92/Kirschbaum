@@ -1,0 +1,9 @@
+profile:
+  datasource:
+    url: postgresql://kirschbaum-postgres:5432/kirschbaum
+    user: admin
+    pass: 12345
+
+kirschbaum:
+    user-service:
+      avatar-url: "http://docker.de"
