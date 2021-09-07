@@ -1,5 +1,15 @@
-function App() {
-  return <h1>Moin</h1>
-}
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Login from './Pages/Login'
+import AuthProvider from './Auth/AuthProvider'
 
-export default App
+export default function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+        </Switch>
+      </Router>
+    </AuthProvider>
+  )
+}
