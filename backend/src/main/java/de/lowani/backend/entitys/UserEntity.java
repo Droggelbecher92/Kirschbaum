@@ -25,7 +25,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "user_score", nullable = false)
-    private String score;
+    private Long score;
 
     @Column(name = "user_role", nullable = false)
     private String role;
