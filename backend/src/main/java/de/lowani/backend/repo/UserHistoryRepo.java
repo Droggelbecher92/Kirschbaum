@@ -1,7 +1,7 @@
 package de.lowani.backend.repo;
 
-import de.lowani.backend.entities.UserHistoryEntity;
+import de.lowani.backend.entities.QuestionHistoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserHistoryRepo extends JpaRepository<UserHistoryEntity, Long> {
+public interface UserHistoryRepo extends JpaRepository<QuestionHistoryEntity, Long> {
 }

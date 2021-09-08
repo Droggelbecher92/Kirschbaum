@@ -12,18 +12,20 @@ import java.util.Objects;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserHistoryEntity {
+public class QuestionHistoryEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "history_id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id")
-    private long user;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private UserEntity user;
 
-    @Column(name = "question_id")
-    private Long question;
+    @ManyToOne
+    @JoinColumn(name="question_id", nullable=false)
+    private QuestionEntity question;
 
     @Column(name = "score", nullable = false)
     private long score;
@@ -32,7 +34,7 @@ public class UserHistoryEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserHistoryEntity that = (UserHistoryEntity) o;
+        QuestionHistoryEntity that = (QuestionHistoryEntity) o;
         return user == that.user && score == that.score && Objects.equals(id, that.id) && Objects.equals(question, that.question);
     }
 

@@ -2,7 +2,9 @@ package de.lowani.backend.entities;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "kirsch_question")
@@ -13,16 +15,21 @@ import java.util.Objects;
 @NoArgsConstructor
 public class QuestionEntity {
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "id")
+    private final Set<QuestionHistoryEntity> questionHistories = new HashSet<>();
+
     @Id
     @GeneratedValue
-    @Column(name = "question_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "topic_id")
-    private Long topic;
+    @ManyToOne
+    @JoinColumn(name="topic_id", nullable=false)
+    private TopicEntity topic;
 
-    @Column(name = "category_id")
-    private Long category;
+    @ManyToOne
+    @JoinColumn(name="category_id", nullable=false)
+    private CategoryEntity category;
 
     @Column(name = "question", nullable = false)
     private String question;
