@@ -3,10 +3,11 @@ package de.lowani.backend.entitys;
 import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "question")
+@Table(name = "kirsch_question")
 @Getter
 @Setter
 @Builder(toBuilder = true)
@@ -19,13 +20,11 @@ public class QuestionEntity {
     @Column(name = "question_id", nullable = false)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "topic_id")
-    private final Set<TopicEntity> topic = new HashSet<>();
+    @Column(name = "topic_id")
+    private Long topic;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private final Set<CategoryEntity> category = new HashSet<>();
+    @Column(name = "category_id")
+    private Long category;
 
     @Column(name = "question", nullable = false)
     private String question;
@@ -44,4 +43,18 @@ public class QuestionEntity {
 
     @Column(name = "correct_answer", nullable = false)
     private String solution;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionEntity that = (QuestionEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(topic, that.topic) && Objects.equals(category, that.category) && Objects.equals(question, that.question) && Objects.equals(answerOne, that.answerOne) && Objects.equals(answerTwo, that.answerTwo) && Objects.equals(answerThree, that.answerThree) && Objects.equals(answerFour, that.answerFour) && Objects.equals(solution, that.solution);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, topic, category, question, answerOne, answerTwo, answerThree, answerFour, solution);
+    }
 }
+

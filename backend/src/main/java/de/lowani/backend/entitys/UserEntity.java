@@ -2,10 +2,11 @@ package de.lowani.backend.entitys;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "kirsch_user")
 @Getter
 @Setter
 @Builder(toBuilder = true)
@@ -30,6 +31,16 @@ public class UserEntity {
     @Column(name = "user_role", nullable = false)
     private String role;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(score, that.score) && Objects.equals(role, that.role);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, password, score, role);
+    }
 }

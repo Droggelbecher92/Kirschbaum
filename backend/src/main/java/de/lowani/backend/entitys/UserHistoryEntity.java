@@ -4,10 +4,11 @@ package de.lowani.backend.entitys;
 import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_history")
+@Table(name = "kirsch_user_history")
 @Getter
 @Setter
 @Builder(toBuilder = true)
@@ -20,15 +21,25 @@ public class UserHistoryEntity {
     @Column(name = "history_id", nullable = false)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private final Set<UserEntity> users = new HashSet<>();
+    @Column(name = "user_id")
+    private long user;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id")
-    private final Set<QuestionEntity> questions = new HashSet<>();
+    @Column(name = "question_id")
+    private Long question;
 
     @Column(name = "score", nullable = false)
     private long score;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserHistoryEntity that = (UserHistoryEntity) o;
+        return user == that.user && score == that.score && Objects.equals(id, that.id) && Objects.equals(question, that.question);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, question, score);
+    }
 }
