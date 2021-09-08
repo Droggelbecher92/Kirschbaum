@@ -2,7 +2,7 @@ spring:
   profiles:
     active: local
   application:
-    name: rem213
+    name: kirschbaum
   datasource:
     url: jdbc:${profile.datasource.url}
     username: ${profile.datasource.user}
