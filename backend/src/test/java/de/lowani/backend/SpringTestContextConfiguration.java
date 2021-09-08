@@ -17,7 +17,6 @@ import static org.mockito.Mockito.mock;
 @TestConfiguration
 public class SpringTestContextConfiguration {
 
-    public static final String MOCKED_SERVICES_PROFILE = "mockedUserService";
 
     @Primary
     @Bean(name = "dataSource", destroyMethod = "shutdown")
