@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: kirschbaum
+  datasource:
+    url: jdbc:${profile.datasource.url}
+    username: ${profile.datasource.user}
+    password: ${profile.datasource.pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: true
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+    hibernate:
+      ddl-auto: update
+
+server:
+  servlet:
+    context-path: "/api/${spring.application.name}"
+
+security:
+  jwt:
+    secret: "mrnXuK2ADVGE9k7WqjkBsCq4WEVqjqmZVWkCF5GmcJTJge4UAd"
+    expiresAfterHours: 24
+
