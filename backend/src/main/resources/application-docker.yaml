@@ -4,6 +4,3 @@ profile:
     user: admin
     pass: 12345
 
-kirschbaum:
-    user-service:
-      avatar-url: "http://docker.de"

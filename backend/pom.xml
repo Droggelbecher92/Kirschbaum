@@ -12,7 +12,7 @@
   <artifactId>backend</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>backend</name>
-  <description>backend</description>
+  <description>Backend for Kirschbaum App</description>
   <properties>
     <java.version>16</java.version>
   </properties>
