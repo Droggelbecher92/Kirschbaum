@@ -2,7 +2,7 @@ package de.lowani.backend.controller;
 
 
 import de.lowani.backend.api.User;
-import de.lowani.backend.entitys.UserEntity;
+import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -12,16 +12,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static de.lowani.backend.controller.UserController.USER_CONTROLLER_TAG;
-import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
+import static javax.servlet.http.HttpServletResponse.*;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -56,6 +53,15 @@ public class UserController {
         }
         List<User> users = map(allEntities);
         return ok(users);
+    }
+
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_BAD_REQUEST, message = "Unable to create User with blank name"),
+            @ApiResponse(code = SC_CONFLICT, message = "Unable to create User, user already exists")
+    })
+    public ResponseEntity<User> postNewUser(){
+        return ResponseEntity.ok(null);
     }
 
 

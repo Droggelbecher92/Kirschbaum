@@ -1,6 +1,6 @@
 package de.lowani.backend.service;
 
-import de.lowani.backend.entitys.UserEntity;
+import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.repo.UserRepo;
 import lombok.Getter;
 import lombok.Setter;

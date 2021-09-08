@@ -22,5 +22,8 @@ server:
   servlet:
     context-path: "/api/${spring.application.name}"
 
-
+security:
+  jwt:
+    secret: "mrnXuK2ADVGE9k7WqjkBsCq4WEVqjqmZVWkCF5GmcJTJge4UAd"
+    expiresAfterHours: 24
 

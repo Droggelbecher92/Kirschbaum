@@ -1,4 +1,5 @@
-package de.lowani.backend.entitys;
+package de.lowani.backend.entities;
+
 
 import lombok.*;
 
@@ -6,27 +7,27 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "kirsch_question_topic")
+@Table(name = "kirsch_question_category")
 @Getter
 @Setter
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class TopicEntity {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "topic_id", nullable = false)
+    @Column(name = "category_id", nullable = false)
     private Long id;
 
-    @Column(name = "topic_name", nullable = false)
+    @Column(name = "category_name", nullable = false)
     private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TopicEntity that = (TopicEntity) o;
+        CategoryEntity that = (CategoryEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 

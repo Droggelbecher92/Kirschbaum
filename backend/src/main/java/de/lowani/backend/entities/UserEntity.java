@@ -1,4 +1,4 @@
-package de.lowani.backend.entitys;
+package de.lowani.backend.entities;
 
 import lombok.*;
 import javax.persistence.*;
