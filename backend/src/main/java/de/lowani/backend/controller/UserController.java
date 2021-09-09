@@ -76,6 +76,7 @@ public class UserController {
         UserEntity savedUser = userService.save(newUser);
 
         User createdUser = map(savedUser);
+
         createdUser.setPassword(savedUser.getPassword());
         return ok(createdUser);
     }
