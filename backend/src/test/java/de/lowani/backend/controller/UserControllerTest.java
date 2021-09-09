@@ -276,7 +276,7 @@ class UserControllerTest{
         ResponseEntity<User> response = restTemplate
                 .exchange(url()+"/Thomas",HttpMethod.DELETE,httpEntity,User.class);
         //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.CONFLICT));
+        assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     // Hilfsfunktionen

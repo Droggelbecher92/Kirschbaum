@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,14 +61,14 @@ public class UserService {
     }
 
     public UserEntity updatePassword(String name, String password) {
-        UserEntity changedUser = find(name).orElseThrow(() -> new IllegalArgumentException("User not in DB"));
+        UserEntity changedUser = find(name).orElseThrow(() -> new EntityNotFoundException("User not in DB"));
         String hashedPassword = passwordEncoder.encode(password);
         changedUser.setPassword(hashedPassword);
         return userRepo.save(changedUser);
     }
 
     public UserEntity updateUsername(String oldName, String newName) {
-        UserEntity changedUser = find(oldName).orElseThrow(() -> new IllegalArgumentException("User not in DB"));
+        UserEntity changedUser = find(oldName).orElseThrow(() -> new EntityNotFoundException("User not in DB"));
         if (find(newName).isPresent()){
             throw new EntityExistsException("Username already in use");
         }
@@ -80,5 +81,18 @@ public class UserService {
         UserEntity resetUser = updatePassword(username,newPassword);
         resetUser.setPassword(newPassword);
         return resetUser;
+    }
+
+    public UserEntity deleteUser(String username) {
+        Optional<UserEntity> optionalUserEntity = userRepo.findByName(username);
+        if (optionalUserEntity.isEmpty()){
+            throw new EntityNotFoundException("User not found. Searched for User: "+username);
+        }
+        UserEntity userToDelete = optionalUserEntity.get();
+        if (userToDelete.getRole().equals("admin")){
+            throw new IllegalArgumentException("Admin cannot be deleted, please contact support.");
+        }
+        userRepo.delete(optionalUserEntity.get());
+        return optionalUserEntity.get();
     }
 }
