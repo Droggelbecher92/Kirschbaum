@@ -80,7 +80,7 @@ class UserControllerTest{
 
 
     @Test
-    public void getAllUsersShouldReturnAllUsers(){
+    public void getAllUsersShouldReturnAllUsersAsAdmin(){
         //GiVEN
         int amountOfUsers = 3;
         //WHEN
@@ -95,20 +95,32 @@ class UserControllerTest{
     }
 
     @Test
+    public void getAllUsersShouldNotWorkAsUser(){
+        //GiVEN
+
+        //WHEN
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "user"));
+        ResponseEntity<List<User>> response = restTemplate
+                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<User>>(){});
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
+    }
+
+    @Test
     public void createNewUserAsAdmin(){
         //GiVEN
         User userToAdd = User.builder().name("Fritz").build();
         //WHEN
         HttpEntity<User> httpEntity = new HttpEntity<>(userToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, User.class);
+                .exchange(url(), HttpMethod.POST, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getName(), is("Fritz"));
-        assertThat(response.getBody().getScore(), is(0));
+        assertThat(response.getBody().getScore(), is(0L));
         assertThat(response.getBody().getRole(), is("user"));
         UserEntity addedUser = userRepo.findByName("Fritz").orElseThrow();
-        assertThat(addedUser.getScore(), is(0));
+        assertThat(addedUser.getScore(), is(0L));
     }
 
     @Test
@@ -118,7 +130,7 @@ class UserControllerTest{
         //WHEN
         HttpEntity<User> httpEntity = new HttpEntity<>(userToAdd, authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, User.class);
+                .exchange(url(), HttpMethod.POST, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
@@ -126,11 +138,11 @@ class UserControllerTest{
     @Test
     public void createNewUserAsAdminWithNullShouldFail(){
         //GiVEN
-        User userToAdd = User.builder().name(null).build();
+        User userToAdd = User.builder().name("").build();
         //WHEN
         HttpEntity<User> httpEntity = new HttpEntity<>(userToAdd,authorizedHeader("Bernd", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, User.class);
+                .exchange(url(), HttpMethod.POST, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }

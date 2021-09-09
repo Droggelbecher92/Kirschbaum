@@ -13,7 +13,7 @@ public class User {
     @ApiModelProperty(required = true, example = "234", notes = "The ID of the user")
     private long id;
 
-    @ApiModelProperty(example = "Peter Lustig", notes = "The name of the user")
+    @ApiModelProperty(required = true, example = "Peter Lustig", notes = "The name of the user")
     private String name;
 
     @ApiModelProperty(example = "user", notes = "The role of the user")
