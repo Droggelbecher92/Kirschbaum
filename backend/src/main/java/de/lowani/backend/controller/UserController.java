@@ -82,6 +82,16 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
     })
+
+    public ResponseEntity<User> postNewUser(){
+        return ResponseEntity.ok(null);
+    }
+    */
+    @GetMapping(value = "{name}", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
+    })
+
     public ResponseEntity<User> find(@PathVariable String name) {
         Optional<UserEntity> userEntityOptional = userService.find(name);
         if (userEntityOptional.isPresent()) {

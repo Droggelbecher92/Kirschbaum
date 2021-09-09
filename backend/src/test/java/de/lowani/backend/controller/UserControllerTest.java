@@ -80,7 +80,9 @@ class UserControllerTest{
 
 
     @Test
+
     public void getAllUsersShouldReturnAllUsersAsAdmin(){
+
         //GiVEN
         int amountOfUsers = 3;
         //WHEN
@@ -121,6 +123,7 @@ class UserControllerTest{
         assertThat(response.getBody().getRole(), is("user"));
         UserEntity addedUser = userRepo.findByName("Fritz").orElseThrow();
         assertThat(addedUser.getScore(), is(0L));
+
     }
 
     @Test

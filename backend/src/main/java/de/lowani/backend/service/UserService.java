@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.springframework.util.StringUtils.hasText;
 
+
 @Service
 @Getter
 @Setter
@@ -36,6 +37,7 @@ public class UserService {
     public Optional<UserEntity> find(String name) {
         return userRepo.findByName(name);
     }
+
 
     public UserEntity save(UserEntity user) {
         String name = user.getName();
