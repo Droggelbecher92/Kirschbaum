@@ -22,4 +22,7 @@ public class User {
     @ApiModelProperty(example = "777", notes = "The current score of the user")
     private long score;
 
+    @ApiModelProperty(example = "khadsfhkhadsfk", notes = "The current password of the user(hashed)")
+    private String password;
+
 }

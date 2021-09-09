@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Getter
@@ -21,4 +22,8 @@ public class UserService {
     }
 
     public List<UserEntity> findAll() { return userRepo.findAll();}
+
+    public Optional<UserEntity> find(String name) {
+        return userRepo.findByName(name);
+    }
 }
