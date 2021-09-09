@@ -9,4 +9,5 @@ public interface UserRepo extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByName(String name);
 
+    Optional<UserEntity> findByNameContains(String letter);
 }

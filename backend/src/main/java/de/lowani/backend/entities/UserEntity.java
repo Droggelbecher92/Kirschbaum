@@ -2,7 +2,9 @@ package de.lowani.backend.entities;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -14,9 +16,13 @@ import java.util.Objects;
 @NoArgsConstructor
 public class UserEntity {
 
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "id")
+    private final Set<QuestionHistoryEntity> questionHistories = new HashSet<>();
+
     @Id
     @GeneratedValue
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "user_name", nullable = false, unique = true)
