@@ -56,4 +56,27 @@ public class UserService {
                     "User with name=%s already exists", name));
         }
     }
+
+    public UserEntity updatePassword(String name, String password) {
+        UserEntity changedUser = find(name).orElseThrow(() -> new IllegalArgumentException("User not in DB"));
+        String hashedPassword = passwordEncoder.encode(password);
+        changedUser.setPassword(hashedPassword);
+        return userRepo.save(changedUser);
+    }
+
+    public UserEntity updateUsername(String oldName, String newName) {
+        UserEntity changedUser = find(oldName).orElseThrow(() -> new IllegalArgumentException("User not in DB"));
+        if (find(newName).isPresent()){
+            throw new EntityExistsException("Username already in use");
+        }
+        changedUser.setName(newName);
+        return userRepo.save(changedUser);
+    }
+
+    public UserEntity resetPassword(String username) {
+        String newPassword = passwordService.getNewPassword();
+        UserEntity resetUser = updatePassword(username,newPassword);
+        resetUser.setPassword(newPassword);
+        return resetUser;
+    }
 }
