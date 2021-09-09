@@ -53,15 +53,16 @@ public class UserController {
         return ok(users);
     }
 
-    /*@PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_BAD_REQUEST, message = "Unable to create User with blank name"),
-            @ApiResponse(code = SC_CONFLICT, message = "Unable to create User, user already exists")
+            @ApiResponse(code = SC_CONFLICT, message = "Unable to create User, user already exists"),
+            @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not create a user")
     })
     public ResponseEntity<User> postNewUser(){
         return ResponseEntity.ok(null);
     }
-    */
+
     @GetMapping(value = "{name}", produces = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_NOT_FOUND, message = "User not found")

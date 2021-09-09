@@ -103,7 +103,7 @@ class UserControllerTest{
         ResponseEntity<User> response = restTemplate
                 .exchange(url()+"/new", HttpMethod.POST, httpEntity, User.class);
         //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getName(), is("Fritz"));
         assertThat(response.getBody().getScore(), is(0));
         assertThat(response.getBody().getRole(), is("user"));
