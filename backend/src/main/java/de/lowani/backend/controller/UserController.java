@@ -25,7 +25,6 @@ import java.util.Optional;
 import static de.lowani.backend.controller.UserController.USER_CONTROLLER_TAG;
 import static javax.servlet.http.HttpServletResponse.*;
 import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Tag(name = USER_CONTROLLER_TAG, description = "Provides CRUD operations for an User")
@@ -86,15 +85,6 @@ public class UserController {
             @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
     })
 
-    public ResponseEntity<User> postNewUser(){
-        return ResponseEntity.ok(null);
-    }
-    */
-    @GetMapping(value = "{name}", produces = APPLICATION_JSON_VALUE)
-    @ApiResponses(value = {
-            @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
-    })
-
     public ResponseEntity<User> find(@PathVariable String name) {
         Optional<UserEntity> userEntityOptional = userService.find(name);
         if (userEntityOptional.isPresent()) {
@@ -121,7 +111,7 @@ public class UserController {
         return ok(changedUser);
     }
 
-    @PutMapping(value = "/{username}/password", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{username}/password", produces = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
     })
     public ResponseEntity<User> resetUserPassword(@AuthenticationPrincipal UserEntity authUser, @PathVariable String username) {

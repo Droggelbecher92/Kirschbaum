@@ -215,7 +215,7 @@ class UserControllerTest{
     }
 
     @Test
-    public void testOnlyAdminCanResetAUsersPassword(){
+    public void onlyAdminCanResetAUsersPassword(){
         //GiVEN
 
         //WHEN
@@ -224,8 +224,8 @@ class UserControllerTest{
                 .exchange(url()+"/Peter/password",HttpMethod.PUT,httpEntity,User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-        UserEntity passwordChangedUser = userRepo.findByName("Thomas").orElseThrow();
-        assertThat(passwordChangedUser.getPassword(), not("$2a$10$mqED7roIDLFqR.z0QINQBeX0pb/oHneV4eCH4en1Onu4QskRdyK7C"));
+        UserEntity passwordChangedUser = userRepo.findByName("Peter").orElseThrow();
+        assertThat(passwordChangedUser.getPassword(), is("blubblub"));
     }
 
     @Test
