@@ -121,5 +121,6 @@ class AuthControllerTest {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(response.getBody().getToken(), is(nullValue()));
     }
 }
