@@ -179,7 +179,6 @@ class UserControllerTest{
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         User changedUser = response.getBody();
         assertThat(changedUser.getName(), is("Kimchi"));
-        assertThat(changedUser.getPassword(), is("$2a$10$8UcrltuoyBbi4jMZHUo2r.VVoVK3SI5.T92s9VVr0gzQuhdxo0Mgy"));
         UserEntity addedUser = userRepo.findByName("Kimchi").orElseThrow();
         assertThat(addedUser.getPassword(), not("nur zum testen ob in db"));
     }
@@ -206,7 +205,7 @@ class UserControllerTest{
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas","admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Kim/reset-pw",HttpMethod.PUT,httpEntity,User.class);
+                .exchange(url()+"/Kim/password",HttpMethod.PUT,httpEntity,User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         User changedUser = response.getBody();
@@ -216,17 +215,17 @@ class UserControllerTest{
     }
 
     @Test
-    public void testOnlyAdminCanResetAUsersPassword(){
+    public void onlyAdminCanResetAUsersPassword(){
         //GiVEN
 
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Kim","user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Peter/reset-pw",HttpMethod.PUT,httpEntity,User.class);
+                .exchange(url()+"/Peter/password",HttpMethod.PUT,httpEntity,User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-        UserEntity passwordChangedUser = userRepo.findByName("Thomas").orElseThrow();
-        assertThat(passwordChangedUser.getPassword(), not("$2a$10$mqED7roIDLFqR.z0QINQBeX0pb/oHneV4eCH4en1Onu4QskRdyK7C"));
+        UserEntity passwordChangedUser = userRepo.findByName("Peter").orElseThrow();
+        assertThat(passwordChangedUser.getPassword(), is("blubblub"));
     }
 
     @Test
@@ -277,7 +276,7 @@ class UserControllerTest{
         ResponseEntity<User> response = restTemplate
                 .exchange(url()+"/Thomas",HttpMethod.DELETE,httpEntity,User.class);
         //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.CONFLICT));
+        assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     // Hilfsfunktionen

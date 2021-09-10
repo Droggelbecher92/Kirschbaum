@@ -1,6 +1,8 @@
 package de.lowani.backend.controller;
 
 
+import de.lowani.backend.api.NewPassword;
+import de.lowani.backend.api.NewUsername;
 import de.lowani.backend.api.User;
 import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.exception.UnauthorizedUserException;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +25,6 @@ import java.util.Optional;
 import static de.lowani.backend.controller.UserController.USER_CONTROLLER_TAG;
 import static javax.servlet.http.HttpServletResponse.*;
 import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Tag(name = USER_CONTROLLER_TAG, description = "Provides CRUD operations for an User")
@@ -74,19 +76,11 @@ public class UserController {
         UserEntity savedUser = userService.save(newUser);
 
         User createdUser = map(savedUser);
-        createdUser.setPassword(createdUser.getPassword());
+
+        createdUser.setPassword(savedUser.getPassword());
         return ok(createdUser);
     }
 
-    @GetMapping(value = "{name}", produces = APPLICATION_JSON_VALUE)
-    @ApiResponses(value = {
-            @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
-    })
-
-    public ResponseEntity<User> postNewUser(){
-        return ResponseEntity.ok(null);
-    }
-    */
     @GetMapping(value = "{name}", produces = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
@@ -98,8 +92,73 @@ public class UserController {
             UserEntity userEntity = userEntityOptional.get();
             User user = map(userEntity);
             return ok(user);
+        } else {
+            throw new EntityNotFoundException("No matching user found");
         }
-        return notFound().build();
+    }
+
+    @PutMapping(value = "/password", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_BAD_REQUEST, message = "Password must not be empty"),
+            @ApiResponse(code = SC_NOT_FOUND, message = "User not found")
+    })
+    public ResponseEntity<User> changePassword(@AuthenticationPrincipal UserEntity authUser, @RequestBody NewPassword newPassword) {
+        String password = newPassword.getPassword();
+        if (password.length()<1){
+            throw new IllegalArgumentException("Password must not be empty");
+        }
+        UserEntity changedUserEntity = userService.updatePassword(authUser.getName(),password);
+
+        User changedUser = map(changedUserEntity);
+        changedUser.setPassword(password);
+        return ok(changedUser);
+    }
+
+    @PutMapping(value = "/{username}/password", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NOT_FOUND, message = "User not found"),
+            @ApiResponse(code = SC_UNAUTHORIZED, message = "Only Admin can reset passwords")
+    })
+    public ResponseEntity<User> resetUserPassword(@AuthenticationPrincipal UserEntity authUser, @PathVariable String username) {
+        if (!authUser.getRole().equals("admin")){
+            throw new UnauthorizedUserException("Only an Admin can reset password");
+        }
+        UserEntity changedUserEntity = userService.resetPassword(username);
+
+        User changedUser = map(changedUserEntity);
+        changedUser.setPassword(changedUserEntity.getPassword());
+        return ok(changedUser);
+    }
+
+    @PutMapping(value = "/username", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_BAD_REQUEST, message = "Username must not be empty or less then 3 letters"),
+            @ApiResponse(code = SC_CONFLICT, message = "Username already exists")
+    })
+    public ResponseEntity<User> changeUsername(@AuthenticationPrincipal UserEntity authUser, @RequestBody NewUsername newUsername) {
+        String username = newUsername.getUsername();
+        if (username.length()<3){
+            throw new IllegalArgumentException("Username must not be empty or less then 3 letters");
+        }
+        UserEntity changedUserEntity = userService.updateUsername(authUser.getName(),username);
+
+        User changedUser = map(changedUserEntity);
+        return ok(changedUser);
+    }
+
+    @DeleteMapping(value="/{username}", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NOT_FOUND, message = "User not found"),
+            @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not delete a user"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "Admin cannot be deleted")
+    })
+    public ResponseEntity<User> deleteUser(@AuthenticationPrincipal UserEntity authUser, @PathVariable String username) {
+       if (!authUser.getRole().equals("admin")){
+           throw new UnauthorizedUserException("Admin only operation");
+       }
+       UserEntity deletedUserEntity = userService.deleteUser(username);
+       User deletedUser = map(deletedUserEntity);
+       return ok(deletedUser);
     }
 
 

@@ -27,7 +27,7 @@ public class JwtService {
     public String createJwtToken(UserEntity user) {
         Instant now = Instant.now();
         Date iat = Date.from(now);
-        Date exp = Date.from(now.plus(Duration.ofMinutes(jwtConfig.getExpiresAfterHours())));
+        Date exp = Date.from(now.plus(Duration.ofHours(jwtConfig.getExpiresAfterHours())));
 
         Map<String,Object> claims = new HashMap<>();
         claims.put("role", user.getRole());
