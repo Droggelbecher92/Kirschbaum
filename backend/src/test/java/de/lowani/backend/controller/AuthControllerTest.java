@@ -68,7 +68,7 @@ class AuthControllerTest {
                         .score(0L).build()
         );
         Credentials credentials = Credentials.builder()
-                .username(username)
+                .userName(username)
                 .password(password).build();
 
         // When
@@ -90,7 +90,7 @@ class AuthControllerTest {
     public void badCredentials() {
         // Given
         Credentials credentials = Credentials.builder()
-                .username("Lisa")
+                .userName("Lisa")
                 .password("password").build();
 
         // When
