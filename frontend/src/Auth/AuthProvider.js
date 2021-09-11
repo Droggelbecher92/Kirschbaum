@@ -1,6 +1,7 @@
 import AuthContext from './AuthContext'
 import { useContext, useState } from 'react'
 import jwt from 'jsonwebtoken'
+import { getToken } from '../Services/api-service'
 // import { getToken } from '../services/api-service'
 
 export default function AuthProvider({ children }) {
@@ -13,12 +14,12 @@ export default function AuthProvider({ children }) {
     role: claims.role,
   }
 
-  // const login = credentials => getToken(credentials).then(setToken)
+  const login = credentials => getToken(credentials).then(setToken)
 
   const logout = () => setToken()
 
   return (
-    <AuthContext.Provider value={{ token, user, /*login*/ logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

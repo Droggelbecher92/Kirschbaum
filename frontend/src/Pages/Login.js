@@ -9,7 +9,7 @@ import Loading from '../Components/Loading'
 import Error from '../Components/Error'
 
 const initialState = {
-  username: '',
+  userName: '',
   password: '',
 }
 
@@ -48,8 +48,8 @@ export default function Login() {
         <Main as="form" onSubmit={handleSubmit}>
           <TextField
             title="Username"
-            name="username"
-            value={credentials.username}
+            name="userName"
+            value={credentials.userName}
             onChange={handleCredentialsChange}
           />
           <TextField
@@ -59,7 +59,7 @@ export default function Login() {
             value={credentials.password}
             onChange={handleCredentialsChange}
           />
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" type="submit">
             Login
           </Button>
         </Main>

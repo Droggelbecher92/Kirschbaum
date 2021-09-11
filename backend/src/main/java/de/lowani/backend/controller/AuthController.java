@@ -64,7 +64,7 @@ public class AuthController {
             @ApiResponse(code = SC_UNAUTHORIZED, message = "Invalid credentials")
     })
     public ResponseEntity<AccessToken> getAccessToken(@RequestBody Credentials credentials) {
-        String username = credentials.getUsername();
+        String username = credentials.getUserName();
         hasText(username, "Username must not be blank to get token");
         String password = credentials.getPassword();
         hasText(password, "Password must not be blank to get token");
