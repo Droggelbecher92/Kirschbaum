@@ -1,0 +1,7 @@
+profile:
+  datasource:
+    url: postgresql://localhost:5432/kirschbaum
+    user: admin
+    pass: 12345
+
+
