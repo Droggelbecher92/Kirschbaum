@@ -64,17 +64,17 @@ public class AuthController {
             @ApiResponse(code = SC_UNAUTHORIZED, message = "Invalid credentials")
     })
     public ResponseEntity<AccessToken> getAccessToken(@RequestBody Credentials credentials) {
-        String username = credentials.getUserName();
-        hasText(username, "Username must not be blank to get token");
+        String userName = credentials.getUserName();
+        hasText(userName, "Username must not be blank to get token");
         String password = credentials.getPassword();
         hasText(password, "Password must not be blank to get token");
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userName, password);
 
         try {
             authenticationManager.authenticate(authToken);
 
-            UserEntity user = userService.find(username).orElseThrow();
+            UserEntity user = userService.find(userName).orElseThrow();
             String token = jwtService.createJwtToken(user);
 
             AccessToken accessToken = new AccessToken(token);

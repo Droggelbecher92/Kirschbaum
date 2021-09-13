@@ -10,7 +10,7 @@ export default function AuthProvider({ children }) {
   const claims = jwt.decode(token)
 
   const user = claims && {
-    username: claims.sub,
+    name: claims.sub,
     role: claims.role,
   }
 

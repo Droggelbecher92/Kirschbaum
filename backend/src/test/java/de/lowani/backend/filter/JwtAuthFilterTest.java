@@ -74,7 +74,7 @@ class JwtAuthFilterTest extends SpringBootTests {
     /*@Test
     public void wronglySigned() {
         // Given
-        String username = "Bob";
+        String userName = "Bob";
         Instant now = Instant.now();
         Date iat = Date.from(now);
         Date exp = Date.from(now.plus(Duration.ofHours(jwtConfig.getExpiresAfterHours())));
@@ -85,7 +85,7 @@ class JwtAuthFilterTest extends SpringBootTests {
                 ))
                 .setIssuedAt(iat)
                 .setExpiration(exp)
-                .setSubject(username)
+                .setSubject(userName)
                 .signWith(SignatureAlgorithm.HS256, wrongSecret).compact();
 
         // When
