@@ -6,34 +6,41 @@ import {
   SupervisorAccount,
 } from '@material-ui/icons'
 import styled from 'styled-components/macro'
-import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function BottomNav() {
-  const [value, setValue] = useState('home')
+  const location = useLocation()
+
   return (
     <BottomNavi>
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-        showLabels
-      >
-        <BottomNavigationAction label="Home" value="home" icon={<Home />} />
+      <BottomNavigation value={location.pathname}>
+        <BottomNavigationAction
+          label="Home"
+          value="/"
+          icon={<Home />}
+          component={Link}
+          to="/"
+        />
         <BottomNavigationAction
           label="Details"
-          value="details"
+          value="/user"
           icon={<AccountBox />}
+          component={Link}
+          to="/user"
         />
         <BottomNavigationAction
           label="Admin"
-          value="admin"
+          value="/admin"
           icon={<SupervisorAccount />}
+          component={Link}
+          to="/admin"
         />
         <BottomNavigationAction
           label="Logout"
-          value="logout"
+          value="/logout"
           icon={<ExitToApp />}
+          component={Link}
+          to="/logout"
         />
       </BottomNavigation>
     </BottomNavi>
