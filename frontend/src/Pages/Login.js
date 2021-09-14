@@ -3,10 +3,11 @@ import TextField from '../Components/TextField'
 import { useAuth } from '../Auth/AuthProvider'
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
+import logo from '../img/headbage.jpg'
 
 const initialState = {
   userName: '',
@@ -40,9 +41,10 @@ export default function Login() {
 
   return (
     <Page>
-      <Typography color="primary" variant="h2">
-        Kirschbaum
-      </Typography>
+      <div>
+        <br />
+        <img src={logo} alt="logo" />
+      </div>
       {loading && <Loading />}
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>
