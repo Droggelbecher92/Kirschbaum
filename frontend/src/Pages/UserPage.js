@@ -25,7 +25,6 @@ export default function UserPage() {
 
   const handlePasswordChange = event => {
     setPasswords({ ...passwords, [event.target.name]: event.target.value })
-    console.log(passwords)
   }
 
   const handleNameChange = event => {
