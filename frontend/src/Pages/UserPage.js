@@ -6,7 +6,7 @@ import BottomNav from '../Components/BottomNav'
 import Main from '../Components/Main'
 import { useState } from 'react'
 import Error from '../Components/Error'
-import { updatePassword } from '../Services/api-service'
+import { updateName, updatePassword } from '../Services/api-service'
 import Loading from '../Components/Loading'
 
 const initialStatePasswords = {
@@ -43,6 +43,17 @@ export default function UserPage() {
       })
   }
 
+  const changeName = () => {
+    setError()
+    setLoading(true)
+    updateName(token, name)
+      .then(logout)
+      .catch(error => {
+        setError(error)
+        setLoading(false)
+      })
+  }
+
   const passwordMatch =
     passwords.password2.length && passwords.password1 === passwords.password2
 
@@ -71,10 +82,11 @@ export default function UserPage() {
             onChange={handleNameChange}
           />
           <Button
-            disabled={name.length < 5}
+            disabled={name.length < 3}
             variant="outlined"
             color="primary"
             type="button"
+            onClick={changeName}
           >
             Username ändern
           </Button>
