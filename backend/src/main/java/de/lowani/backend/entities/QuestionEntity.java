@@ -31,6 +31,9 @@ public class QuestionEntity {
     @JoinColumn(name="category_id", nullable=false)
     private CategoryEntity category;
 
+    @Column(name = "question_type", nullable = false)
+    private String type;
+
     @Column(name = "question", nullable = false)
     private String question;
 
