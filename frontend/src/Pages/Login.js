@@ -1,9 +1,8 @@
 import Page from '../Components/Page'
-import TextField from '../Components/TextField'
 import { useAuth } from '../Auth/AuthProvider'
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
@@ -49,13 +48,13 @@ export default function Login() {
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>
           <TextField
-            title="Dein Name"
+            label="Dein Username"
             name="userName"
             value={credentials.userName}
             onChange={handleCredentialsChange}
           />
           <TextField
-            title="Password"
+            label="Passwort"
             name="password"
             type="password"
             value={credentials.password}
