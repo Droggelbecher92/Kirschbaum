@@ -1,13 +1,18 @@
 package de.lowani.backend.service;
 
 import de.lowani.backend.api.Category;
+import de.lowani.backend.api.Question;
 import de.lowani.backend.api.Topic;
 import de.lowani.backend.api.User;
 import de.lowani.backend.entities.CategoryEntity;
+import de.lowani.backend.entities.QuestionEntity;
 import de.lowani.backend.entities.TopicEntity;
 import de.lowani.backend.entities.UserEntity;
+import de.lowani.backend.repo.CategoryRepo;
+import de.lowani.backend.repo.TopicRepo;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -17,6 +22,15 @@ import java.util.List;
 @Getter
 @Setter
 public class MapperService {
+
+    private final CategoryRepo categoryRepo;
+    private final TopicRepo topicRepo;
+
+    @Autowired
+    public MapperService(CategoryRepo categoryRepo, TopicRepo topicRepo) {
+        this.categoryRepo = categoryRepo;
+        this.topicRepo = topicRepo;
+    }
 
     //Category
     public Category map(CategoryEntity categoryEntity) {
@@ -77,5 +91,46 @@ public class MapperService {
             users.add(user);
         }
         return users;
+    }
+
+    //Questions
+
+    public Question map(QuestionEntity questionEntity){
+        return Question.builder()
+                .id(questionEntity.getId())
+                .categoryName(questionEntity.getCategory().getName())
+                .topicName(questionEntity.getTopic().getName())
+                .type(questionEntity.getType())
+                .question(questionEntity.getQuestion())
+                .answer1(questionEntity.getAnswerOne())
+                .answer2(questionEntity.getAnswerTwo())
+                .answer3(questionEntity.getAnswerThree())
+                .answer4(questionEntity.getAnswerFour())
+                .solution(questionEntity.getSolution())
+                .build();
+    }
+
+    public QuestionEntity map(Question question){
+        return QuestionEntity.builder()
+                .id(question.getId())
+                .category(categoryRepo.findByName(question.getCategoryName()).get())
+                .topic(topicRepo.findByName(question.getTopicName()).get())
+                .type(question.getType())
+                .question(question.getQuestion())
+                .answerOne(question.getAnswer1())
+                .answerTwo(question.getAnswer2())
+                .answerThree(question.getAnswer3())
+                .answerFour(question.getAnswer4())
+                .solution(question.getSolution())
+                .build();
+    }
+
+    public List<Question> mapListOfQuestions(List<QuestionEntity> questionEntities) {
+        List<Question> questions = new LinkedList<>();
+        for (QuestionEntity questionEntity : questionEntities) {
+            Question question = map(questionEntity);
+            questions.add(question);
+        }
+        return questions;
     }
 }
