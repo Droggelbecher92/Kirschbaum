@@ -49,7 +49,7 @@ public class TopicController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No topics found")
     })
-    public ResponseEntity<List<Topic>> getAllCategories(){
+    public ResponseEntity<List<Topic>> getAllCTopics(){
         List<TopicEntity> allEntities = topicService.findAll();
         if (allEntities.isEmpty()) {
             return ResponseEntity.noContent().build();
