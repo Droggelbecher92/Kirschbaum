@@ -1,22 +1,21 @@
 package de.lowani.backend.controller;
 
-import de.lowani.backend.api.Category;
 import de.lowani.backend.api.Topic;
-import de.lowani.backend.entities.CategoryEntity;
 import de.lowani.backend.entities.TopicEntity;
 import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.exception.UnauthorizedUserException;
+import de.lowani.backend.service.MapperService;
 import de.lowani.backend.service.TopicService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
-import java.util.LinkedList;
 import java.util.List;
 
 import static de.lowani.backend.controller.TopicController.TOPIC_CONTROLLER_TAG;
@@ -38,9 +37,12 @@ public class TopicController {
     public static final String TOPIC_CONTROLLER_TAG = "topic";
 
     private final TopicService topicService;
+    private final MapperService mapperService;
 
-    public TopicController(TopicService topicService) {
+    @Autowired
+    public TopicController(TopicService topicService, MapperService mapperService) {
         this.topicService = topicService;
+        this.mapperService = mapperService;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -52,8 +54,8 @@ public class TopicController {
         if (allEntities.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        List<Topic> categories = map(allEntities);
-        return ok(categories);
+        List<Topic> topics = mapperService.mapListOfTopic(allEntities);
+        return ok(topics);
     }
 
     @PostMapping(value="/new" ,produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE )
@@ -72,28 +74,9 @@ public class TopicController {
         if (topicService.findByName(newTopic.getTopic()).isPresent()){
             throw new EntityExistsException("Topic already in use");
         }
-        TopicEntity topicEntity = map(newTopic);
+        TopicEntity topicEntity = mapperService.map(newTopic);
         TopicEntity addedTopicEnt = topicService.save(topicEntity);
-        Topic addedTopic = map(addedTopicEnt);
+        Topic addedTopic = mapperService.map(addedTopicEnt);
         return ok(addedTopic);
-    }
-
-    //Mapper
-
-    private Topic map(TopicEntity topicEntity) {
-        return Topic.builder().topic(topicEntity.getName()).build();
-    }
-
-    private TopicEntity map(Topic topic) {
-        return TopicEntity.builder().name(topic.getTopic()).build();
-    }
-
-    private List<Topic> map(List<TopicEntity> topicEntities) {
-        List<Topic> topics = new LinkedList<>();
-        for (TopicEntity topicEntity : topicEntities) {
-            Topic topic = map(topicEntity);
-            topics.add(topic);
-        }
-        return topics;
     }
 }

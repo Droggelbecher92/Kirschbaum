@@ -6,6 +6,7 @@ import de.lowani.backend.api.NewUsername;
 import de.lowani.backend.api.User;
 import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.exception.UnauthorizedUserException;
+import de.lowani.backend.service.MapperService;
 import de.lowani.backend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -18,7 +19,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,10 +39,12 @@ public class UserController {
     public static final String USER_CONTROLLER_TAG = "User";
 
     private final UserService userService;
+    private final MapperService mapperService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MapperService mapperService) {
         this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -58,7 +60,7 @@ public class UserController {
         if (allEntities.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        List<User> users = map(allEntities);
+        List<User> users = mapperService.mapListOfUser(allEntities);
         return ok(users);
     }
 
@@ -72,10 +74,10 @@ public class UserController {
         if (!authUser.getRole().equals("admin")){
             throw new UnauthorizedUserException("Only an Admin can create new user");
         }
-        UserEntity newUser = mapNew(user);
+        UserEntity newUser = mapperService.mapNew(user);
         UserEntity savedUser = userService.save(newUser);
 
-        User createdUser = map(savedUser);
+        User createdUser = mapperService.map(savedUser);
 
         createdUser.setPassword(savedUser.getPassword());
         return ok(createdUser);
@@ -90,7 +92,7 @@ public class UserController {
         Optional<UserEntity> userEntityOptional = userService.find(name);
         if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
-            User user = map(userEntity);
+            User user = mapperService.map(userEntity);
             return ok(user);
         } else {
             throw new EntityNotFoundException("No matching user found");
@@ -109,7 +111,7 @@ public class UserController {
         }
         UserEntity changedUserEntity = userService.updatePassword(authUser.getName(),password);
 
-        User changedUser = map(changedUserEntity);
+        User changedUser = mapperService.map(changedUserEntity);
         changedUser.setPassword(password);
         return ok(changedUser);
     }
@@ -125,7 +127,7 @@ public class UserController {
         }
         UserEntity changedUserEntity = userService.resetPassword(username);
 
-        User changedUser = map(changedUserEntity);
+        User changedUser = mapperService.map(changedUserEntity);
         changedUser.setPassword(changedUserEntity.getPassword());
         return ok(changedUser);
     }
@@ -142,7 +144,7 @@ public class UserController {
         }
         UserEntity changedUserEntity = userService.updateUsername(authUser.getName(),username);
 
-        User changedUser = map(changedUserEntity);
+        User changedUser = mapperService.map(changedUserEntity);
         return ok(changedUser);
     }
 
@@ -157,36 +159,7 @@ public class UserController {
            throw new UnauthorizedUserException("Admin only operation");
        }
        UserEntity deletedUserEntity = userService.deleteUser(username);
-       User deletedUser = map(deletedUserEntity);
+       User deletedUser = mapperService.map(deletedUserEntity);
        return ok(deletedUser);
-    }
-
-
-
-
-    //Mapper
-
-    private User map(UserEntity userEntity) {
-        return User.builder()
-                .id(userEntity.getId())
-                .name(userEntity.getName())
-                .role(userEntity.getRole())
-                .score(userEntity.getScore()).build();
-    }
-
-    private UserEntity mapNew(User user) {
-        return UserEntity.builder()
-                .name(user.getName())
-                .score(0L)
-                .role("user").build();
-    }
-
-    private List<User> map(List<UserEntity> userEntities) {
-        List<User> users = new LinkedList<>();
-        for (UserEntity userEntity : userEntities) {
-            User user = map(userEntity);
-            users.add(user);
-        }
-        return users;
     }
 }
