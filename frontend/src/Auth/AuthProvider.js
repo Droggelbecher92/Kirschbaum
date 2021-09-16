@@ -19,7 +19,14 @@ export default function AuthProvider({ children }) {
   const logout = () => setToken()
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        user,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
