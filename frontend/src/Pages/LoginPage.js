@@ -13,7 +13,7 @@ const initialState = {
   password: '',
 }
 
-export default function Login() {
+export default function LoginPage() {
   const { login, user } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
