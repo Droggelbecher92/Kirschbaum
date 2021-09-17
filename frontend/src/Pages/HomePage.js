@@ -6,8 +6,12 @@ import BottomNav from '../Components/BottomNav'
 import Loading from '../Components/Loading'
 import { useEffect, useState } from 'react'
 import { getCategories, getTopics } from '../Services/api-service'
+import ChooseBoxRandom from '../Components/ChooseBoxRandom'
+import ChooseBoxCategory from '../Components/ChooseBoxCategory'
+import ChooseBoxTopic from '../Components/ChooseBoxTopic'
+import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
 
-export default function Home() {
+export default function HomePage() {
   const { user, token } = useAuth()
   const [topics, setTopics] = useState()
   const [categories, setCategories] = useState()
@@ -39,11 +43,13 @@ export default function Home() {
   return (
     <MainPage>
       <ChooseField>
+        <ChooseBoxSpecial>Doppelte Punkte</ChooseBoxSpecial>
         {categories.map(category => (
-          <button>{category.category}</button>
+          <ChooseBoxCategory>{category.category}</ChooseBoxCategory>
         ))}
+        <ChooseBoxRandom>Random</ChooseBoxRandom>
         {topics.map(topic => (
-          <button>{topic.topic}</button>
+          <ChooseBoxTopic>{topic.topic}</ChooseBoxTopic>
         ))}
       </ChooseField>
       <BottomNav />

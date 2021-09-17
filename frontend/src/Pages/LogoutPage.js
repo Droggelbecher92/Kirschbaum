@@ -4,7 +4,7 @@ import { useAuth } from '../Auth/AuthProvider'
 import { Redirect } from 'react-router-dom'
 import BottomNav from '../Components/BottomNav'
 
-export default function Logout() {
+export default function LogoutPage() {
   const { user, logout } = useAuth()
   while (!user) {
     return <Redirect to="/login" />
