@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -113,8 +114,8 @@ public class MapperService {
     public QuestionEntity map(Question question){
         return QuestionEntity.builder()
                 .id(question.getId())
-                .category(categoryRepo.findByName(question.getCategoryName()).get())
-                .topic(topicRepo.findByName(question.getTopicName()).get())
+                .category(categoryRepo.findByName(question.getCategoryName()).orElseThrow())
+                .topic(topicRepo.findByName(question.getTopicName()).orElseThrow())
                 .type(question.getType())
                 .question(question.getQuestion())
                 .answerOne(question.getAnswer1())
