@@ -63,6 +63,9 @@ class QuestionControllerTest {
 
     @AfterEach
     public void clearUserRepo(){
+        questionRepo.deleteAll();
+        topicRepo.deleteAll();
+        categoryRepo.deleteAll();
         userRepo.deleteAll();
     }
 
