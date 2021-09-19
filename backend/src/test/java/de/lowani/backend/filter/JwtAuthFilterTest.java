@@ -71,7 +71,7 @@ class JwtAuthFilterTest extends SpringBootTests {
         assertThat(response.getBody().getName(), is(username));
     }
 
-    /*@Test
+    @Test
     public void wronglySigned() {
         // Given
         String userName = "Bob";
@@ -122,5 +122,5 @@ class JwtAuthFilterTest extends SpringBootTests {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
-    }*/
+    }
 }
