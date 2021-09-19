@@ -12,4 +12,6 @@ public interface QuestionRepo extends JpaRepository<QuestionEntity, Long> {
 
     Optional<List<QuestionEntity>> findAllByTopic_Name(String topicName);
 
+    Optional<QuestionEntity> findByQuestion(String question);
+
 }
