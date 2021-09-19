@@ -1,15 +1,14 @@
-import styled from 'styled-components/macro'
-import ChooseBoxQuiz from './ChooseBoxQuiz'
-import { ThumbDown, ThumbUp } from '@material-ui/icons'
 import { Typography } from '@material-ui/core'
 import ChooseFieldQuiz from './ChooseFieldQuiz'
+import ChooseBoxQuiz from './ChooseBoxQuiz'
 import AnswerButton from './AnswerButton'
+import styled from 'styled-components/macro'
 
-export default function QuizThumb({
+export default function QuizSingle({
   currentQuestion,
   handleAnswer,
   submitAnswer,
-  thumbAnswer,
+  singleAnswer,
 }) {
   return (
     <WrapperQuestion>
@@ -23,27 +22,44 @@ export default function QuizThumb({
       </Typography>
       <ChooseFieldQuiz>
         <ChooseBoxQuiz
-          value="UP"
+          value={currentQuestion.answer1}
           type="submit"
           onClick={e =>
             handleAnswer(e, currentQuestion.answer1, currentQuestion.type)
           }
         >
-          <ThumbUp />
+          {currentQuestion.answer1}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
-          value="DOWN"
+          value={currentQuestion.answer2}
           type="submit"
-          onClick={e => handleAnswer(e, currentQuestion.type)}
+          onClick={e =>
+            handleAnswer(e, currentQuestion.answer2, currentQuestion.type)
+          }
         >
+          {currentQuestion.answer2}
+        </ChooseBoxQuiz>
+        <ChooseBoxQuiz
+          value={currentQuestion.answer3}
           type="submit"
-          <ThumbDown />
+          onClick={e =>
+            handleAnswer(e, currentQuestion.answer3, currentQuestion.type)
+          }
+        >
+          {currentQuestion.answer3}
+        </ChooseBoxQuiz>
+        <ChooseBoxQuiz
+          value={currentQuestion.answer4}
+          type="submit"
+          onClick={e =>
+            handleAnswer(e, currentQuestion.answer4, currentQuestion.type)
+          }
+        >
+          {currentQuestion.answer4}
         </ChooseBoxQuiz>
         <div></div>
-        <div></div>
-        <div></div>
         <AnswerButton
-          disabled={!thumbAnswer}
+          disabled={!singleAnswer}
           type="submit"
           onClick={e => submitAnswer(e)}
         >
