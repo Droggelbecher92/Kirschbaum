@@ -20,8 +20,8 @@ export default function HomePage() {
   const [url, setUrl] = useState('')
 
   useEffect(() => {
-    setupTopics(token).catch(error => console.log(error.message))
-    setupCategories(token).catch(error => console.log(error.message))
+    setupTopics(token).catch(error => setError(error.message))
+    setupCategories(token).catch(error => setError(error.message))
   }, [token])
 
   const setupTopics = token =>

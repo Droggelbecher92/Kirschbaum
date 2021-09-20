@@ -23,7 +23,6 @@ export default function QuizPage() {
   const [thumbAnswer, setThumbAnswer] = useState('')
   const [singleAnswer, setSingleAnswer] = useState('')
   const [multiAnswer, setMultiAnswer] = useState(initialArray)
-  const [error, setError] = useState()
 
   useEffect(() => {
     setCurrentQuestion(currentQuestionList[counter])
@@ -37,7 +36,7 @@ export default function QuizPage() {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
         })
-        .catch(error => setError(error))
+        .catch(error => console.log(error.message))
     } else if (firstFilter === 'Topic') {
       getTopicQuestions(token, secondFilter)
         .then(response => response.data)
@@ -45,7 +44,7 @@ export default function QuizPage() {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
         })
-        .catch(error => setError(error))
+        .catch(error => console.log(error.message))
     } else {
       getRandomQuestions(token)
         .then(response => response.data)
@@ -53,7 +52,7 @@ export default function QuizPage() {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
         })
-        .catch(error => setError(error))
+        .catch(error => console.log(error.message))
     }
   }, [firstFilter, secondFilter, token])
 
