@@ -61,7 +61,7 @@ export default function QuizMulti({
         <AnswerButton
           disabled={multiAnswer.length < 1}
           type="submit"
-          onClick={e => submitAnswer(e)}
+          onClick={e => submitAnswer(e, currentQuestion.type)}
         >
           {`Aktuelle Auswahl: ${multiAnswer}`}
         </AnswerButton>

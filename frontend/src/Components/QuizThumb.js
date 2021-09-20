@@ -34,7 +34,9 @@ export default function QuizThumb({
         <ChooseBoxQuiz
           value="DOWN"
           type="submit"
-          onClick={e => handleAnswer(e, currentQuestion.type)}
+          onClick={e =>
+            handleAnswer(e, currentQuestion.answer2, currentQuestion.type)
+          }
         >
           <ThumbDown />
         </ChooseBoxQuiz>
@@ -44,7 +46,7 @@ export default function QuizThumb({
         <AnswerButton
           disabled={!thumbAnswer}
           type="submit"
-          onClick={e => submitAnswer(e)}
+          onClick={e => submitAnswer(e, currentQuestion.type)}
         >
           Bestätigen
         </AnswerButton>
