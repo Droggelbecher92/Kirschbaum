@@ -7,6 +7,7 @@ import {
   getCategoryQuestions,
   getRandomQuestions,
   getTopicQuestions,
+  saveAnswers,
 } from '../Services/api-service'
 import QuizThumb from '../Components/QuizThumb'
 import QuizSingle from '../Components/QuizSingle'
@@ -83,7 +84,11 @@ export default function QuizPage() {
 
   const submitAnswer = (event, questionKind) => {
     event.preventDefault()
+    let score = 0
     if (questionKind === 'SINGLE') {
+      if (singleAnswer === currentQuestion.solution) {
+        score += 1
+      }
       const newArray = givenAnswers
       newArray.push(singleAnswer)
       setGivenAnswers(newArray)
@@ -103,14 +108,27 @@ export default function QuizPage() {
           }
         }
       }
+      if (multistring === currentQuestion.solution) {
+        score += 1
+      }
       const newArray = givenAnswers
       newArray.push(multistring)
       setGivenAnswers(newArray)
     } else {
+      if (thumbAnswer === currentQuestion.solution) {
+        score += 1
+      }
       const newArray = givenAnswers
       newArray.push(thumbAnswer)
       setGivenAnswers(newArray)
     }
+
+    const answer = {
+      userName: user.userName,
+      question: currentQuestion.question,
+      score: score,
+    }
+    saveAnswers(token, answer).catch(e => console.log(e))
     setSingleAnswer('')
     setMultiAnswer([])
     setThumbAnswer('')

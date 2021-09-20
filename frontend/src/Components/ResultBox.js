@@ -1,28 +1,14 @@
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
-import { saveAnswers } from '../Services/api-service'
+import { useEffect, useState } from 'react'
 
-export default function ResultBox({
-  question,
-  givenAnswer,
-  correctAnswer,
-  user,
-  token,
-}) {
-  const isRight = givenAnswer === correctAnswer
-  const pointsMade = () => {
-    if (isRight) {
-      return 1
-    } else {
-      return 0
+export default function ResultBox({ question, givenAnswer, correctAnswer }) {
+  const [isRight, setIsRight] = useState(false)
+  useEffect(() => {
+    if (givenAnswer === correctAnswer) {
+      setIsRight(true)
     }
-  }
-  const answer = {
-    userName: user.userName,
-    question: question,
-    score: pointsMade(),
-  }
-  saveAnswers(token, answer).catch(e => console.log(e))
+  }, [correctAnswer, givenAnswer])
   return (
     <Wrapper>
       <Typography variant="h6" color="textPrimary">
