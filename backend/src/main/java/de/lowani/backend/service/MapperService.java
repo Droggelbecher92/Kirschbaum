@@ -1,21 +1,16 @@
 package de.lowani.backend.service;
 
-import de.lowani.backend.api.Category;
-import de.lowani.backend.api.Question;
-import de.lowani.backend.api.Topic;
-import de.lowani.backend.api.User;
-import de.lowani.backend.entities.CategoryEntity;
-import de.lowani.backend.entities.QuestionEntity;
-import de.lowani.backend.entities.TopicEntity;
-import de.lowani.backend.entities.UserEntity;
+import de.lowani.backend.api.*;
+import de.lowani.backend.entities.*;
 import de.lowani.backend.repo.CategoryRepo;
+import de.lowani.backend.repo.QuestionRepo;
 import de.lowani.backend.repo.TopicRepo;
+import de.lowani.backend.repo.UserRepo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,11 +21,15 @@ public class MapperService {
 
     private final CategoryRepo categoryRepo;
     private final TopicRepo topicRepo;
+    private final UserRepo userRepo;
+    private final QuestionRepo questionRepo;
 
     @Autowired
-    public MapperService(CategoryRepo categoryRepo, TopicRepo topicRepo) {
+    public MapperService(CategoryRepo categoryRepo, TopicRepo topicRepo, UserRepo userRepo, QuestionRepo questionRepo) {
         this.categoryRepo = categoryRepo;
         this.topicRepo = topicRepo;
+        this.userRepo = userRepo;
+        this.questionRepo = questionRepo;
     }
 
     //Category
@@ -133,5 +132,22 @@ public class MapperService {
             questions.add(question);
         }
         return questions;
+    }
+
+    //Answer
+    public Answer map(AnswerHistoryEntity answerEntity){
+        return Answer.builder()
+                .question(answerEntity.getQuestion().getQuestion())
+                .score((int) answerEntity.getScore())
+                .userName(answerEntity.getUser().getName())
+                .build();
+    }
+
+    public AnswerHistoryEntity map(Answer answer){
+        return AnswerHistoryEntity.builder()
+                .score(answer.getScore())
+                .user(userRepo.findByName(answer.getUserName()).orElseThrow())
+                .question(questionRepo.findByQuestion(answer.getQuestion()).orElseThrow())
+                .build();
     }
 }

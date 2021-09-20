@@ -18,7 +18,7 @@ public class UserEntity {
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "id")
-    private final Set<QuestionHistoryEntity> questionHistories = new HashSet<>();
+    private final Set<AnswerHistoryEntity> questionHistories = new HashSet<>();
 
     @Id
     @GeneratedValue

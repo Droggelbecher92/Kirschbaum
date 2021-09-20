@@ -12,7 +12,7 @@ import java.util.Objects;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionHistoryEntity {
+public class AnswerHistoryEntity {
 
     @Id
     @GeneratedValue
@@ -34,7 +34,7 @@ public class QuestionHistoryEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        QuestionHistoryEntity that = (QuestionHistoryEntity) o;
+        AnswerHistoryEntity that = (AnswerHistoryEntity) o;
         return user == that.user && score == that.score && Objects.equals(id, that.id) && Objects.equals(question, that.question);
     }
 
