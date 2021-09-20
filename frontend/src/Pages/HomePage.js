@@ -10,15 +10,18 @@ import ChooseBoxRandom from '../Components/ChooseBoxRandom'
 import ChooseBoxCategory from '../Components/ChooseBoxCategory'
 import ChooseBoxTopic from '../Components/ChooseBoxTopic'
 import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
+import Error from '../Components/Error'
 
 export default function HomePage() {
   const { user, token } = useAuth()
   const [topics, setTopics] = useState()
   const [categories, setCategories] = useState()
+  const [error, setError] = useState()
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
-    setupTopics(token).catch(error => console.log(error.message))
-    setupCategories(token).catch(error => console.log(error.message))
+    setupTopics(token).catch(error => setError(error.message))
+    setupCategories(token).catch(error => setError(error.message))
   }, [token])
 
   const setupTopics = token =>
@@ -30,6 +33,11 @@ export default function HomePage() {
       .then(response => response.data)
       .then(setCategories)
 
+  const handleRedirect = (event, which) => {
+    event.preventDefault()
+    setUrl(`/quiz/${which}/${event.target.value}`)
+  }
+
   while (!user) {
     return <Redirect to="/login" />
   }
@@ -40,16 +48,47 @@ export default function HomePage() {
       </MainPage>
     )
   }
+  if (url) {
+    return <Redirect to={url} />
+  }
+
   return (
     <MainPage>
       <ChooseField>
-        <ChooseBoxSpecial>Doppelte Punkte</ChooseBoxSpecial>
+        {error && <Error />}
+        <ChooseBoxSpecial
+          value="Special"
+          type="submit"
+          onClick={e => handleRedirect(e, 'Special')}
+        >
+          Doppelte Punkte
+        </ChooseBoxSpecial>
         {categories.map(category => (
-          <ChooseBoxCategory>{category.category}</ChooseBoxCategory>
+          <ChooseBoxCategory
+            value={category.category}
+            type="submit"
+            key={category.category}
+            onClick={e => handleRedirect(e, 'Category')}
+          >
+            {category.category}
+          </ChooseBoxCategory>
         ))}
-        <ChooseBoxRandom>Random</ChooseBoxRandom>
+        <ChooseBoxRandom
+          value="Random"
+          type="submit"
+          onClick={e => handleRedirect(e, 'Random')}
+        >
+          Random
+        </ChooseBoxRandom>
         {topics.map(topic => (
-          <ChooseBoxTopic>{topic.topic}</ChooseBoxTopic>
+          <ChooseBoxTopic
+            value={topic.topic}
+            type="submit"
+            key={topic.topic}
+            onClick={e => handleRedirect(e, 'topic')}
+          >
+            {topic.topic}
+          </ChooseBoxTopic>
         ))}
       </ChooseField>
       <BottomNav />

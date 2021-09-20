@@ -15,7 +15,7 @@ export default function App() {
           <Route path="/login" component={LoginPage} />
           <Route path="/user" component={UserPage} />
           <Route path="/logout" component={LogoutPage} />
-          <Route path="/quiz" component={QuizPage} />
+          <Route path="/quiz/:firstFilter/:secondFilter" component={QuizPage} />
         </Switch>
       </Router>
     </AuthProvider>

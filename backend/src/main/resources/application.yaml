@@ -24,6 +24,6 @@ server:
 
 security:
   jwt:
-    secret: "mrnXuK2ADVGE9k7WqjkBsCq4WEVqjqmZVWkCF5GmcJTJge4UAd"
+    secret: "awijdkleilrodsjsnneidjnrukshndASSDFEA"
     expiresAfterHours: 24
 

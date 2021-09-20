@@ -34,7 +34,7 @@ export default function LoginPage() {
   }
 
   if (user) {
-    return <Redirect to="/" />
+    return <Redirect exact to="/" />
   }
 
   return (

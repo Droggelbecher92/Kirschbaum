@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(GET, SWAGGER_URLS).permitAll()
                 .antMatchers(POST,ACCESS_TOKEN_URL).permitAll()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/**").permitAll()
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
