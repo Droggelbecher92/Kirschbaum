@@ -71,21 +71,21 @@ class JwtAuthFilterTest extends SpringBootTests {
         assertThat(response.getBody().getName(), is(username));
     }
 
-    /*@Test
+    @Test
     public void wronglySigned() {
         // Given
-        String username = "Bob";
+        String userName = "Bob";
         Instant now = Instant.now();
         Date iat = Date.from(now);
         Date exp = Date.from(now.plus(Duration.ofHours(jwtConfig.getExpiresAfterHours())));
         String wrongSecret = jwtConfig.getSecret() + "Wrong!!";
         String token = Jwts.builder()
                 .setClaims(new HashMap<>(
-                        Map.of("role", "user","score",0l,"password","blub")
+                        Map.of("role", "user","password","blub")
                 ))
                 .setIssuedAt(iat)
                 .setExpiration(exp)
-                .setSubject(username)
+                .setSubject(userName)
                 .signWith(SignatureAlgorithm.HS256, wrongSecret).compact();
 
         // When
@@ -122,5 +122,5 @@ class JwtAuthFilterTest extends SpringBootTests {
 
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
-    }*/
+    }
 }

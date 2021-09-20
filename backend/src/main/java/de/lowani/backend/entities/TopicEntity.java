@@ -39,4 +39,5 @@ public class TopicEntity {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
 }

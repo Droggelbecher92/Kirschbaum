@@ -16,7 +16,7 @@ import java.util.Set;
 public class QuestionEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "id")
-    private final Set<QuestionHistoryEntity> questionHistories = new HashSet<>();
+    private final Set<AnswerHistoryEntity> questionHistories = new HashSet<>();
 
     @Id
     @GeneratedValue
@@ -30,6 +30,9 @@ public class QuestionEntity {
     @ManyToOne
     @JoinColumn(name="category_id", nullable=false)
     private CategoryEntity category;
+
+    @Column(name = "question_type", nullable = false)
+    private String type;
 
     @Column(name = "question", nullable = false)
     private String question;

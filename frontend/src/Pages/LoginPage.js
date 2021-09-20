@@ -1,19 +1,19 @@
 import Page from '../Components/Page'
-import TextField from '../Components/TextField'
 import { useAuth } from '../Auth/AuthProvider'
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Button, Typography } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
+import logo from '../img/headbage.jpg'
 
 const initialState = {
   userName: '',
   password: '',
 }
 
-export default function Login() {
+export default function LoginPage() {
   const { login, user } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
@@ -21,7 +21,6 @@ export default function Login() {
 
   const handleCredentialsChange = event => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value })
-    console.log(credentials)
   }
 
   const handleSubmit = event => {
@@ -35,25 +34,26 @@ export default function Login() {
   }
 
   if (user) {
-    return <Redirect to="/" />
+    return <Redirect exact to="/" />
   }
 
   return (
     <Page>
-      <Typography color="primary" variant="h2">
-        Kirschbaum
-      </Typography>
+      <div>
+        <br />
+        <img src={logo} alt="logo" />
+      </div>
       {loading && <Loading />}
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>
           <TextField
-            title="Username"
+            label="Dein Username"
             name="userName"
             value={credentials.userName}
             onChange={handleCredentialsChange}
           />
           <TextField
-            title="Password"
+            label="Passwort"
             name="password"
             type="password"
             value={credentials.password}
