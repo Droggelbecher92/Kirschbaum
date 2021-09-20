@@ -29,25 +29,33 @@ export default function QuizPage() {
     setCurrentQuestion(currentQuestionList[counter])
   }, [currentQuestionList, counter])
 
-  if (firstFilter === 'Category') {
-    getCategoryQuestions(token, secondFilter)
-      .then(response => response.data)
-      .then(data => setCurrentQuestionList(data))
-      .then(() => setCurrentQuestion(currentQuestionList[counter]))
-      .catch(error => setError(error))
-  } else if (firstFilter === 'Topic') {
-    getTopicQuestions(token, secondFilter)
-      .then(response => response.data)
-      .then(data => setCurrentQuestionList(data))
-      .then(() => setCurrentQuestion(currentQuestionList[counter]))
-      .catch(error => setError(error))
-  } else {
-    getRandomQuestions(token)
-      .then(response => response.data)
-      .then(data => setCurrentQuestionList(data))
-      .then(() => setCurrentQuestion(currentQuestionList[counter]))
-      .catch(error => setError(error))
-  }
+  useEffect(() => {
+    if (firstFilter === 'Category') {
+      getCategoryQuestions(token, secondFilter)
+        .then(response => response.data)
+        .then(data => {
+          setCurrentQuestionList(data)
+          setCurrentQuestion(data[0])
+        })
+        .catch(error => setError(error))
+    } else if (firstFilter === 'Topic') {
+      getTopicQuestions(token, secondFilter)
+        .then(response => response.data)
+        .then(data => {
+          setCurrentQuestionList(data)
+          setCurrentQuestion(data[0])
+        })
+        .catch(error => setError(error))
+    } else {
+      getRandomQuestions(token)
+        .then(response => response.data)
+        .then(data => {
+          setCurrentQuestionList(data)
+          setCurrentQuestion(data[0])
+        })
+        .catch(error => setError(error))
+    }
+  }, [firstFilter, secondFilter, token])
 
   const handleAnswer = (event, answer, questionKind) => {
     event.preventDefault()
@@ -71,19 +79,30 @@ export default function QuizPage() {
 
   const submitAnswer = event => {
     event.preventDefault()
+    setSingleAnswer('')
+    setMultiAnswer(initialArray)
+    setThumbAnswer('')
     setCounter(counter + 1)
   }
 
   if (!user) {
     return <Redirect to="/login" />
   }
-  while (!currentQuestion) {
-    return (
-      <MainPage>
-        <Loading />
-      </MainPage>
-    )
+  if (!currentQuestion) {
+    if (
+      currentQuestionList.length > 0 &&
+      currentQuestionList.length === counter
+    ) {
+      return <Redirect to="/" />
+    } else {
+      return (
+        <MainPage>
+          <Loading />
+        </MainPage>
+      )
+    }
   }
+
   if (currentQuestion.type === 'THUMB') {
     return (
       <QuizThumb

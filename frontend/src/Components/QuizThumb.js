@@ -36,7 +36,6 @@ export default function QuizThumb({
           type="submit"
           onClick={e => handleAnswer(e, currentQuestion.type)}
         >
-          type="submit"
           <ThumbDown />
         </ChooseBoxQuiz>
         <div></div>
