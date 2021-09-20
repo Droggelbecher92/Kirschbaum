@@ -32,3 +32,6 @@ export const getTopicQuestions = (token, topic) =>
 
 export const getCategoryQuestions = (token, category) =>
   axios.get(`/api/kirschbaum/question/category/${category}`, headers(token))
+
+export const saveAnswers = (token, answer) =>
+  axios.post(`/api/kirschbaum/answer`, answer, headers(token))

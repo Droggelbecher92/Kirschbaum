@@ -7,28 +7,30 @@ import {
   getCategoryQuestions,
   getRandomQuestions,
   getTopicQuestions,
+  saveAnswers,
 } from '../Services/api-service'
 import QuizThumb from '../Components/QuizThumb'
 import QuizSingle from '../Components/QuizSingle'
 import QuizMulti from '../Components/QuizMulti'
-
-const initialArray = []
+import QuizResult from '../Components/QuizResult'
 
 export default function QuizPage() {
   const { user, token } = useAuth()
   const { firstFilter, secondFilter } = useParams()
-  const [currentQuestionList, setCurrentQuestionList] = useState(initialArray)
+  const [currentQuestionList, setCurrentQuestionList] = useState([])
   const [currentQuestion, setCurrentQuestion] = useState({})
   const [counter, setCounter] = useState(0)
   const [thumbAnswer, setThumbAnswer] = useState('')
   const [singleAnswer, setSingleAnswer] = useState('')
-  const [multiAnswer, setMultiAnswer] = useState(initialArray)
+  const [multiAnswer, setMultiAnswer] = useState([])
+  const [givenAnswers, setGivenAnswers] = useState([])
 
   useEffect(() => {
     setCurrentQuestion(currentQuestionList[counter])
   }, [currentQuestionList, counter])
 
   useEffect(() => {
+    setGivenAnswers([])
     if (firstFilter === 'Category') {
       getCategoryQuestions(token, secondFilter)
         .then(response => response.data)
@@ -63,25 +65,78 @@ export default function QuizPage() {
     } else if (questionKind === 'SINGLE') {
       setSingleAnswer(answer)
     } else if (questionKind === 'MULTI') {
-      function findAnswer(currentAnswers) {
-        return currentAnswers === answer
-      }
-
-      if (multiAnswer.length < 1 || !multiAnswer.find(findAnswer)) {
-        setMultiAnswer([...multiAnswer, answer])
+      if (multiAnswer.length < 1) {
+        const newArray = [answer]
+        setMultiAnswer(newArray)
+      } else if (multiAnswer.indexOf(answer) === -1) {
+        let newArray = multiAnswer
+        newArray.push(answer)
+        setMultiAnswer(newArray)
       } else {
-        multiAnswer.splice(multiAnswer.indexOf(answer), 1)
-        setMultiAnswer(multiAnswer)
+        let newArray = multiAnswer
+        newArray.splice(multiAnswer.indexOf(answer), 1)
+        setMultiAnswer(newArray)
       }
+    } else {
+      console.log('doof')
     }
   }
 
-  const submitAnswer = event => {
+  const submitAnswer = (event, questionKind) => {
     event.preventDefault()
+    let score = 0
+    if (questionKind === 'SINGLE') {
+      if (singleAnswer === currentQuestion.solution) {
+        score += 1
+      }
+      const newArray = givenAnswers
+      newArray.push(singleAnswer)
+      setGivenAnswers(newArray)
+    } else if (questionKind === 'MULTI') {
+      const possibleAnswersInOrder = [
+        currentQuestion.answer1,
+        currentQuestion.answer2,
+        currentQuestion.answer3,
+        currentQuestion.answer4,
+      ]
+      let multistring = ''
+      for (let i = 0; i < possibleAnswersInOrder.length; i++) {
+        console.log('blub')
+        for (let k = 0; k < multiAnswer.length; k++) {
+          if (possibleAnswersInOrder[i] === multiAnswer[k]) {
+            multistring += multiAnswer[k] + ' '
+          }
+        }
+      }
+      if (multistring === currentQuestion.solution) {
+        score += 1
+      }
+      const newArray = givenAnswers
+      newArray.push(multistring)
+      setGivenAnswers(newArray)
+    } else {
+      if (thumbAnswer === currentQuestion.solution) {
+        score += 1
+      }
+      const newArray = givenAnswers
+      newArray.push(thumbAnswer)
+      setGivenAnswers(newArray)
+    }
+
+    const answer = {
+      userName: user.userName,
+      question: currentQuestion.question,
+      score: score,
+    }
+    saveAnswers(token, answer).catch(e => console.log(e))
     setSingleAnswer('')
-    setMultiAnswer(initialArray)
+    setMultiAnswer([])
     setThumbAnswer('')
     setCounter(counter + 1)
+  }
+
+  const resetAnswers = () => {
+    return <Redirect to="/" />
   }
 
   if (!user) {
@@ -92,7 +147,15 @@ export default function QuizPage() {
       currentQuestionList.length > 0 &&
       currentQuestionList.length === counter
     ) {
-      return <Redirect to="/" />
+      return (
+        <QuizResult
+          answers={givenAnswers}
+          questions={currentQuestionList}
+          resetAnswers={resetAnswers}
+          user={user}
+          token={token}
+        />
+      )
     } else {
       return (
         <MainPage>

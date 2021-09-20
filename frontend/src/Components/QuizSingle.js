@@ -61,7 +61,7 @@ export default function QuizSingle({
         <AnswerButton
           disabled={!singleAnswer}
           type="submit"
-          onClick={e => submitAnswer(e)}
+          onClick={e => submitAnswer(e, currentQuestion.type)}
         >
           Bestätigen
         </AnswerButton>

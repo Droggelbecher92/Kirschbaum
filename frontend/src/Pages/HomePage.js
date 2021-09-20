@@ -33,9 +33,8 @@ export default function HomePage() {
       .then(response => response.data)
       .then(setCategories)
 
-  const handleRedirect = (event, which) => {
-    event.preventDefault()
-    setUrl(`/quiz/${which}/${event.target.value}`)
+  const handleRedirect = (filer2, which) => {
+    setUrl(`/quiz/${which}/${filer2}`)
   }
 
   while (!user) {
@@ -59,7 +58,7 @@ export default function HomePage() {
         <ChooseBoxSpecial
           value="Special"
           type="submit"
-          onClick={e => handleRedirect(e, 'Special')}
+          onClick={e => handleRedirect('random', 'Special')}
         >
           Doppelte Punkte
         </ChooseBoxSpecial>
@@ -68,7 +67,7 @@ export default function HomePage() {
             value={category.category}
             type="submit"
             key={category.category}
-            onClick={e => handleRedirect(e, 'Category')}
+            onClick={e => handleRedirect(category.category, 'Category')}
           >
             {category.category}
           </ChooseBoxCategory>
@@ -76,7 +75,7 @@ export default function HomePage() {
         <ChooseBoxRandom
           value="Random"
           type="submit"
-          onClick={e => handleRedirect(e, 'Random')}
+          onClick={e => handleRedirect('random', 'Random')}
         >
           Random
         </ChooseBoxRandom>
@@ -85,7 +84,7 @@ export default function HomePage() {
             value={topic.topic}
             type="submit"
             key={topic.topic}
-            onClick={e => handleRedirect(e, 'topic')}
+            onClick={e => handleRedirect(topic.topic, 'Topic')}
           >
             {topic.topic}
           </ChooseBoxTopic>
