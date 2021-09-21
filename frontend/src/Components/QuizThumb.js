@@ -4,6 +4,7 @@ import { ThumbDown, ThumbUp } from '@material-ui/icons'
 import { Typography } from '@material-ui/core'
 import ChooseFieldQuiz from './ChooseFieldQuiz'
 import AnswerButton from './AnswerButton'
+import { useState } from 'react'
 
 export default function QuizThumb({
   currentQuestion,
@@ -11,6 +12,8 @@ export default function QuizThumb({
   submitAnswer,
   thumbAnswer,
 }) {
+  const [first, setFirst] = useState(false)
+  const [second, setSecond] = useState(false)
   return (
     <WrapperQuestion>
       <Typography
@@ -25,18 +28,28 @@ export default function QuizThumb({
         <ChooseBoxQuiz
           value="UP"
           type="submit"
-          onClick={e =>
+          selected={first}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer1, currentQuestion.type)
-          }
+            if (first === false) {
+              setFirst(true)
+              setSecond(false)
+            }
+          }}
         >
           <ThumbUp />
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value="DOWN"
           type="submit"
-          onClick={e =>
+          selected={second}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer2, currentQuestion.type)
-          }
+            if (second === false) {
+              setFirst(false)
+              setSecond(true)
+            }
+          }}
         >
           <ThumbDown />
         </ChooseBoxQuiz>
@@ -46,7 +59,11 @@ export default function QuizThumb({
         <AnswerButton
           disabled={!thumbAnswer}
           type="submit"
-          onClick={e => submitAnswer(e, currentQuestion.type)}
+          onClick={e => {
+            submitAnswer(e, currentQuestion.type)
+            setFirst(false)
+            setSecond(false)
+          }}
         >
           Bestätigen
         </AnswerButton>
