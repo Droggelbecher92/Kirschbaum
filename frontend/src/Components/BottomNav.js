@@ -7,8 +7,10 @@ import {
 } from '@material-ui/icons'
 import styled from 'styled-components/macro'
 import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../Auth/AuthProvider'
 
 export default function BottomNav() {
+  const { user } = useAuth()
   const location = useLocation()
 
   return (
@@ -28,13 +30,15 @@ export default function BottomNav() {
           component={Link}
           to="/user"
         />
-        <BottomNavigationAction
-          label="Admin"
-          value="/admin"
-          icon={<SupervisorAccount />}
-          component={Link}
-          to="/admin"
-        />
+        {user.role === 'admin' && (
+          <BottomNavigationAction
+            label="Admin"
+            value="/admin"
+            icon={<SupervisorAccount />}
+            component={Link}
+            to="/admin"
+          />
+        )}
         <BottomNavigationAction
           label="Logout"
           value="/logout"
