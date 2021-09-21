@@ -95,4 +95,10 @@ public class UserService {
         userRepo.delete(optionalUserEntity.get());
         return optionalUserEntity.get();
     }
+
+    public void updateScore(int score, String userName) {
+        UserEntity userToUpdate = userRepo.findByName(userName).orElseThrow();
+        userToUpdate.setScore(userToUpdate.getScore()+score);
+        userRepo.save(userToUpdate);
+    }
 }

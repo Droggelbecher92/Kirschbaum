@@ -4,10 +4,11 @@ import Page from '../Components/Page'
 import { Button, TextField, Typography } from '@material-ui/core'
 import BottomNav from '../Components/BottomNav'
 import Main from '../Components/Main'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Error from '../Components/Error'
-import { updateName, updatePassword } from '../Services/api-service'
+import { getUser, updateName, updatePassword } from '../Services/api-service'
 import Loading from '../Components/Loading'
+import MainPage from '../Components/MainPage'
 
 const initialStatePasswords = {
   password1: '',
@@ -18,10 +19,18 @@ const initalName = ''
 
 export default function UserPage() {
   const { user, token, logout } = useAuth()
+  const [actualUser, setActualUser] = useState()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
   const [passwords, setPasswords] = useState(initialStatePasswords)
   const [name, setName] = useState(initalName)
+
+  useEffect(() => {
+    getUser(token, user.userName)
+      .then(response => response.data)
+      .then(setActualUser)
+      .catch(e => setError(e))
+  }, [token, user])
 
   const handlePasswordChange = event => {
     setPasswords({ ...passwords, [event.target.name]: event.target.value })
@@ -56,8 +65,16 @@ export default function UserPage() {
   const passwordMatch =
     passwords.password2.length && passwords.password1 === passwords.password2
 
-  while (!user) {
+  if (!user) {
     return <Redirect to="/login" />
+  }
+
+  if (!actualUser) {
+    return (
+      <MainPage>
+        <Loading />
+      </MainPage>
+    )
   }
 
   return (
@@ -67,7 +84,7 @@ export default function UserPage() {
           {'Moin ' + user.userName}
         </Typography>
         <Typography variant="h4" color="textSecondary">
-          {'Your current score is: ' + user.score}
+          {'Your current score is: ' + actualUser.score}
         </Typography>
       </div>
       {loading && <Loading />}

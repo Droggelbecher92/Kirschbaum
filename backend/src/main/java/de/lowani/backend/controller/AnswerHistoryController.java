@@ -5,6 +5,7 @@ import de.lowani.backend.api.Answer;
 import de.lowani.backend.entities.AnswerHistoryEntity;
 import de.lowani.backend.service.AnswerHistoryService;
 import de.lowani.backend.service.MapperService;
+import de.lowani.backend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -30,11 +31,13 @@ public class AnswerHistoryController {
     public static final String ANSWER_CONTROLLER_TAG = "Answer";
 
     private final AnswerHistoryService answerHistoryService;
+    private final UserService userService;
     private final MapperService mapperService;
 
     @Autowired
-    public AnswerHistoryController(AnswerHistoryService answerHistoryService, MapperService mapperService) {
+    public AnswerHistoryController(AnswerHistoryService answerHistoryService, UserService userService, MapperService mapperService) {
         this.answerHistoryService = answerHistoryService;
+        this.userService = userService;
         this.mapperService = mapperService;
     }
 
@@ -46,6 +49,7 @@ public class AnswerHistoryController {
         if (givenAnswer.getQuestion().isEmpty()||givenAnswer.getQuestion().length()<2||givenAnswer.getUserName().isEmpty()||givenAnswer.getUserName().length()<2){
             throw new IllegalArgumentException("Name and Question must be filled");
         }
+        userService.updateScore(givenAnswer.getScore(),givenAnswer.getUserName());
         AnswerHistoryEntity answerToSave = mapperService.map(givenAnswer);
         AnswerHistoryEntity savedAnswerEnt = answerHistoryService.save(answerToSave);
         Answer savedAnswer = mapperService.map(savedAnswerEnt);
