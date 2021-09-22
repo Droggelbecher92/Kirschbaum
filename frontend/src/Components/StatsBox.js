@@ -2,13 +2,13 @@ import styled from 'styled-components/macro'
 import ProgressionPercent from './ProgressionPercent'
 import { Typography } from '@material-ui/core'
 
-export default function StatsBox({ percent, level }) {
+export default function StatsBox({ percent, text }) {
   return (
     <Wrapper>
       <Typography variant="body1" color="textPrimary">
-        Insgesamt beantwortete Fragen
+        {text}
       </Typography>
-      <ProgressionPercent percent={percent} level={level} />
+      <ProgressionPercent percent={percent} />
     </Wrapper>
   )
 }

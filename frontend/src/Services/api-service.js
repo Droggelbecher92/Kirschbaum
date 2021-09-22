@@ -27,6 +27,9 @@ export const getCategories = token =>
 export const getUser = (token, userName) =>
   axios.get(`/api/kirschbaum/user/${userName}`, headers(token))
 
+export const getAllUsers = token =>
+  axios.get(`/api/kirschbaum/user`, headers(token))
+
 export const getRandomQuestions = token =>
   axios.get('/api/kirschbaum/question/random', headers(token))
 

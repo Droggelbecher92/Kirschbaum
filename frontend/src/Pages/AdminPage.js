@@ -3,12 +3,13 @@ import BottomNavAdmin from '../Components/BottomNavAdmin'
 import { Typography } from '@material-ui/core'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
-import { getStats } from '../Services/api-service'
+import { getAllUsers, getStats } from '../Services/api-service'
 import Loading from '../Components/Loading'
 import StatsBoxGlobal from '../Components/StatsBoxGlobal'
 import MainPage from '../Components/MainPage'
 import MainAdmin from '../Components/MainAdmin'
 import Error from '../Components/Error'
+import StatsBox from '../Components/StatsBox'
 
 export default function AdminPage() {
   const { user, token } = useAuth()
@@ -17,6 +18,8 @@ export default function AdminPage() {
   const [right, setRight] = useState(0)
   const [wrong, setWrong] = useState()
   const [error, setError] = useState()
+  const [numberOfUsers, setNumberOfUsers] = useState(0)
+  const [allUsers, setAllUsers] = useState(0)
 
   const getRight = answers => {
     const rightAnswers = answers.filter(answer => answer.score > 0)
@@ -28,7 +31,22 @@ export default function AdminPage() {
     return wrongAnswers.length
   }
 
+  const howMany = answers => {
+    const users = answers.map(answer => answer.userName)
+    console.log(users)
+    const number = [...new Set(users)]
+    console.log(number)
+    return number.length
+  }
+
   useEffect(() => {
+    getAllUsers(token)
+      .then(response => response.data)
+      .then(data => {
+        const users = data.map(dat => dat.id)
+        setAllUsers(users.length)
+      })
+      .catch(e => setError(e))
     getStats(token)
       .then(response => response.data)
       .then(data => {
@@ -36,6 +54,7 @@ export default function AdminPage() {
         setOverall(data.length)
         setRight(getRight(data))
         setWrong(getWrong(data))
+        setNumberOfUsers(howMany(data))
       })
       .catch(e => setError(e))
   }, [token, user])
@@ -53,6 +72,10 @@ export default function AdminPage() {
       <MainAdmin>
         <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
         <StatsBoxGlobal right={right} wrong={wrong} all={overall} />
+        <StatsBox
+          text={'Wie viele Mitarbeiter nutzen die App?'}
+          percent={Math.round((numberOfUsers * 100) / allUsers)}
+        />
         {error && <Error>{error.message}</Error>}
       </MainAdmin>
       <BottomNavAdmin />
