@@ -71,6 +71,7 @@ export default function AdminPage() {
     <MainPage>
       <MainAdmin>
         <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
+        <div></div>
         <StatsBoxGlobal right={right} wrong={wrong} all={overall} />
         <StatsBox
           text={'Wie viele Mitarbeiter nutzen die App?'}

@@ -7,6 +7,9 @@ import LogoutPage from './Pages/LogoutPage'
 import QuizPage from './Pages/QuizPage'
 import ProtectedRoute from './Auth/ProtectedRoute'
 import AdminPage from './Pages/AdminPage'
+import RegisterPage from './Pages/RegisterPage'
+import StatsPage from './Pages/StatsPage'
+import SolutionPage from './Pages/SolutionPage'
 
 export default function App() {
   return (
@@ -21,7 +24,18 @@ export default function App() {
             path="/quiz/:firstFilter/:secondFilter"
             component={QuizPage}
           />
-          <ProtectedRoute adminOnly path="/admin" component={AdminPage} />
+          <ProtectedRoute adminOnly exact path="/admin" component={AdminPage} />
+          <ProtectedRoute
+            adminOnly
+            path="/admin/add"
+            component={RegisterPage}
+          />
+          <ProtectedRoute adminOnly path="/admin/stats" component={StatsPage} />
+          <ProtectedRoute
+            adminOnly
+            path="/admin/solution"
+            component={SolutionPage}
+          />
         </Switch>
       </Router>
     </AuthProvider>
