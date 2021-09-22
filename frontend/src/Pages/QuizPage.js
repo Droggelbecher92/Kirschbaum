@@ -101,7 +101,6 @@ export default function QuizPage() {
       ]
       let multistring = ''
       for (let i = 0; i < possibleAnswersInOrder.length; i++) {
-        console.log('blub')
         for (let k = 0; k < multiAnswer.length; k++) {
           if (possibleAnswersInOrder[i] === multiAnswer[k]) {
             multistring += multiAnswer[k] + ' '
