@@ -10,6 +10,6 @@ export default styled.div`
   color: var(--neutral-dark);
 
   display: grid;
-  place-items: center;
-  grid-template-rows: 1fr min-content;
+  grid-template-rows: 1fr;
+  grid-template-columns: 100%;
 `
