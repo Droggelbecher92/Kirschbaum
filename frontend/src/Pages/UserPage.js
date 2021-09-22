@@ -9,6 +9,8 @@ import Error from '../Components/Error'
 import { getUser, updateName, updatePassword } from '../Services/api-service'
 import Loading from '../Components/Loading'
 import MainPage from '../Components/MainPage'
+import 'react-circular-progressbar/dist/styles.css'
+import ProgressionLevel from '../Components/ProgressionLevel'
 
 const initialStatePasswords = {
   password1: '',
@@ -79,17 +81,16 @@ export default function UserPage() {
 
   return (
     <Page>
-      <div>
-        <Typography variant="h3" color="textSecondary">
-          {'Moin ' + user.userName}
-        </Typography>
-        <Typography variant="h4" color="textSecondary">
-          {'Your current score is: ' + actualUser.score}
-        </Typography>
-      </div>
+      <Typography variant="h4" color="textPrimary">
+        Dein aktuelles Level
+      </Typography>
       {loading && <Loading />}
       {!loading && (
         <Main>
+          <ProgressionLevel
+            level={`${Math.floor(actualUser.score / 100)}`}
+            percent={actualUser.score % 100}
+          />
           <TextField
             id="standard-basic"
             label="Neuer Username"
