@@ -5,17 +5,23 @@ import HomePage from './Pages/HomePage'
 import UserPage from './Pages/UserPage'
 import LogoutPage from './Pages/LogoutPage'
 import QuizPage from './Pages/QuizPage'
+import ProtectedRoute from './Auth/ProtectedRoute'
+import AdminPage from './Pages/AdminPage'
 
 export default function App() {
   return (
     <AuthProvider>
       <Router>
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <ProtectedRoute exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
-          <Route path="/user" component={UserPage} />
-          <Route path="/logout" component={LogoutPage} />
-          <Route path="/quiz/:firstFilter/:secondFilter" component={QuizPage} />
+          <ProtectedRoute path="/user" component={UserPage} />
+          <ProtectedRoute path="/logout" component={LogoutPage} />
+          <ProtectedRoute
+            path="/quiz/:firstFilter/:secondFilter"
+            component={QuizPage}
+          />
+          <ProtectedRoute adminOnly path="/admin" component={AdminPage} />
         </Switch>
       </Router>
     </AuthProvider>
