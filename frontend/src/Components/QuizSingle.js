@@ -3,6 +3,7 @@ import ChooseFieldQuiz from './ChooseFieldQuiz'
 import ChooseBoxQuiz from './ChooseBoxQuiz'
 import AnswerButton from './AnswerButton'
 import styled from 'styled-components/macro'
+import { useState } from 'react'
 
 export default function QuizSingle({
   currentQuestion,
@@ -10,6 +11,10 @@ export default function QuizSingle({
   submitAnswer,
   singleAnswer,
 }) {
+  const [first, setFirst] = useState(false)
+  const [second, setSecond] = useState(false)
+  const [third, setThird] = useState(false)
+  const [fourth, setFourth] = useState(false)
   return (
     <WrapperQuestion>
       <Typography
@@ -24,36 +29,64 @@ export default function QuizSingle({
         <ChooseBoxQuiz
           value={currentQuestion.answer1}
           type="submit"
-          onClick={e =>
+          selected={first}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer1, currentQuestion.type)
-          }
+            if (first === false) {
+              setFirst(true)
+              setSecond(false)
+              setThird(false)
+              setFourth(false)
+            }
+          }}
         >
           {currentQuestion.answer1}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer2}
           type="submit"
-          onClick={e =>
+          selected={second}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer2, currentQuestion.type)
-          }
+            if (second === false) {
+              setFirst(false)
+              setSecond(true)
+              setThird(false)
+              setFourth(false)
+            }
+          }}
         >
           {currentQuestion.answer2}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer3}
           type="submit"
-          onClick={e =>
+          selected={third}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer3, currentQuestion.type)
-          }
+            if (third === false) {
+              setFirst(false)
+              setSecond(false)
+              setThird(true)
+              setFourth(false)
+            }
+          }}
         >
           {currentQuestion.answer3}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer4}
           type="submit"
-          onClick={e =>
+          selected={fourth}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer4, currentQuestion.type)
-          }
+            if (fourth === false) {
+              setFirst(false)
+              setSecond(false)
+              setThird(false)
+              setFourth(true)
+            }
+          }}
         >
           {currentQuestion.answer4}
         </ChooseBoxQuiz>
@@ -61,7 +94,13 @@ export default function QuizSingle({
         <AnswerButton
           disabled={!singleAnswer}
           type="submit"
-          onClick={e => submitAnswer(e, currentQuestion.type)}
+          onClick={e => {
+            submitAnswer(e, currentQuestion.type)
+            setFirst(false)
+            setSecond(false)
+            setThird(false)
+            setFourth(false)
+          }}
         >
           Bestätigen
         </AnswerButton>

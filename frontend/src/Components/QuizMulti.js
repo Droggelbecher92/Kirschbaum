@@ -3,6 +3,7 @@ import ChooseFieldQuiz from './ChooseFieldQuiz'
 import ChooseBoxQuiz from './ChooseBoxQuiz'
 import AnswerButton from './AnswerButton'
 import styled from 'styled-components/macro'
+import { useState } from 'react'
 
 export default function QuizMulti({
   currentQuestion,
@@ -10,6 +11,10 @@ export default function QuizMulti({
   submitAnswer,
   multiAnswer,
 }) {
+  const [first, setFirst] = useState(false)
+  const [second, setSecond] = useState(false)
+  const [third, setThird] = useState(false)
+  const [fourth, setFourth] = useState(false)
   return (
     <WrapperQuestion>
       <Typography
@@ -24,36 +29,60 @@ export default function QuizMulti({
         <ChooseBoxQuiz
           value={currentQuestion.answer1}
           type="submit"
-          onClick={e =>
+          selected={first}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer1, currentQuestion.type)
-          }
+            if (first === true) {
+              setFirst(false)
+            } else {
+              setFirst(true)
+            }
+          }}
         >
           {currentQuestion.answer1}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer2}
           type="submit"
-          onClick={e =>
+          selected={second}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer2, currentQuestion.type)
-          }
+            if (second === true) {
+              setSecond(false)
+            } else {
+              setSecond(true)
+            }
+          }}
         >
           {currentQuestion.answer2}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer3}
           type="submit"
-          onClick={e =>
+          selected={third}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer3, currentQuestion.type)
-          }
+            if (third === true) {
+              setThird(false)
+            } else {
+              setThird(true)
+            }
+          }}
         >
           {currentQuestion.answer3}
         </ChooseBoxQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer4}
           type="submit"
-          onClick={e =>
+          selected={fourth}
+          onClick={e => {
             handleAnswer(e, currentQuestion.answer4, currentQuestion.type)
-          }
+            if (fourth === true) {
+              setFourth(false)
+            } else {
+              setFourth(true)
+            }
+          }}
         >
           {currentQuestion.answer4}
         </ChooseBoxQuiz>
@@ -61,9 +90,15 @@ export default function QuizMulti({
         <AnswerButton
           disabled={multiAnswer.length < 1}
           type="submit"
-          onClick={e => submitAnswer(e, currentQuestion.type)}
+          onClick={e => {
+            submitAnswer(e, currentQuestion.type)
+            setFirst(false)
+            setSecond(false)
+            setThird(false)
+            setFourth(false)
+          }}
         >
-          {`Aktuelle Auswahl: ${multiAnswer}`}
+          Bestätigen
         </AnswerButton>
       </ChooseFieldQuiz>
     </WrapperQuestion>
@@ -75,6 +110,7 @@ const WrapperQuestion = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+
   background: var(--background-light);
   color: var(--neutral-dark);
   display: grid;
