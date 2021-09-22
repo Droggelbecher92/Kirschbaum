@@ -32,7 +32,7 @@ export default function BottomNavAdmin() {
           to="/admin"
         />
         <BottomNavigationAction
-          label="Home"
+          label="Lösungen"
           value="/admin/solution"
           icon={<FollowTheSigns />}
           component={Link}
