@@ -52,7 +52,7 @@ export default function AdminPage() {
   return (
     <MainPage>
       <MainAdmin>
-        <Typography variant="h3">{'Hallo ' + user.name}</Typography>
+        <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
         <StatsBoxGlobal right={right} wrong={wrong} all={overall} />
       </MainAdmin>
       <BottomNavAdmin />
