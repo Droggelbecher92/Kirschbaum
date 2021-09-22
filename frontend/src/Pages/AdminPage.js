@@ -1,4 +1,3 @@
-import Main from '../Components/Main'
 import Page from '../Components/Page'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 import { Typography } from '@material-ui/core'
@@ -9,6 +8,7 @@ import Loading from '../Components/Loading'
 import StatsBoxGlobal from '../Components/StatsBoxGlobal'
 import MainPage from '../Components/MainPage'
 import MainAdmin from '../Components/MainAdmin'
+import Error from '../Components/Error'
 
 export default function AdminPage() {
   const { user, token } = useAuth()
@@ -43,7 +43,6 @@ export default function AdminPage() {
   if (!answers) {
     return (
       <Page>
-        <div></div>
         <Loading />
       </Page>
     )
@@ -54,6 +53,7 @@ export default function AdminPage() {
       <MainAdmin>
         <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
         <StatsBoxGlobal right={right} wrong={wrong} all={overall} />
+        {error && <Error>{error.message}</Error>}
       </MainAdmin>
       <BottomNavAdmin />
     </MainPage>
