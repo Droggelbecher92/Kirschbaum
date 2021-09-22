@@ -16,12 +16,6 @@ export default function StatsBoxGlobal({ all, right, wrong }) {
       <Typography variant="body1" color="textPrimary">
         {right}
       </Typography>
-      <Typography variant="body1" color="textPrimary">
-        Davon falsch beantwortet
-      </Typography>
-      <Typography variant="body1" color="textPrimary">
-        {wrong}
-      </Typography>
     </Wrapper>
   )
 }

@@ -1,5 +1,6 @@
 import { CircularProgressbar } from 'react-circular-progressbar'
 import styled from 'styled-components/macro'
+import { Typography } from '@material-ui/core'
 
 export default function ProgressionLevel({ level, percent }) {
   return (
