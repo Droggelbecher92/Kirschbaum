@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Getter
 @Setter
@@ -21,5 +23,9 @@ public class AnswerHistoryService {
 
     public AnswerHistoryEntity save(AnswerHistoryEntity answerToSave) {
         return answerRepo.save(answerToSave);
+    }
+
+    public List<AnswerHistoryEntity> findAll() {
+        return answerRepo.findAll();
     }
 }
