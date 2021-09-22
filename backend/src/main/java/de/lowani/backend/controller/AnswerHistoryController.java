@@ -3,6 +3,7 @@ package de.lowani.backend.controller;
 
 import de.lowani.backend.api.Answer;
 import de.lowani.backend.entities.AnswerHistoryEntity;
+import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.service.AnswerHistoryService;
 import de.lowani.backend.service.MapperService;
 import de.lowani.backend.service.UserService;
@@ -12,7 +13,10 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static de.lowani.backend.controller.AnswerHistoryController.ANSWER_CONTROLLER_TAG;
 import static javax.servlet.http.HttpServletResponse.*;
@@ -54,5 +58,15 @@ public class AnswerHistoryController {
         AnswerHistoryEntity savedAnswerEnt = answerHistoryService.save(answerToSave);
         Answer savedAnswer = mapperService.map(savedAnswerEnt);
         return ok(savedAnswer);
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getAllAnswers(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAll();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
     }
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -137,9 +138,10 @@ public class MapperService {
     //Answer
     public Answer map(AnswerHistoryEntity answerEntity){
         return Answer.builder()
+                .id(answerEntity.getId())
                 .question(answerEntity.getQuestion().getQuestion())
                 .score((int) answerEntity.getScore())
-                .userName(answerEntity.getUser().getName())
+                .userName(String.valueOf(answerEntity.getUser().getId()))
                 .build();
     }
 
@@ -149,5 +151,14 @@ public class MapperService {
                 .user(userRepo.findByName(answer.getUserName()).orElseThrow())
                 .question(questionRepo.findByQuestion(answer.getQuestion()).orElseThrow())
                 .build();
+    }
+
+    public List<Answer> mapListOfAnswers(List<AnswerHistoryEntity> answerHistoryEntities){
+        List<Answer> answers = new LinkedList<>();
+        for (AnswerHistoryEntity answerEnt :
+                answerHistoryEntities) {
+            answers.add(map(answerEnt));
+        }
+        return answers;
     }
 }
