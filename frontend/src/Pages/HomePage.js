@@ -1,6 +1,5 @@
 import { Redirect } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthProvider'
-import MainPage from '../Components/MainPage'
 import ChooseField from '../Components/ChooseField'
 import BottomNav from '../Components/BottomNav'
 import Loading from '../Components/Loading'
@@ -11,6 +10,7 @@ import ChooseBoxCategory from '../Components/ChooseBoxCategory'
 import ChooseBoxTopic from '../Components/ChooseBoxTopic'
 import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
 import Error from '../Components/Error'
+import Page from '../Components/Page'
 
 export default function HomePage() {
   const { user, token } = useAuth()
@@ -42,9 +42,9 @@ export default function HomePage() {
   }
   while (!categories || !topics) {
     return (
-      <MainPage>
+      <Page>
         <Loading />
-      </MainPage>
+      </Page>
     )
   }
   if (url) {
@@ -52,7 +52,7 @@ export default function HomePage() {
   }
 
   return (
-    <MainPage>
+    <Page>
       <ChooseField>
         {error && <Error />}
         <ChooseBoxSpecial
@@ -91,6 +91,6 @@ export default function HomePage() {
         ))}
       </ChooseField>
       <BottomNav />
-    </MainPage>
+    </Page>
   )
 }

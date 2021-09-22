@@ -1,4 +1,4 @@
-import MainPage from '../Components/MainPage'
+import Page from '../Components/Page'
 import { Redirect, useParams } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
@@ -157,9 +157,9 @@ export default function QuizPage() {
       )
     } else {
       return (
-        <MainPage>
+        <Page>
           <Loading />
-        </MainPage>
+        </Page>
       )
     }
   }

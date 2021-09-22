@@ -1,4 +1,3 @@
-import Page from '../Components/Page'
 import { useAuth } from '../Auth/AuthProvider'
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
@@ -7,6 +6,7 @@ import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
 import logo from '../img/headbage.jpg'
+import PageHeader from '../Components/PageHeader'
 
 const initialState = {
   userName: '',
@@ -38,7 +38,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Page>
+    <PageHeader>
       <div>
         <br />
         <img src={logo} alt="logo" />
@@ -65,6 +65,6 @@ export default function LoginPage() {
         </Main>
       )}
       {error && <Error>{error.message}</Error>}
-    </Page>
+    </PageHeader>
   )
 }

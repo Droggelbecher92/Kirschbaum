@@ -1,11 +1,11 @@
-import MainPage from '../Components/MainPage'
+import Page from '../Components/Page'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 
 export default function RegisterPage() {
   return (
-    <MainPage>
+    <Page>
       <div>hier kommen neue Nutzer hinzu</div>
       <BottomNavAdmin />
-    </MainPage>
+    </Page>
   )
 }

@@ -1,4 +1,3 @@
-import Page from '../Components/Page'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 import { Typography } from '@material-ui/core'
 import { useAuth } from '../Auth/AuthProvider'
@@ -6,10 +5,12 @@ import { useEffect, useState } from 'react'
 import { getAllUsers, getStats } from '../Services/api-service'
 import Loading from '../Components/Loading'
 import StatsBoxGlobal from '../Components/StatsBoxGlobal'
-import MainPage from '../Components/MainPage'
 import MainAdmin from '../Components/MainAdmin'
 import Error from '../Components/Error'
 import StatsBox from '../Components/StatsBox'
+import Page from '../Components/Page'
+import PageHeader from '../Components/PageHeader'
+import BottomNav from '../Components/BottomNav'
 
 export default function AdminPage() {
   const { user, token } = useAuth()
@@ -63,15 +64,15 @@ export default function AdminPage() {
     return (
       <Page>
         <Loading />
+        <BottomNav />
       </Page>
     )
   }
 
   return (
-    <MainPage>
+    <PageHeader>
+      <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
       <MainAdmin>
-        <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
-        <div></div>
         <StatsBoxGlobal right={right} wrong={wrong} all={overall} />
         <StatsBox
           text={'Wie viele Mitarbeiter nutzen die App?'}
@@ -80,6 +81,6 @@ export default function AdminPage() {
         {error && <Error>{error.message}</Error>}
       </MainAdmin>
       <BottomNavAdmin />
-    </MainPage>
+    </PageHeader>
   )
 }

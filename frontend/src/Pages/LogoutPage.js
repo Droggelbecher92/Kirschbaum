@@ -11,10 +11,13 @@ export default function LogoutPage() {
   }
   return (
     <Page>
-      <Typography variant="h3">{'Bis bald ' + user.userName}</Typography>
-      <Button variant="contained" color="primary" onClick={logout}>
-        Logout
-      </Button>
+      <div>
+        <Typography variant="h4">{'Bis bald ' + user.userName}</Typography>
+        <br />
+        <Button variant="contained" color="primary" onClick={logout}>
+          Logout
+        </Button>
+      </div>
       <BottomNav />
     </Page>
   )
