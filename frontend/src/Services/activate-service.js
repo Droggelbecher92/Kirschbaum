@@ -1,4 +1,4 @@
-export const activateSubmitForSingleQuestion = credentials => {
+export const activateSubmitQuestion = credentials => {
   if (
     credentials.question === '' ||
     credentials.categoryName === '' ||
@@ -9,7 +9,12 @@ export const activateSubmitForSingleQuestion = credentials => {
   const type = credentials.type
   if (type === 'THUMB') {
     if (credentials.solution !== '') {
-      return true
+      if (
+        credentials.solution === credentials.answer1 ||
+        credentials.solution === credentials.answer2
+      ) {
+        return true
+      }
     }
   } else if (type === 'SINGLE') {
     if (

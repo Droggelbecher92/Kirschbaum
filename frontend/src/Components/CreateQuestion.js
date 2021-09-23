@@ -7,10 +7,7 @@ import SelectCategory from './SelectCategory'
 import SelectType from './SelectType'
 import DefineThumbAnswer from './DefineThumbAnswer'
 import DefineSingleAnswer from './DefineSingleAnswer'
-import {
-  activateSubmit,
-  activateSubmitForSingleQuestion,
-} from '../Services/activate-service'
+import { activateSubmitQuestion } from '../Services/activate-service'
 
 const initialState = {
   type: '',
@@ -42,7 +39,7 @@ export default function CreateQuestion() {
     }
   }
 
-  const active = activateSubmitForSingleQuestion(credentials)
+  const active = activateSubmitQuestion(credentials)
 
   return (
     <Wrapper as="form" onSubmit={handleSubmit}>

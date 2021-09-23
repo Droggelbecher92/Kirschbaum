@@ -36,7 +36,7 @@ export default function DefineSingleAnswer({ handleChange, credentials }) {
       />
       <section>
         <FormControl sx={{ width: '100%' }}>
-          <InputLabel id="single-answer-label">Antwort</InputLabel>
+          <InputLabel id="single-answer-label">Richtige Antwort</InputLabel>
           <Select
             labelId="label-label"
             id="label-helper"
