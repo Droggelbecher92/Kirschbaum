@@ -2,12 +2,15 @@ import styled from 'styled-components/macro'
 import { Button, TextField } from '@material-ui/core'
 import { useState } from 'react'
 import Loading from './Loading'
-import Error from './Error'
-import { saveTopic } from '../Services/api-service'
-import { useAuth } from '../Auth/AuthProvider'
 import SelectTopic from './SelectTopic'
 import SelectCategory from './SelectCategory'
 import SelectType from './SelectType'
+import DefineThumbAnswer from './DefineThumbAnswer'
+import DefineSingleAnswer from './DefineSingleAnswer'
+import {
+  activateSubmit,
+  activateSubmitForSingleQuestion,
+} from '../Services/activate-service'
 
 const initialState = {
   type: '',
@@ -21,10 +24,8 @@ const initialState = {
   solution: '',
 }
 export default function CreateQuestion() {
-  const { token } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState()
   const [created, setCreated] = useState(false)
 
   const handleCredentialsChange = event => {
@@ -36,17 +37,12 @@ export default function CreateQuestion() {
     event.preventDefault()
     setLoading(true)
     setCreated(false)
-    setError()
-    saveTopic(token, credentials)
-      .then(() => {
-        setCreated(true)
-        setLoading(false)
-      })
-      .catch(error => {
-        setError(error)
-        setLoading(false)
-      })
+    if (credentials.type === 'THUMB') {
+      setCredentials({ ...credentials, answer1: 'UP', answer2: 'DOWN' })
+    }
   }
+
+  const active = activateSubmitForSingleQuestion(credentials)
 
   return (
     <Wrapper as="form" onSubmit={handleSubmit}>
@@ -71,9 +67,26 @@ export default function CreateQuestion() {
             handleChange={handleCredentialsChange}
             type={credentials.type}
           />
-          {error && <Error>{error.message}</Error>}
+          {credentials.type === 'THUMB' && (
+            <DefineThumbAnswer
+              handleChange={handleCredentialsChange}
+              solution={credentials.solution}
+            />
+          )}
+          {credentials.type === 'SINGLE' && (
+            <DefineSingleAnswer
+              handleChange={handleCredentialsChange}
+              credentials={credentials}
+            />
+          )}
+
           {created && <p>Hinzugefügt!</p>}
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            disabled={active}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
             Hinzufügen
           </Button>
         </Wrapper>
@@ -84,4 +97,5 @@ export default function CreateQuestion() {
 const Wrapper = styled.main`
   display: grid;
   grid-row-gap: var(--size-l);
+  overflow-y: scroll;
 `
