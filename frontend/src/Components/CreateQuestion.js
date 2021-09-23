@@ -85,7 +85,7 @@ export default function CreateQuestion() {
           />
           <SelectCategory
             handleChange={handleCredentialsChange}
-            topic={credentials.categoryName}
+            category={credentials.categoryName}
           />
           <SelectType
             handleChange={handleCredentialsChange}
