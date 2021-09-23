@@ -6,40 +6,42 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../Auth/AuthProvider'
-import { getTopics } from '../Services/api-service'
+import { getCategories } from '../Services/api-service'
 
-export default function SelectTopic({ handleChange, topic }) {
+export default function SelectCategory({ handleChange, category }) {
   const { token } = useAuth()
-  const [allTopics, setAllTopics] = useState([])
+  const [allCategories, setAllCategories] = useState([])
 
   useEffect(() => {
-    setupTopics(token).catch(error => console.log(error.message))
+    setupCategories(token).catch(error => console.log(error.message))
   }, [token])
 
-  const setupTopics = token => getTopics(token).then(setAllTopics)
+  const setupCategories = token => getCategories(token).then(setAllCategories)
 
   return (
     <section>
       <FormControl sx={{ width: '100%' }}>
-        <InputLabel id="topic-label">Topic</InputLabel>
+        <InputLabel id="category-label">Kategorie</InputLabel>
         <Select
           labelId="label-label"
           id="label-helper"
-          value={topic}
-          name="topicName"
-          label="Topic"
+          value={category}
+          name="categoryName"
+          label="Kategorie"
           onChange={handleChange}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {allTopics.map(topic => (
-            <MenuItem value={topic.topic} name="topicName">
-              {topic.topic}
+          {allCategories.map(category => (
+            <MenuItem value={category.category} name="categoryName">
+              {category.category}
             </MenuItem>
           ))}
         </Select>
-        <FormHelperText>Welches Topic hat deine Frage?</FormHelperText>
+        <FormHelperText>
+          Zu welcher Kategorie gehört deine Frage?
+        </FormHelperText>
       </FormControl>
     </section>
   )
