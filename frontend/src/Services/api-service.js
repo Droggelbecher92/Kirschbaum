@@ -66,3 +66,8 @@ export const saveCategory = (token, category) =>
 
 export const saveTopic = (token, topic) =>
   axios.post(`/api/kirschbaum/topic/new`, topic, headers(token))
+
+export const saveUser = (token, user) =>
+  axios
+    .post(`/api/kirschbaum/user`, user, headers(token))
+    .then(response => response.data)
