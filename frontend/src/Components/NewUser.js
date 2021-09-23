@@ -25,7 +25,7 @@ export default function NewUser() {
   }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: '100%' }}>
       <CardActions>
         <ExpandMore
           expand={expanded}

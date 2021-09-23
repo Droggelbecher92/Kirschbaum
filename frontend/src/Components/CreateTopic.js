@@ -3,13 +3,13 @@ import { Button, TextField } from '@material-ui/core'
 import { useState } from 'react'
 import Loading from './Loading'
 import Error from './Error'
-import { saveCategory } from '../Services/api-service'
+import { saveTopic } from '../Services/api-service'
 import { useAuth } from '../Auth/AuthProvider'
 
 const initialState = {
-  category: '',
+  topic: '',
 }
-export default function CreateCategory() {
+export default function CreateTopic() {
   const { token } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
@@ -17,7 +17,7 @@ export default function CreateCategory() {
   const [created, setCreated] = useState(false)
 
   const handleCredentialsChange = event => {
-    setCredentials({ category: event.target.value })
+    setCredentials({ topic: event.target.value })
   }
 
   const handleSubmit = event => {
@@ -25,7 +25,7 @@ export default function CreateCategory() {
     setLoading(true)
     setCreated(false)
     setError()
-    saveCategory(token, credentials)
+    saveTopic(token, credentials)
       .then(() => {
         setCreated(true)
         setLoading(false)
@@ -42,9 +42,9 @@ export default function CreateCategory() {
       {!loading && (
         <Wrapper>
           <TextField
-            label="Neue Kategorie"
-            name="category"
-            value={credentials.category}
+            label="Neues Topic"
+            name="topic"
+            value={credentials.topic}
             onChange={handleCredentialsChange}
           />
           {error && <Error>{error.message}</Error>}

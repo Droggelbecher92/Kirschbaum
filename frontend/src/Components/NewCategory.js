@@ -26,7 +26,7 @@ export default function NewCategory() {
   }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: '100%' }}>
       <CardActions>
         <ExpandMore
           expand={expanded}
