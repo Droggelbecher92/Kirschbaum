@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import { useState } from 'react'
+import CreateTopic from './CreateTopic'
 
 const ExpandMore = styled(props => {
   const { expand, ...other } = props
@@ -25,7 +26,7 @@ export default function NewTopic() {
   }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: '100%' }}>
       <CardActions>
         <ExpandMore
           expand={expanded}
@@ -38,7 +39,7 @@ export default function NewTopic() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          Hier müssen Felder zum anlegen eines neuen Topics rein
+          <CreateTopic />
         </CardContent>
       </Collapse>
     </Card>
