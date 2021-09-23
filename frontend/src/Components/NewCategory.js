@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import { useState } from 'react'
+import CreateCategory from './CreateCategory'
 
 const ExpandMore = styled(props => {
   const { expand, ...other } = props
@@ -38,7 +39,7 @@ export default function NewCategory() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          Hier müssen Felder zum anlegen einer neuen Kategorie rein
+          <CreateCategory />
         </CardContent>
       </Collapse>
     </Card>
