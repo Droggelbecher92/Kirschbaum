@@ -7,6 +7,7 @@ import { saveTopic } from '../Services/api-service'
 import { useAuth } from '../Auth/AuthProvider'
 import SelectTopic from './SelectTopic'
 import SelectCategory from './SelectCategory'
+import SelectType from './SelectType'
 
 const initialState = {
   type: '',
@@ -65,6 +66,10 @@ export default function CreateQuestion() {
           <SelectCategory
             handleChange={handleCredentialsChange}
             topic={credentials.categoryName}
+          />
+          <SelectType
+            handleChange={handleCredentialsChange}
+            type={credentials.type}
           />
           {error && <Error>{error.message}</Error>}
           {created && <p>Hinzugefügt!</p>}
