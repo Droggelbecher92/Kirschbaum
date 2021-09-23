@@ -1,4 +1,4 @@
-import MainPage from '../Components/MainPage'
+import Page from '../Components/Page'
 import { Redirect, useParams } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
@@ -33,7 +33,6 @@ export default function QuizPage() {
     setGivenAnswers([])
     if (firstFilter === 'Category') {
       getCategoryQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -41,7 +40,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else if (firstFilter === 'Topic') {
       getTopicQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -49,7 +47,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else {
       getRandomQuestions(token)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -157,9 +154,9 @@ export default function QuizPage() {
       )
     } else {
       return (
-        <MainPage>
+        <Page>
           <Loading />
-        </MainPage>
+        </Page>
       )
     }
   }

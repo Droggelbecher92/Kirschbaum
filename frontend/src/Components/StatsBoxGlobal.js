@@ -1,7 +1,8 @@
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
+import ProgressionPercent from './ProgressionPercent'
 
-export default function StatsBoxGlobal({ all, right, wrong }) {
+export default function StatsBoxGlobal({ all, rightPercent }) {
   return (
     <Wrapper>
       <Typography variant="body1" color="textPrimary">
@@ -13,22 +14,12 @@ export default function StatsBoxGlobal({ all, right, wrong }) {
       <Typography variant="body1" color="textPrimary">
         Davon richtig beantwortet
       </Typography>
-      <Typography variant="body1" color="textPrimary">
-        {right}
-      </Typography>
-      <Typography variant="body1" color="textPrimary">
-        Davon falsch beantwortet
-      </Typography>
-      <Typography variant="body1" color="textPrimary">
-        {wrong}
-      </Typography>
+      <ProgressionPercent percent={rightPercent} />
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   background-color: lightskyblue;
-  margin: var(--size-xl);
-  width: 95%;
   border-radius: 10px;
   text-align: center;
 `

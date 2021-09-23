@@ -1,4 +1,3 @@
-import Page from '../Components/Page'
 import { useAuth } from '../Auth/AuthProvider'
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
@@ -7,6 +6,8 @@ import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
 import logo from '../img/headbage.jpg'
+import PageWithHeader from '../Components/PageWithHeader'
+import styled from 'styled-components/macro'
 
 const initialState = {
   userName: '',
@@ -38,11 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <Page>
-      <div>
-        <br />
-        <img src={logo} alt="logo" />
-      </div>
+    <PageWithHeader>
+      <Logo src={logo} alt="logo" />
       {loading && <Loading />}
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>
@@ -65,6 +63,10 @@ export default function LoginPage() {
         </Main>
       )}
       {error && <Error>{error.message}</Error>}
-    </Page>
+    </PageWithHeader>
   )
 }
+
+const Logo = styled.img`
+  padding-top: var(--size-xl);
+`
