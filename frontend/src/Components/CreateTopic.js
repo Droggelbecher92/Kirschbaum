@@ -3,7 +3,7 @@ import { Button, TextField } from '@material-ui/core'
 import { useState } from 'react'
 import Loading from './Loading'
 import Error from './Error'
-import { saveCategory, saveTopic } from '../Services/api-service'
+import { saveTopic } from '../Services/api-service'
 import { useAuth } from '../Auth/AuthProvider'
 
 const initialState = {
