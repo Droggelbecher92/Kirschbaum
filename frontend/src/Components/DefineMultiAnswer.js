@@ -2,19 +2,13 @@ import { TextField } from '@material-ui/core'
 import * as React from 'react'
 import styled from 'styled-components/macro'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { useState } from 'react'
 
 export default function DefineMultiAnswer({
   handleChange,
-  handleSubmit,
   credentials,
+  answers,
+  handleFormat,
 }) {
-  const [answers, setAnswers] = useState(() => [])
-
-  const handleFormat = (event, newAnswers) => {
-    setAnswers(newAnswers)
-    handleSubmit(answers)
-  }
   return (
     <Wrapper>
       <TextField
@@ -45,20 +39,32 @@ export default function DefineMultiAnswer({
       <ToggleButtonGroup
         value={answers}
         onChange={handleFormat}
-        aria-label="text formatting"
+        aria-label="chosen question"
         size="large"
         sx={{ alignContent: 'center', paddingLeft: '22.5%' }}
       >
-        <ToggleButton value={credentials.answer1} aria-label="answer1">
+        <ToggleButton
+          value={credentials.answer1}
+          aria-label={credentials.answer1}
+        >
           1
         </ToggleButton>
-        <ToggleButton value={credentials.answer2} aria-label="answer2">
+        <ToggleButton
+          value={credentials.answer2}
+          aria-label={credentials.answer2}
+        >
           2
         </ToggleButton>
-        <ToggleButton value={credentials.answer3} aria-label="answer3">
+        <ToggleButton
+          value={credentials.answer3}
+          aria-label={credentials.answer3}
+        >
           3
         </ToggleButton>
-        <ToggleButton value={credentials.answer4} aria-label="answer4">
+        <ToggleButton
+          value={credentials.answer4}
+          aria-label={credentials.answer1}
+        >
           4
         </ToggleButton>
       </ToggleButtonGroup>

@@ -1,4 +1,4 @@
-export const activateSubmitQuestion = credentials => {
+export const activateSubmitQuestion = (credentials, answers) => {
   if (
     credentials.question === '' ||
     credentials.categoryName === '' ||
@@ -36,9 +36,7 @@ export const activateSubmitQuestion = credentials => {
       credentials.answer3 !== '' &&
       credentials.answer4 !== ''
     ) {
-      console.log('da')
-      if (credentials.solution.length > 0) {
-        console.log('hier')
+      if (answers.length > 0) {
         return true
       }
     }

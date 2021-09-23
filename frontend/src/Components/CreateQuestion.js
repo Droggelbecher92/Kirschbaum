@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import { Button, TextField } from '@material-ui/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Loading from './Loading'
 import SelectTopic from './SelectTopic'
 import SelectCategory from './SelectCategory'
@@ -29,25 +29,28 @@ export default function CreateQuestion() {
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
   const [created, setCreated] = useState(false)
+  const [answers, setAnswers] = useState([])
+
+  useEffect(() => {
+    setCredentials({ ...credentials, solution: setMultiSolution(answers) })
+  }, [answers])
 
   const handleCredentialsChange = event => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value })
-    console.log(credentials)
   }
 
   const setBasicThumb = () => {
     setCredentials({ ...credentials, answer1: 'UP', answer2: 'DOWN' })
   }
 
-  const setMultiSolution = solutionArray => {
-    const solutionString = orderMultiAnswers(solutionArray, [
+  const setMultiSolution = () => {
+    const solutionString = orderMultiAnswers(answers, [
       credentials.answer1,
       credentials.answer2,
       credentials.answer3,
       credentials.answer4,
     ])
-    setCredentials({ ...credentials, solution: solutionString })
-    console.log(credentials)
+    return solutionString
   }
 
   const handleSubmit = event => {
@@ -60,13 +63,21 @@ export default function CreateQuestion() {
       question.answer2 = 'DOWN'
       saveQuestion(token, question).catch(e => console.log(e.message))
     }
+    if (credentials.type === 'MULTI') {
+      const multiSolution = setMultiSolution()
+      setCredentials({ ...credentials, solution: multiSolution })
+    }
     saveQuestion(token, credentials).catch(e => console.log(e.message))
     setCredentials(initialState)
     setCreated(true)
     setLoading(false)
   }
 
-  const active = activateSubmitQuestion(credentials)
+  const handleFormat = (event, newAnswers) => {
+    setAnswers(newAnswers)
+  }
+
+  const active = activateSubmitQuestion(credentials, answers)
 
   return (
     <Wrapper as="form" onSubmit={handleSubmit}>
@@ -106,8 +117,9 @@ export default function CreateQuestion() {
           )}
           {credentials.type === 'MULTI' && (
             <DefineMultiAnswer
+              answers={answers}
               handleChange={handleCredentialsChange}
-              handleSubmit={setMultiSolution}
+              handleFormat={handleFormat}
               credentials={credentials}
             />
           )}
