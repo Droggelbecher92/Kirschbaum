@@ -47,4 +47,8 @@ public class QuestionService {
         }
         return randomizerService.getRandomQuestions(howMany,allOpt.get());
     }
+
+    public QuestionEntity save(QuestionEntity newQuestionEnt) {
+        return questionRepo.save(newQuestionEnt);
+    }
 }

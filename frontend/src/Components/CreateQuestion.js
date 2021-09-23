@@ -8,6 +8,10 @@ import SelectType from './SelectType'
 import DefineThumbAnswer from './DefineThumbAnswer'
 import DefineSingleAnswer from './DefineSingleAnswer'
 import { activateSubmitQuestion } from '../Services/activate-service'
+import DefineMultiAnswer from './DefineMultiAnswer'
+import { orderMultiAnswers } from '../Services/order-service'
+import { saveQuestion } from '../Services/api-service'
+import { useAuth } from '../Auth/AuthProvider'
 
 const initialState = {
   type: '',
@@ -21,6 +25,7 @@ const initialState = {
   solution: '',
 }
 export default function CreateQuestion() {
+  const { token } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
   const [loading, setLoading] = useState(false)
   const [created, setCreated] = useState(false)
@@ -30,13 +35,35 @@ export default function CreateQuestion() {
     console.log(credentials)
   }
 
+  const setBasicThumb = () => {
+    setCredentials({ ...credentials, answer1: 'UP', answer2: 'DOWN' })
+  }
+
+  const setMultiSolution = solutionArray => {
+    const solutionString = orderMultiAnswers(solutionArray, [
+      credentials.answer1,
+      credentials.answer2,
+      credentials.answer3,
+      credentials.answer4,
+    ])
+    setCredentials({ ...credentials, solution: solutionString })
+    console.log(credentials)
+  }
+
   const handleSubmit = event => {
     event.preventDefault()
     setLoading(true)
     setCreated(false)
     if (credentials.type === 'THUMB') {
-      setCredentials({ ...credentials, answer1: 'UP', answer2: 'DOWN' })
+      let question = credentials
+      question.answer1 = 'UP'
+      question.answer2 = 'DOWN'
+      saveQuestion(token, question).catch(e => console.log(e.message))
     }
+    saveQuestion(token, credentials).catch(e => console.log(e.message))
+    setCredentials(initialState)
+    setCreated(true)
+    setLoading(false)
   }
 
   const active = activateSubmitQuestion(credentials)
@@ -68,6 +95,7 @@ export default function CreateQuestion() {
             <DefineThumbAnswer
               handleChange={handleCredentialsChange}
               solution={credentials.solution}
+              setAnswers={setBasicThumb}
             />
           )}
           {credentials.type === 'SINGLE' && (
@@ -76,10 +104,17 @@ export default function CreateQuestion() {
               credentials={credentials}
             />
           )}
+          {credentials.type === 'MULTI' && (
+            <DefineMultiAnswer
+              handleChange={handleCredentialsChange}
+              handleSubmit={setMultiSolution}
+              credentials={credentials}
+            />
+          )}
 
           {created && <p>Hinzugefügt!</p>}
           <Button
-            disabled={active}
+            disabled={!active}
             variant="contained"
             color="primary"
             type="submit"

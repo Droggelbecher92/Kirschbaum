@@ -30,11 +30,15 @@ export default function SelectCategory({ handleChange, category }) {
           label="Kategorie"
           onChange={handleChange}
         >
-          <MenuItem value="">
+          <MenuItem value="new">
             <em>None</em>
           </MenuItem>
           {allCategories.map(category => (
-            <MenuItem value={category.category} name="categoryName">
+            <MenuItem
+              value={category.category}
+              name="categoryName"
+              key={category.category}
+            >
               {category.category}
             </MenuItem>
           ))}

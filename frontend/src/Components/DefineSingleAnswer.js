@@ -30,7 +30,7 @@ export default function DefineSingleAnswer({ handleChange, credentials }) {
       />
       <TextField
         label="Anwort 4"
-        name="answer$"
+        name="answer4"
         value={credentials.answer4}
         onChange={handleChange}
       />

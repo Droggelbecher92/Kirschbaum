@@ -113,7 +113,6 @@ public class MapperService {
 
     public QuestionEntity map(Question question){
         return QuestionEntity.builder()
-                .id(question.getId())
                 .category(categoryRepo.findByName(question.getCategoryName()).orElseThrow())
                 .topic(topicRepo.findByName(question.getTopicName()).orElseThrow())
                 .type(question.getType())

@@ -71,3 +71,8 @@ export const saveUser = (token, user) =>
   axios
     .post(`/api/kirschbaum/user`, user, headers(token))
     .then(response => response.data)
+
+export const saveQuestion = (token, question) =>
+  axios
+    .post(`/api/kirschbaum/question`, question, headers(token))
+    .then(response => response.data)

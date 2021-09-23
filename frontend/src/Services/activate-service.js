@@ -9,12 +9,7 @@ export const activateSubmitQuestion = credentials => {
   const type = credentials.type
   if (type === 'THUMB') {
     if (credentials.solution !== '') {
-      if (
-        credentials.solution === credentials.answer1 ||
-        credentials.solution === credentials.answer2
-      ) {
-        return true
-      }
+      return true
     }
   } else if (type === 'SINGLE') {
     if (
@@ -34,7 +29,19 @@ export const activateSubmitQuestion = credentials => {
       }
     }
   } else if (type === 'MULTI') {
-    return true
+    if (
+      credentials.solution !== '' &&
+      credentials.answer1 !== '' &&
+      credentials.answer2 !== '' &&
+      credentials.answer3 !== '' &&
+      credentials.answer4 !== ''
+    ) {
+      console.log('da')
+      if (credentials.solution.length > 0) {
+        console.log('hier')
+        return true
+      }
+    }
   } else {
     return false
   }

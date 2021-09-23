@@ -34,7 +34,7 @@ export default function SelectTopic({ handleChange, topic }) {
             <em>None</em>
           </MenuItem>
           {allTopics.map(topic => (
-            <MenuItem value={topic.topic} name="topicName">
+            <MenuItem value={topic.topic} name="topicName" key={topic.topic}>
               {topic.topic}
             </MenuItem>
           ))}

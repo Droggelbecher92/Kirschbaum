@@ -14,8 +14,8 @@ export default function DefineThumbAnswer({ handleChange, solution }) {
           labelId="label-label"
           id="label-helper"
           value={solution}
-          name="type"
-          label="Typ"
+          name="solution"
+          label="Thumb-solution"
           onChange={handleChange}
         >
           <MenuItem value="">
