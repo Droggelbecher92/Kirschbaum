@@ -33,7 +33,6 @@ export default function QuizPage() {
     setGivenAnswers([])
     if (firstFilter === 'Category') {
       getCategoryQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -41,7 +40,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else if (firstFilter === 'Topic') {
       getTopicQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -49,7 +47,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else {
       getRandomQuestions(token)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])

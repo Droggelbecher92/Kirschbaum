@@ -4,7 +4,7 @@ import BottomNavAdmin from '../Components/BottomNavAdmin'
 export default function SolutionPage() {
   return (
     <Page>
-      <div>hier können Lösungen vorgeschlagen werden</div>
+      <p>hier können Lösungen vorgeschlagen werden</p>
       <BottomNavAdmin />
     </Page>
   )

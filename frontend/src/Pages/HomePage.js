@@ -24,23 +24,17 @@ export default function HomePage() {
     setupCategories(token).catch(error => setError(error.message))
   }, [token])
 
-  const setupTopics = token =>
-    getTopics(token)
-      .then(response => response.data)
-      .then(setTopics)
-  const setupCategories = token =>
-    getCategories(token)
-      .then(response => response.data)
-      .then(setCategories)
+  const setupTopics = token => getTopics(token).then(setTopics)
+  const setupCategories = token => getCategories(token).then(setCategories)
 
   const handleRedirect = (filer2, which) => {
     setUrl(`/quiz/${which}/${filer2}`)
   }
 
-  while (!user) {
+  if (!user) {
     return <Redirect to="/login" />
   }
-  while (!categories || !topics) {
+  if (!categories || !topics) {
     return (
       <Page>
         <Loading />
@@ -58,7 +52,7 @@ export default function HomePage() {
         <ChooseBoxSpecial
           value="Special"
           type="submit"
-          onClick={e => handleRedirect('random', 'Special')}
+          onClick={() => handleRedirect('random', 'Special')}
         >
           Doppelte Punkte
         </ChooseBoxSpecial>
@@ -67,7 +61,7 @@ export default function HomePage() {
             value={category.category}
             type="submit"
             key={category.category}
-            onClick={e => handleRedirect(category.category, 'Category')}
+            onClick={() => handleRedirect(category.category, 'Category')}
           >
             {category.category}
           </ChooseBoxCategory>
@@ -75,7 +69,7 @@ export default function HomePage() {
         <ChooseBoxRandom
           value="Random"
           type="submit"
-          onClick={e => handleRedirect('random', 'Random')}
+          onClick={() => handleRedirect('random', 'Random')}
         >
           Random
         </ChooseBoxRandom>
@@ -84,7 +78,7 @@ export default function HomePage() {
             value={topic.topic}
             type="submit"
             key={topic.topic}
-            onClick={e => handleRedirect(topic.topic, 'Topic')}
+            onClick={() => handleRedirect(topic.topic, 'Topic')}
           >
             {topic.topic}
           </ChooseBoxTopic>

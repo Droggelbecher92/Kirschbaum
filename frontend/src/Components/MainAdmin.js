@@ -5,6 +5,7 @@ export default styled.main`
   text-align: center;
   place-items: center;
   height: min-content;
+  grid-row-gap: var(--size-l);
   justify-content: center;
   overflow-y: scroll;
 `

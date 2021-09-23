@@ -4,7 +4,7 @@ import BottomNavAdmin from '../Components/BottomNavAdmin'
 export default function StatsPage() {
   return (
     <Page>
-      <div>hier können genaue Stats geholt werden</div>
+      <p>hier können genaue Stats geholt werden</p>
       <BottomNavAdmin />
     </Page>
   )

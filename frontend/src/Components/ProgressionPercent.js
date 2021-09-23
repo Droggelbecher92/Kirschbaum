@@ -10,7 +10,6 @@ export default function ProgressionPercent({ percent }) {
 }
 const Wrapper = styled.div`
   width: 75%;
-  height: 75%;
   margin-left: 12.5%;
   justify-content: center;
   padding-bottom: 8%;

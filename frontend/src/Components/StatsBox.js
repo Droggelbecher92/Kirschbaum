@@ -14,8 +14,6 @@ export default function StatsBox({ percent, text }) {
 }
 const Wrapper = styled.div`
   background-color: lightskyblue;
-  width: 95%;
-  grid-column: span 2;
   border-radius: 10px;
   text-align: center;
 `

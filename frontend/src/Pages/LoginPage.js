@@ -6,7 +6,8 @@ import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
 import logo from '../img/headbage.jpg'
-import PageHeader from '../Components/PageHeader'
+import PageWithHeader from '../Components/PageWithHeader'
+import styled from 'styled-components/macro'
 
 const initialState = {
   userName: '',
@@ -38,11 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <PageHeader>
-      <div>
-        <br />
-        <img src={logo} alt="logo" />
-      </div>
+    <PageWithHeader>
+      <Logo src={logo} alt="logo" />
       {loading && <Loading />}
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>
@@ -65,6 +63,10 @@ export default function LoginPage() {
         </Main>
       )}
       {error && <Error>{error.message}</Error>}
-    </PageHeader>
+    </PageWithHeader>
   )
 }
+
+const Logo = styled.img`
+  padding-top: var(--size-xl);
+`

@@ -1,6 +1,6 @@
 import { useAuth } from '../Auth/AuthProvider'
 import { Redirect } from 'react-router-dom'
-import PageHeader from '../Components/PageHeader'
+import PageWithHeader from '../Components/PageWithHeader'
 import { Button, TextField, Typography } from '@material-ui/core'
 import BottomNav from '../Components/BottomNav'
 import Main from '../Components/Main'
@@ -29,7 +29,6 @@ export default function UserPage() {
 
   useEffect(() => {
     getUser(token, user.userName)
-      .then(response => response.data)
       .then(setActualUser)
       .catch(e => setError(e))
   }, [token, user])
@@ -80,7 +79,7 @@ export default function UserPage() {
   }
 
   return (
-    <PageHeader>
+    <PageWithHeader>
       <Typography variant="h4" color="textPrimary">
         Dein aktuelles Level
       </Typography>
@@ -136,6 +135,6 @@ export default function UserPage() {
       )}
       {error && <Error>{error.message}</Error>}
       <BottomNav />
-    </PageHeader>
+    </PageWithHeader>
   )
 }
