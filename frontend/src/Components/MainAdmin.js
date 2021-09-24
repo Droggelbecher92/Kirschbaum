@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-export default styled.main`
+export default styled.section`
   display: grid;
   text-align: center;
   place-items: center;

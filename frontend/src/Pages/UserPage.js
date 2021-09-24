@@ -87,7 +87,7 @@ export default function UserPage() {
       {!loading && (
         <Main>
           <ProgressionLevel
-            level={`${Math.floor(actualUser.score / 100)}`}
+            level={`${Math.floor(actualUser.score / 100) + 1}`}
             percent={actualUser.score % 100}
           />
           <TextField

@@ -13,6 +13,7 @@ import QuizThumb from '../Components/QuizThumb'
 import QuizSingle from '../Components/QuizSingle'
 import QuizMulti from '../Components/QuizMulti'
 import QuizResult from '../Components/QuizResult'
+import { orderMultiAnswers } from '../Services/order-service'
 
 export default function QuizPage() {
   const { user, token } = useAuth()
@@ -96,14 +97,7 @@ export default function QuizPage() {
         currentQuestion.answer3,
         currentQuestion.answer4,
       ]
-      let multistring = ''
-      for (let i = 0; i < possibleAnswersInOrder.length; i++) {
-        for (let k = 0; k < multiAnswer.length; k++) {
-          if (possibleAnswersInOrder[i] === multiAnswer[k]) {
-            multistring += multiAnswer[k] + ' '
-          }
-        }
-      }
+      const multistring = orderMultiAnswers(multiAnswer, possibleAnswersInOrder)
       if (multistring === currentQuestion.solution) {
         score += 1
       }

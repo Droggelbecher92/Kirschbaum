@@ -1,9 +1,12 @@
 package de.lowani.backend.controller;
 
+import de.lowani.backend.api.Answer;
+import de.lowani.backend.api.Category;
 import de.lowani.backend.api.Question;
 import de.lowani.backend.api.User;
 import de.lowani.backend.entities.QuestionEntity;
 import de.lowani.backend.entities.UserEntity;
+import de.lowani.backend.exception.UnauthorizedUserException;
 import de.lowani.backend.service.MapperService;
 import de.lowani.backend.service.QuestionService;
 import io.swagger.annotations.Api;
@@ -81,5 +84,20 @@ public class QuestionController {
         }
         List<Question> questions = mapperService.mapListOfQuestions(randomQuestionsEnt);
         return ok(questions);
+    }
+
+    @PostMapping( produces = APPLICATION_JSON_VALUE, consumes =  APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_UNAUTHORIZED, message = "Admin only"),
+            @ApiResponse(code = SC_BAD_REQUEST, message = "Question not complete")
+    })
+    public ResponseEntity<Question> postNewQuestion(@AuthenticationPrincipal UserEntity authUser, @RequestBody Question newQuestion){
+       if (!authUser.getRole().equals("admin")){
+           throw new UnauthorizedUserException("Only admins can create questions");
+       }
+        QuestionEntity newQuestionEnt = mapperService.map(newQuestion);
+        QuestionEntity savedQuestionEnt = questionService.save(newQuestionEnt);
+        Question savedQuestion = mapperService.map(savedQuestionEnt);
+        return ok(savedQuestion);
     }
 }

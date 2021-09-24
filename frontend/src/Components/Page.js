@@ -13,4 +13,5 @@ export default styled.div`
   place-items: center;
   text-align: center;
   grid-template-rows: 1fr min-content;
+  overflow-y: scroll; //Das ist nicht richtig...
 `

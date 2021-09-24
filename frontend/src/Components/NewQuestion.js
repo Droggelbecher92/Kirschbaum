@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import { useState } from 'react'
+import CreateQuestion from './CreateQuestion'
 
 const ExpandMore = styled(props => {
   const { expand, ...other } = props
@@ -38,7 +39,7 @@ export default function NewQuestion() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          Hier müssen Felder zum anlegen einer neuen Frage rein
+          <CreateQuestion />
         </CardContent>
       </Collapse>
     </Card>
