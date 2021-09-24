@@ -10,10 +10,10 @@ export default function RegisterPage() {
   return (
     <Page>
       <MainAdmin>
-        <NewUser />
         <NewQuestion />
         <NewCategory />
         <NewTopic />
+        <NewUser />
       </MainAdmin>
       <BottomNavAdmin />
     </Page>

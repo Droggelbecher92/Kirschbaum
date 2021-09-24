@@ -31,9 +31,18 @@ export default function CreateQuestion() {
   const [created, setCreated] = useState(false)
   const [answers, setAnswers] = useState([])
 
+  const setMultiSolution = () => {
+    return orderMultiAnswers(answers, [
+      credentials.answer1,
+      credentials.answer2,
+      credentials.answer3,
+      credentials.answer4,
+    ])
+  }
+
   useEffect(() => {
-    setCredentials({ ...credentials, solution: setMultiSolution(answers) })
-  }, [answers])
+    setCredentials(c => ({ ...c, solution: setMultiSolution }))
+  }, [answers]) //Hier kommt noch eine Warning
 
   const handleCredentialsChange = event => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value })
@@ -41,16 +50,6 @@ export default function CreateQuestion() {
 
   const setBasicThumb = () => {
     setCredentials({ ...credentials, answer1: 'UP', answer2: 'DOWN' })
-  }
-
-  const setMultiSolution = () => {
-    const solutionString = orderMultiAnswers(answers, [
-      credentials.answer1,
-      credentials.answer2,
-      credentials.answer3,
-      credentials.answer4,
-    ])
-    return solutionString
   }
 
   const handleSubmit = event => {
@@ -67,10 +66,13 @@ export default function CreateQuestion() {
       const multiSolution = setMultiSolution()
       setCredentials({ ...credentials, solution: multiSolution })
     }
-    saveQuestion(token, credentials).catch(e => console.log(e.message))
-    setCredentials(initialState)
-    setCreated(true)
-    setLoading(false)
+    saveQuestion(token, credentials)
+      .then(() => {
+        setCredentials(initialState)
+        setCreated(true)
+        setLoading(false)
+      })
+      .catch(e => console.log(e.message))
   }
 
   const handleFormat = (event, newAnswers) => {
@@ -141,5 +143,4 @@ export default function CreateQuestion() {
 const Wrapper = styled.main`
   display: grid;
   grid-row-gap: var(--size-l);
-  overflow-y: scroll;
 `
