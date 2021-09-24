@@ -24,6 +24,16 @@ const initialState = {
   answer4: '',
   solution: '',
 }
+
+const setMultiSolution = (answers, credentials) => {
+  return orderMultiAnswers(answers, [
+    credentials.answer1,
+    credentials.answer2,
+    credentials.answer3,
+    credentials.answer4,
+  ])
+}
+
 export default function CreateQuestion() {
   const { token } = useAuth()
   const [credentials, setCredentials] = useState(initialState)
@@ -31,18 +41,12 @@ export default function CreateQuestion() {
   const [created, setCreated] = useState(false)
   const [answers, setAnswers] = useState([])
 
-  const setMultiSolution = () => {
-    return orderMultiAnswers(answers, [
-      credentials.answer1,
-      credentials.answer2,
-      credentials.answer3,
-      credentials.answer4,
-    ])
-  }
-
   useEffect(() => {
-    setCredentials(c => ({ ...c, solution: setMultiSolution }))
-  }, [answers]) //Hier kommt noch eine Warning
+    setCredentials(credentials => ({
+      ...credentials,
+      solution: setMultiSolution(answers, credentials),
+    }))
+  }, [answers])
 
   const handleCredentialsChange = event => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value })
