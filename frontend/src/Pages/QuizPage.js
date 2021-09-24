@@ -1,4 +1,4 @@
-import MainPage from '../Components/MainPage'
+import Page from '../Components/Page'
 import { Redirect, useParams } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import QuizThumb from '../Components/QuizThumb'
 import QuizSingle from '../Components/QuizSingle'
 import QuizMulti from '../Components/QuizMulti'
 import QuizResult from '../Components/QuizResult'
+import { orderMultiAnswers } from '../Services/order-service'
 
 export default function QuizPage() {
   const { user, token } = useAuth()
@@ -33,7 +34,6 @@ export default function QuizPage() {
     setGivenAnswers([])
     if (firstFilter === 'Category') {
       getCategoryQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -41,7 +41,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else if (firstFilter === 'Topic') {
       getTopicQuestions(token, secondFilter)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -49,7 +48,6 @@ export default function QuizPage() {
         .catch(error => console.log(error.message))
     } else {
       getRandomQuestions(token)
-        .then(response => response.data)
         .then(data => {
           setCurrentQuestionList(data)
           setCurrentQuestion(data[0])
@@ -99,14 +97,7 @@ export default function QuizPage() {
         currentQuestion.answer3,
         currentQuestion.answer4,
       ]
-      let multistring = ''
-      for (let i = 0; i < possibleAnswersInOrder.length; i++) {
-        for (let k = 0; k < multiAnswer.length; k++) {
-          if (possibleAnswersInOrder[i] === multiAnswer[k]) {
-            multistring += multiAnswer[k] + ' '
-          }
-        }
-      }
+      const multistring = orderMultiAnswers(multiAnswer, possibleAnswersInOrder)
       if (multistring === currentQuestion.solution) {
         score += 1
       }
@@ -157,9 +148,9 @@ export default function QuizPage() {
       )
     } else {
       return (
-        <MainPage>
+        <Page>
           <Loading />
-        </MainPage>
+        </Page>
       )
     }
   }

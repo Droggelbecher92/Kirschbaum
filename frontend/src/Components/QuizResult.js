@@ -1,4 +1,4 @@
-import MainPage from './MainPage'
+import MainPage from './Page'
 import BottomNav from './BottomNav'
 import ResultBox from './ResultBox'
 import styled from 'styled-components/macro'

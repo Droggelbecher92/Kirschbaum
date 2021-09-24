@@ -11,5 +11,6 @@ export default styled.div`
 
   display: grid;
   place-items: center;
-  grid-template-rows: 1fr min-content;
+  text-align: center;
+  grid-template-rows: min-content 1fr min-content;
 `

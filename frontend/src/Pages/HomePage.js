@@ -1,6 +1,5 @@
 import { Redirect } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthProvider'
-import MainPage from '../Components/MainPage'
 import ChooseField from '../Components/ChooseField'
 import BottomNav from '../Components/BottomNav'
 import Loading from '../Components/Loading'
@@ -11,6 +10,7 @@ import ChooseBoxCategory from '../Components/ChooseBoxCategory'
 import ChooseBoxTopic from '../Components/ChooseBoxTopic'
 import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
 import Error from '../Components/Error'
+import Page from '../Components/Page'
 
 export default function HomePage() {
   const { user, token } = useAuth()
@@ -24,27 +24,21 @@ export default function HomePage() {
     setupCategories(token).catch(error => setError(error.message))
   }, [token])
 
-  const setupTopics = token =>
-    getTopics(token)
-      .then(response => response.data)
-      .then(setTopics)
-  const setupCategories = token =>
-    getCategories(token)
-      .then(response => response.data)
-      .then(setCategories)
+  const setupTopics = token => getTopics(token).then(setTopics)
+  const setupCategories = token => getCategories(token).then(setCategories)
 
   const handleRedirect = (filer2, which) => {
     setUrl(`/quiz/${which}/${filer2}`)
   }
 
-  while (!user) {
+  if (!user) {
     return <Redirect to="/login" />
   }
-  while (!categories || !topics) {
+  if (!categories || !topics) {
     return (
-      <MainPage>
+      <Page>
         <Loading />
-      </MainPage>
+      </Page>
     )
   }
   if (url) {
@@ -52,13 +46,13 @@ export default function HomePage() {
   }
 
   return (
-    <MainPage>
+    <Page>
       <ChooseField>
         {error && <Error />}
         <ChooseBoxSpecial
           value="Special"
           type="submit"
-          onClick={e => handleRedirect('random', 'Special')}
+          onClick={() => handleRedirect('random', 'Special')}
         >
           Doppelte Punkte
         </ChooseBoxSpecial>
@@ -67,7 +61,7 @@ export default function HomePage() {
             value={category.category}
             type="submit"
             key={category.category}
-            onClick={e => handleRedirect(category.category, 'Category')}
+            onClick={() => handleRedirect(category.category, 'Category')}
           >
             {category.category}
           </ChooseBoxCategory>
@@ -75,7 +69,7 @@ export default function HomePage() {
         <ChooseBoxRandom
           value="Random"
           type="submit"
-          onClick={e => handleRedirect('random', 'Random')}
+          onClick={() => handleRedirect('random', 'Random')}
         >
           Random
         </ChooseBoxRandom>
@@ -84,13 +78,13 @@ export default function HomePage() {
             value={topic.topic}
             type="submit"
             key={topic.topic}
-            onClick={e => handleRedirect(topic.topic, 'Topic')}
+            onClick={() => handleRedirect(topic.topic, 'Topic')}
           >
             {topic.topic}
           </ChooseBoxTopic>
         ))}
       </ChooseField>
       <BottomNav />
-    </MainPage>
+    </Page>
   )
 }

@@ -1,6 +1,6 @@
 import { useAuth } from '../Auth/AuthProvider'
 import { Redirect } from 'react-router-dom'
-import Page from '../Components/Page'
+import PageWithHeader from '../Components/PageWithHeader'
 import { Button, TextField, Typography } from '@material-ui/core'
 import BottomNav from '../Components/BottomNav'
 import Main from '../Components/Main'
@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react'
 import Error from '../Components/Error'
 import { getUser, updateName, updatePassword } from '../Services/api-service'
 import Loading from '../Components/Loading'
-import MainPage from '../Components/MainPage'
+import Page from '../Components/Page'
+import 'react-circular-progressbar/dist/styles.css'
+import ProgressionLevel from '../Components/ProgressionLevel'
 
 const initialStatePasswords = {
   password1: '',
@@ -27,7 +29,6 @@ export default function UserPage() {
 
   useEffect(() => {
     getUser(token, user.userName)
-      .then(response => response.data)
       .then(setActualUser)
       .catch(e => setError(e))
   }, [token, user])
@@ -71,25 +72,24 @@ export default function UserPage() {
 
   if (!actualUser) {
     return (
-      <MainPage>
+      <Page>
         <Loading />
-      </MainPage>
+      </Page>
     )
   }
 
   return (
-    <Page>
-      <div>
-        <Typography variant="h3" color="textSecondary">
-          {'Moin ' + user.userName}
-        </Typography>
-        <Typography variant="h4" color="textSecondary">
-          {'Your current score is: ' + actualUser.score}
-        </Typography>
-      </div>
+    <PageWithHeader>
+      <Typography variant="h4" color="textPrimary">
+        Dein aktuelles Level
+      </Typography>
       {loading && <Loading />}
       {!loading && (
         <Main>
+          <ProgressionLevel
+            level={`${Math.floor(actualUser.score / 100) + 1}`}
+            percent={actualUser.score % 100}
+          />
           <TextField
             id="standard-basic"
             label="Neuer Username"
@@ -135,6 +135,6 @@ export default function UserPage() {
       )}
       {error && <Error>{error.message}</Error>}
       <BottomNav />
-    </Page>
+    </PageWithHeader>
   )
 }
