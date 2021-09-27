@@ -69,4 +69,37 @@ public class AnswerHistoryController {
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
     }
+
+    @GetMapping(value = "topic/{topic}", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getAllAnswersByTopic(@PathVariable String topic){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAllByTopic(topic);
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "right", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getAllCorrectAnswers(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findRight();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "wrong", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getAllWrongAnswers(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWrong();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+
+
 }
