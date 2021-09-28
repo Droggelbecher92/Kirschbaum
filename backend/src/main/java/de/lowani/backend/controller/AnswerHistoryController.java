@@ -80,6 +80,16 @@ public class AnswerHistoryController {
         return ok(allAnswers);
     }
 
+    @GetMapping(value = "category/{category}", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getAllAnswersByCategory(@PathVariable String category){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAllByCategory(category);
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
     @GetMapping(value = "right", produces = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
@@ -96,6 +106,46 @@ public class AnswerHistoryController {
     })
     public ResponseEntity<List<Answer>> getAllWrongAnswers(){
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWrong();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "best/category", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getBestCategory(){
+        List<AnswerHistoryEntity> allAnswersBestCategoryEnt = answerHistoryService.findBestCategory();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersBestCategoryEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "best/topic", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getBestTopic(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findBestTopic();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "worst/category", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getWorstCategory(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWorstCategory();
+        List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
+        return ok(allAnswers);
+    }
+
+    @GetMapping(value = "worst/topic", produces = APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
+    })
+    public ResponseEntity<List<Answer>> getWorstTopic(){
+        List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWorstTopic();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
     }

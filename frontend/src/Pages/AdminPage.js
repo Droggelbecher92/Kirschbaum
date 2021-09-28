@@ -2,7 +2,7 @@ import BottomNavAdmin from '../Components/BottomNavAdmin'
 import { Typography } from '@material-ui/core'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
-import { getAllUsers, getStats } from '../Services/api-service'
+import { getAllUsers, getBestCategory, getStats } from '../Services/api-service'
 import Loading from '../Components/Loading'
 import StatsBoxGlobal from '../Components/StatsBoxGlobal'
 import MainAdmin from '../Components/MainAdmin'
@@ -49,6 +49,7 @@ export default function AdminPage() {
         setNumberOfUsers(howMany(stats))
       })
       .catch(e => setError(e))
+    getBestCategory(token).then(answers => console.log(answers))
   }, [token, user])
 
   if (!answers) {

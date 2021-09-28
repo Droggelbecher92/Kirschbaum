@@ -81,3 +81,8 @@ export const saveQuestion = (token, question) =>
   axios
     .post(`/api/kirschbaum/question`, question, headers(token))
     .then(response => response.data)
+
+export const getBestCategory = token =>
+  axios
+    .get(`/api/kirschbaum/answer/best/category`, headers(token))
+    .then(response => response.data)
