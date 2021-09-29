@@ -7,4 +7,5 @@ export default styled.section`
   height: min-content;
   grid-row-gap: var(--size-l);
   justify-content: center;
+  overflow-y: scroll;
 `

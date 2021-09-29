@@ -9,7 +9,6 @@ import MainAdmin from '../Components/MainAdmin'
 import Error from '../Components/Error'
 import StatsBox from '../Components/StatsBox'
 import Page from '../Components/Page'
-import PageWithHeader from '../Components/PageWithHeader'
 
 export default function AdminPage() {
   const { user, token } = useAuth()
@@ -60,9 +59,9 @@ export default function AdminPage() {
   }
 
   return (
-    <PageWithHeader>
-      <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
+    <Page>
       <MainAdmin>
+        <Typography variant="h3">{'Hallo ' + user.userName}</Typography>
         <StatsBoxGlobal all={overall} rightPercent={percent(overall, right)} />
         <StatsBox
           text={'Wie viele Mitarbeiter nutzen die App?'}
@@ -71,6 +70,6 @@ export default function AdminPage() {
         {error && <Error>{error.message}</Error>}
       </MainAdmin>
       <BottomNavAdmin />
-    </PageWithHeader>
+    </Page>
   )
 }

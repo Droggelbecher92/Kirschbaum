@@ -7,13 +7,13 @@ import {
   getWorstCategory,
   getWorstTopic,
 } from '../Services/api-service'
-import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import BottomNav from '../Components/BottomNav'
 import Error from '../Components/Error'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 import StatsBoxBad from '../Components/StatsBoxBad'
 import StatsBoxGood from '../Components/StatsBoxGood'
+import MainAdmin from '../Components/MainAdmin'
 
 export default function StatsPage() {
   const { token } = useAuth()
@@ -82,7 +82,7 @@ export default function StatsPage() {
 
   return (
     <Page>
-      <Main>
+      <MainAdmin>
         <StatsBoxGood
           header={'Beste Kategorie:'}
           filter={bestCategory[0].category}
@@ -106,7 +106,7 @@ export default function StatsPage() {
           percent={percent(worstTopic.length, worstTopicAmount)}
         />
         {error && <Error>{error.message}</Error>}
-      </Main>
+      </MainAdmin>
       <BottomNavAdmin />
     </Page>
   )
