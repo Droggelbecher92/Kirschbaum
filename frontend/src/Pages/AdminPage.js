@@ -10,7 +10,6 @@ import Error from '../Components/Error'
 import StatsBox from '../Components/StatsBox'
 import Page from '../Components/Page'
 import PageWithHeader from '../Components/PageWithHeader'
-import BottomNav from '../Components/BottomNav'
 
 export default function AdminPage() {
   const { user, token } = useAuth()
@@ -55,7 +54,7 @@ export default function AdminPage() {
     return (
       <Page>
         <Loading />
-        <BottomNav />
+        <BottomNavAdmin />
       </Page>
     )
   }

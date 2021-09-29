@@ -1,8 +1,8 @@
 import styled from 'styled-components/macro'
+import ProgressionPercent from './ProgressionPercent'
 import { Typography } from '@material-ui/core'
-import ProgressionPercentBad from './ProgressionPercentBad'
 
-export default function StatsBoxBad({ percent, header, filter }) {
+export default function StatsBoxGood({ percent, header, filter }) {
   return (
     <Wrapper>
       <Typography variant="body1" color="textSecondary">
@@ -12,9 +12,9 @@ export default function StatsBoxBad({ percent, header, filter }) {
         {filter}
       </Typography>
       <Typography variant="body1" color="textSecondary">
-        Davon falsch beantwortet:
+        Davon richtig beantwortet:
       </Typography>
-      <ProgressionPercentBad percent={percent} />
+      <ProgressionPercent percent={percent} />
     </Wrapper>
   )
 }

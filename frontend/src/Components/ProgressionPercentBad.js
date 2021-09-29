@@ -7,7 +7,11 @@ export default function ProgressionPercentBad({ percent }) {
       <CircularProgressbar
         value={percent}
         text={percent + '%'}
-        styles={buildStyles({ pathColor: '#AD1E28', textColor: '#AD1E28' })}
+        styles={buildStyles({
+          pathColor: '#AD1E28',
+          textColor: '#AD1E28',
+          pathTransitionDuration: 0.5,
+        })}
       />
     </Wrapper>
   )

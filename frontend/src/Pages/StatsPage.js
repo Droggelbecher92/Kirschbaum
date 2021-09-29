@@ -1,5 +1,4 @@
 import Page from '../Components/Page'
-import StatsBox from '../Components/StatsBox'
 import { useAuth } from '../Auth/AuthProvider'
 import { useEffect, useState } from 'react'
 import {
@@ -14,6 +13,7 @@ import BottomNav from '../Components/BottomNav'
 import Error from '../Components/Error'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 import StatsBoxBad from '../Components/StatsBoxBad'
+import StatsBoxGood from '../Components/StatsBoxGood'
 
 export default function StatsPage() {
   const { token } = useAuth()
@@ -83,20 +83,26 @@ export default function StatsPage() {
   return (
     <Page>
       <Main>
-        <StatsBox
-          text={'Aktuell beste Kategorie:' + bestCategory[0].category}
+        <StatsBoxGood
+          header={'Beste Kategorie:'}
+          filter={bestCategory[0].category}
+          text={'Davon richtig:'}
           percent={percent(bestCategory.length, bestCategoryAmount)}
         />
-        <StatsBox
-          text={'Aktuell bestes Topic:' + bestTopic[0].topic}
+        <StatsBoxGood
+          header={'Bestes Topic:'}
+          filter={bestTopic[0].topic}
+          text={'Davon richtig:'}
           percent={percent(bestTopic.length, bestTopicAmount)}
         />
         <StatsBoxBad
-          text={'Aktuell schlechteste Kategorie:' + worstCategory[0].category}
+          header={'Schwächste Kategorie:'}
+          filter={worstCategory[0].category}
           percent={percent(worstCategory.length, worstCategoryAmount)}
         />
         <StatsBoxBad
-          text={'Aktuell schlechtestes Topic:' + worstTopic[0].topic}
+          header={'Schwächstes Topic:'}
+          filter={worstTopic[0].topic}
           percent={percent(worstTopic.length, worstTopicAmount)}
         />
         {error && <Error>{error.message}</Error>}
