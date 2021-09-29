@@ -20,6 +20,8 @@ export default function CreateCategory() {
     setCredentials({ category: event.target.value })
   }
 
+  const active = credentials.category.length > 2
+
   const handleSubmit = event => {
     event.preventDefault()
     setLoading(true)
@@ -49,7 +51,12 @@ export default function CreateCategory() {
           />
           {error && <Error>{error.message}</Error>}
           {created && <p>Hinzugefügt!</p>}
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            disabled={!active}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
             Hinzufügen
           </Button>
         </Wrapper>

@@ -147,4 +147,5 @@ export default function CreateQuestion() {
 const Wrapper = styled.main`
   display: grid;
   grid-row-gap: var(--size-l);
+  height: min-content;
 `

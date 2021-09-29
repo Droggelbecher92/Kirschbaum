@@ -17,6 +17,8 @@ export default function CreateUser() {
   const [created, setCreated] = useState(false)
   const [password, setPassword] = useState('')
 
+  const active = credentials.name > 2
+
   const handleCredentialsChange = event => {
     setCredentials({ name: event.target.value })
   }
@@ -57,7 +59,12 @@ export default function CreateUser() {
               <p>{password}</p>
             </section>
           )}
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            disabled={!active}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
             Hinzufügen
           </Button>
         </Wrapper>

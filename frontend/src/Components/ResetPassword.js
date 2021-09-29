@@ -52,7 +52,7 @@ export default function ResetPassword() {
       {!loading && (
         <Wrapper>
           <section>
-            <FormControl sx={{ width: '100%' }}>
+            <FormControl sx={{ width: '100%', height: 'min-content' }}>
               <InputLabel id="user-label">Alle User</InputLabel>
               <Select
                 labelId="label-label"

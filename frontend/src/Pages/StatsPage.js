@@ -8,7 +8,6 @@ import {
   getWorstTopic,
 } from '../Services/api-service'
 import Loading from '../Components/Loading'
-import BottomNav from '../Components/BottomNav'
 import Error from '../Components/Error'
 import BottomNavAdmin from '../Components/BottomNavAdmin'
 import StatsBoxBad from '../Components/StatsBoxBad'
@@ -75,7 +74,7 @@ export default function StatsPage() {
     return (
       <Page>
         <Loading />
-        <BottomNav />
+        <BottomNavAdmin />
       </Page>
     )
   }

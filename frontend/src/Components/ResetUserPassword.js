@@ -26,7 +26,7 @@ export default function ResetUserPassword() {
   }
 
   return (
-    <Card sx={{ width: '100%' }}>
+    <Card sx={{ width: '100%', height: 'min-content' }}>
       <CardActions>
         <ExpandMore
           expand={expanded}

@@ -16,6 +16,8 @@ export default function CreateTopic() {
   const [error, setError] = useState()
   const [created, setCreated] = useState(false)
 
+  const active = credentials.topic.length > 2
+
   const handleCredentialsChange = event => {
     setCredentials({ topic: event.target.value })
   }
@@ -49,7 +51,12 @@ export default function CreateTopic() {
           />
           {error && <Error>{error.message}</Error>}
           {created && <p>Hinzugefügt!</p>}
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            disabled={!active}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
             Hinzufügen
           </Button>
         </Wrapper>
