@@ -15,7 +15,7 @@ export default function BottomNav() {
 
   return (
     <BottomNavi>
-      <BottomNavigation value={location.pathname}>
+      <BottomNavigation value={location.pathname} showLabels>
         <BottomNavigationAction
           label="Home"
           value="/"

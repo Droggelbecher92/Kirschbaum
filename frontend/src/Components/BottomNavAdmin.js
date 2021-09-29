@@ -9,7 +9,7 @@ export default function BottomNavAdmin() {
 
   return (
     <BottomNavi>
-      <BottomNavigation value={location.pathname}>
+      <BottomNavigation value={location.pathname} showLabels>
         <BottomNavigationAction
           label="Nutzer"
           value="/admin/add"
@@ -32,15 +32,15 @@ export default function BottomNavAdmin() {
           to="/admin"
         />
         <BottomNavigationAction
-          label="Lösungen"
+          label="Bedarf"
           value="/admin/solution"
           icon={<FollowTheSigns />}
           component={Link}
           to="/admin/solution"
         />
         <BottomNavigationAction
-          label="Back"
-          value="/logout"
+          label="Zurück"
+          value="/"
           icon={<ExitToApp />}
           component={Link}
           to="/"
