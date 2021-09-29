@@ -46,45 +46,41 @@ export default function GetCategoryStats() {
 
   return (
     <Wrapper>
-      <Wrapper>
-        <section>
-          <FormControl sx={{ width: '100%', height: 'min-content' }}>
-            <InputLabel id="category-label">Kategorien</InputLabel>
-            <Select
-              labelId="label-label"
-              id="label-helper"
-              value={category}
-              name="category"
-              label="Category"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
+      <section>
+        <FormControl sx={{ width: '100%', height: 'min-content' }}>
+          <InputLabel id="category-label">Kategorien</InputLabel>
+          <Select
+            labelId="label-label"
+            id="label-helper"
+            value={category}
+            name="category"
+            label="Category"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {allCategories.map(category => (
+              <MenuItem
+                value={category.category}
+                name="categoryName"
+                key={category.category}
+              >
+                {category.category}
               </MenuItem>
-              {allCategories.map(category => (
-                <MenuItem
-                  value={category.category}
-                  name="categoryName"
-                  key={category.category}
-                >
-                  {category.category}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>
-              Für welche Kategorie Stats anzeigen?
-            </FormHelperText>
-          </FormControl>
-        </section>
-        {error && <Error>{error.message}</Error>}
-        {category !== '' && (
-          <StatsBoxGood
-            header="Deine Auswahl"
-            filter={category}
-            percent={percent(answers.length, correct)}
-          />
-        )}
-      </Wrapper>
+            ))}
+          </Select>
+          <FormHelperText>Für welche Kategorie Stats anzeigen?</FormHelperText>
+        </FormControl>
+      </section>
+      {error && <Error>{error.message}</Error>}
+      {category !== '' && (
+        <StatsBoxGood
+          header="Deine Auswahl"
+          filter={category}
+          percent={percent(answers.length, correct)}
+        />
+      )}
     </Wrapper>
   )
 }

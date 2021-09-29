@@ -46,43 +46,37 @@ export default function GetTopicStats() {
 
   return (
     <Wrapper>
-      <Wrapper>
-        <section>
-          <FormControl sx={{ width: '100%', height: 'min-content' }}>
-            <InputLabel id="topic-label">Topics</InputLabel>
-            <Select
-              labelId="label-label"
-              id="label-helper"
-              value={topic}
-              name="topic"
-              label="Tpoic"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
+      <section>
+        <FormControl sx={{ width: '100%', height: 'min-content' }}>
+          <InputLabel id="topic-label">Topics</InputLabel>
+          <Select
+            labelId="label-label"
+            id="label-helper"
+            value={topic}
+            name="topic"
+            label="Tpoic"
+            onChange={handleChange}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {allTopics.map(topic => (
+              <MenuItem value={topic.topic} name="topicName" key={topic.topic}>
+                {topic.topic}
               </MenuItem>
-              {allTopics.map(topic => (
-                <MenuItem
-                  value={topic.topic}
-                  name="topicName"
-                  key={topic.topic}
-                >
-                  {topic.topic}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Für welches Topic Stats anzeigen?</FormHelperText>
-          </FormControl>
-        </section>
-        {error && <Error>{error.message}</Error>}
-        {topic !== '' && (
-          <StatsBoxGood
-            header="Deine Auswahl"
-            filter={topic}
-            percent={percent(answers.length, correct)}
-          />
-        )}
-      </Wrapper>
+            ))}
+          </Select>
+          <FormHelperText>Für welches Topic Stats anzeigen?</FormHelperText>
+        </FormControl>
+      </section>
+      {error && <Error>{error.message}</Error>}
+      {topic !== '' && (
+        <StatsBoxGood
+          header="Deine Auswahl"
+          filter={topic}
+          percent={percent(answers.length, correct)}
+        />
+      )}
     </Wrapper>
   )
 }
