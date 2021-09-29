@@ -13,6 +13,8 @@ import BottomNavAdmin from '../Components/BottomNavAdmin'
 import StatsBoxBad from '../Components/StatsBoxBad'
 import StatsBoxGood from '../Components/StatsBoxGood'
 import MainAdmin from '../Components/MainAdmin'
+import CategoryStats from '../Components/CategoryStats'
+import TopicStats from '../Components/TopicStats'
 
 export default function StatsPage() {
   const { token } = useAuth()
@@ -104,6 +106,8 @@ export default function StatsPage() {
           filter={worstTopic[0].topic}
           percent={percent(worstTopic.length, worstTopicAmount)}
         />
+        <CategoryStats />
+        <TopicStats />
         {error && <Error>{error.message}</Error>}
       </MainAdmin>
       <BottomNavAdmin />
