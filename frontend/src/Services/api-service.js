@@ -86,3 +86,18 @@ export const getBestCategory = token =>
   axios
     .get(`/api/kirschbaum/answer/best/category`, headers(token))
     .then(response => response.data)
+
+export const getWorstCategory = token =>
+  axios
+    .get(`/api/kirschbaum/answer/worst/category`, headers(token))
+    .then(response => response.data)
+
+export const getBestTopic = token =>
+  axios
+    .get(`/api/kirschbaum/answer/best/topic`, headers(token))
+    .then(response => response.data)
+
+export const getWorstTopic = token =>
+  axios
+    .get(`/api/kirschbaum/answer/worst/topic`, headers(token))
+    .then(response => response.data)

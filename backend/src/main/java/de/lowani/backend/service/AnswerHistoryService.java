@@ -67,7 +67,7 @@ public class AnswerHistoryService {
 
     public List<AnswerHistoryEntity> findBestCategory() {
         List<AnswerHistoryEntity> allAnswers = findAll();
-        int currentBest = 0;
+        int best = 0;
         String bestCategory = "";
         int currentCounter = 0;
         int currentRight=0;
@@ -86,8 +86,8 @@ public class AnswerHistoryService {
                 }
             }
             currentPercent=(currentRight*100)/currentCounter;
-            if (currentPercent>currentBest&&currentCounter>15){
-                currentBest=currentPercent;
+            if (currentPercent>best&&currentCounter>5){
+                best=currentPercent;
                 bestCategory=currentCategory;
             }
             checkedCategorys.add(currentCategory);
@@ -95,7 +95,7 @@ public class AnswerHistoryService {
                 if (!checkedCategorys.contains(answer.getQuestion().getCategory().getName())){
                     nextCategory=answer.getQuestion().getCategory().getName();
                     currentCounter=0;
-                    currentBest=0;
+                    currentRight=0;
                     break;
                 }
             }
@@ -109,7 +109,7 @@ public class AnswerHistoryService {
 
     public List<AnswerHistoryEntity> findBestTopic() {
         List<AnswerHistoryEntity> allAnswers = findAll();
-        int currentBest = 0;
+        int best = 0;
         String bestTopic = "";
         int currentCounter = 0;
         int currentRight=0;
@@ -128,8 +128,8 @@ public class AnswerHistoryService {
                 }
             }
             currentPercent=(currentRight*100)/currentCounter;
-            if (currentPercent>currentBest&&currentCounter>15){
-                currentBest=currentPercent;
+            if (currentPercent>best&&currentCounter>5){
+                best=currentPercent;
                 bestTopic=currentTopic;
             }
             checkedTopics.add(currentTopic);
@@ -137,7 +137,7 @@ public class AnswerHistoryService {
                 if (!checkedTopics.contains(answer.getQuestion().getTopic().getName())){
                     nextTopic=answer.getQuestion().getTopic().getName();
                     currentCounter=0;
-                    currentBest=0;
+                    currentRight=0;
                     break;
                 }
             }
@@ -170,7 +170,7 @@ public class AnswerHistoryService {
                 }
             }
             currentPercent=(currentWrong*100)/currentCounter;
-            if (currentPercent>currentWorst&&currentCounter>15){
+            if (currentPercent>currentWorst&&currentCounter>5){
                 currentWorst=currentPercent;
                 worstCategory=currentCategory;
             }
@@ -212,7 +212,7 @@ public class AnswerHistoryService {
                 }
             }
             currentPercent=(currentWrong*100)/currentCounter;
-            if (currentPercent>currentWorst&&currentCounter>15){
+            if (currentPercent>currentWorst&&currentCounter>5){
                 currentWorst=currentPercent;
                 worstTopic=currentTopic;
             }
