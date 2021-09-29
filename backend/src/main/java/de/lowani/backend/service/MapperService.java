@@ -141,6 +141,8 @@ public class MapperService {
                 .question(answerEntity.getQuestion().getQuestion())
                 .score((int) answerEntity.getScore())
                 .userName(String.valueOf(answerEntity.getUser().getId()))
+                .category(answerEntity.getQuestion().getCategory().getName())
+                .topic(answerEntity.getQuestion().getTopic().getName())
                 .build();
     }
 

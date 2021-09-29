@@ -13,5 +13,7 @@ public class Answer {
     private long id;
     private String userName;
     private String question;
+    private String topic;
+    private String category;
     private int score;
 }

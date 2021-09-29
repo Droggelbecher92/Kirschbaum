@@ -11,7 +11,6 @@ export default function AuthProvider({ children }) {
   const user = claims && {
     userName: claims.sub,
     role: claims.role,
-    score: claims.score,
   }
 
   const login = credentials => getToken(credentials).then(setToken)
