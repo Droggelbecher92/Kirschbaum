@@ -17,7 +17,7 @@ export default function CreateUser() {
   const [created, setCreated] = useState(false)
   const [password, setPassword] = useState('')
 
-  const active = credentials.name > 2
+  const active = credentials.name.length > 2
 
   const handleCredentialsChange = event => {
     setCredentials({ name: event.target.value })
