@@ -5,7 +5,7 @@ import { Button, TextField } from '@material-ui/core'
 import Main from '../Components/Main'
 import Loading from '../Components/Loading'
 import Error from '../Components/Error'
-import logo from '../img/headbage.jpg'
+import logo from '../img/logo.png'
 import PageWithHeader from '../Components/PageWithHeader'
 import styled from 'styled-components/macro'
 
@@ -40,7 +40,7 @@ export default function LoginPage() {
 
   return (
     <PageWithHeader>
-      <Logo src={logo} alt="logo" />
+      <Logo src={logo} alt="logo" height="75%" />
       {loading && <Loading />}
       {!loading && (
         <Main as="form" onSubmit={handleSubmit}>

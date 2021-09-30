@@ -12,6 +12,11 @@ import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
 import Error from '../Components/Error'
 import Page from '../Components/Page'
 import Onboarding from '../Components/Onboarding'
+import Main from '../Components/Main'
+import ChooseBoxStart from '../Components/ChooseBoxStart'
+import PageWithHeader from '../Components/PageWithHeader'
+import logo from '../img/logo.png'
+import styled from 'styled-components/macro'
 
 export default function HomePage() {
   const { user, token } = useAuth()
@@ -51,18 +56,19 @@ export default function HomePage() {
   }
   if (actualUser.score === 0) {
     return (
-      <Page>
-        <ChooseField>
+      <PageWithHeader>
+        <Logo src={logo} alt="logo" width="25%" height="100%" />
+        <Main>
           <Onboarding />
-          <ChooseBoxRandom
+          <ChooseBoxStart
             value="Random"
             type="submit"
             onClick={() => handleRedirect('random', 'Random')}
           >
             Starte hier!
-          </ChooseBoxRandom>
-        </ChooseField>
-      </Page>
+          </ChooseBoxStart>
+        </Main>
+      </PageWithHeader>
     )
   }
 
@@ -70,6 +76,7 @@ export default function HomePage() {
     <Page>
       <ChooseField>
         {error && <Error />}
+        <Logo src={logo} alt="logo" height="100%" />
         <ChooseBoxSpecial
           value="Special"
           type="submit"
@@ -77,6 +84,13 @@ export default function HomePage() {
         >
           Doppelte Punkte
         </ChooseBoxSpecial>
+        <ChooseBoxRandom
+          value="Random"
+          type="submit"
+          onClick={() => handleRedirect('random', 'Random')}
+        >
+          Zufällige Fragen
+        </ChooseBoxRandom>
         {categories.map(category => (
           <ChooseBoxCategory
             value={category.category}
@@ -87,13 +101,6 @@ export default function HomePage() {
             {category.category}
           </ChooseBoxCategory>
         ))}
-        <ChooseBoxRandom
-          value="Random"
-          type="submit"
-          onClick={() => handleRedirect('random', 'Random')}
-        >
-          Random
-        </ChooseBoxRandom>
         {topics.map(topic => (
           <ChooseBoxTopic
             value={topic.topic}
@@ -109,3 +116,8 @@ export default function HomePage() {
     </Page>
   )
 }
+const Logo = styled.img`
+  padding-top: var(--size-xl);
+  grid-column: span 2;
+  padding-left: 37%;
+`

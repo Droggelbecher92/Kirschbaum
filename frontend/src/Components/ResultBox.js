@@ -14,17 +14,20 @@ export default function ResultBox({ question, givenAnswer, correctAnswer }) {
       <Typography variant="h6" color="textPrimary">
         {question}
       </Typography>
+      <br />
       <Typography variant="body1">{'Deine Antwort: ' + givenAnswer}</Typography>
+      <br />
       <Typography variant="body1">
         {'Richtige Antwort: ' + correctAnswer}
       </Typography>
+      <br />
       {isRight && (
-        <Typography variant="body1" color="textPrimary">
+        <Typography variant="h4" color="textPrimary">
           Richtig!
         </Typography>
       )}
       {!isRight && (
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="h4" color="textSecondary">
           Leider Falsch
         </Typography>
       )}
@@ -32,7 +35,7 @@ export default function ResultBox({ question, givenAnswer, correctAnswer }) {
   )
 }
 const Wrapper = styled.div`
-  background-color: lightskyblue;
+  background-color: #b7e0ea;
   grid-column: span 2;
   border-radius: 10px;
   text-align: center;
