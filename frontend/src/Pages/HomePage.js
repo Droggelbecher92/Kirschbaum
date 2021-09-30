@@ -4,25 +4,30 @@ import ChooseField from '../Components/ChooseField'
 import BottomNav from '../Components/BottomNav'
 import Loading from '../Components/Loading'
 import { useEffect, useState } from 'react'
-import { getCategories, getTopics } from '../Services/api-service'
+import { getCategories, getTopics, getUser } from '../Services/api-service'
 import ChooseBoxRandom from '../Components/ChooseBoxRandom'
 import ChooseBoxCategory from '../Components/ChooseBoxCategory'
 import ChooseBoxTopic from '../Components/ChooseBoxTopic'
 import ChooseBoxSpecial from '../Components/ChooseBoxSpecial'
 import Error from '../Components/Error'
 import Page from '../Components/Page'
+import Onboarding from '../Components/Onboarding'
 
 export default function HomePage() {
   const { user, token } = useAuth()
   const [topics, setTopics] = useState()
   const [categories, setCategories] = useState()
   const [error, setError] = useState()
+  const [actualUser, setActualUser] = useState()
   const [url, setUrl] = useState('')
 
   useEffect(() => {
     setupTopics(token).catch(error => setError(error.message))
     setupCategories(token).catch(error => setError(error.message))
-  }, [token])
+    getUser(token, user.userName)
+      .then(setActualUser)
+      .catch(e => setError(e))
+  }, [token, user])
 
   const setupTopics = token => getTopics(token).then(setTopics)
   const setupCategories = token => getCategories(token).then(setCategories)
@@ -34,7 +39,7 @@ export default function HomePage() {
   if (!user) {
     return <Redirect to="/login" />
   }
-  if (!categories || !topics) {
+  if (!categories || !topics || !actualUser) {
     return (
       <Page>
         <Loading />
@@ -43,6 +48,22 @@ export default function HomePage() {
   }
   if (url) {
     return <Redirect to={url} />
+  }
+  if (actualUser.score === 0) {
+    return (
+      <Page>
+        <ChooseField>
+          <Onboarding />
+          <ChooseBoxRandom
+            value="Random"
+            type="submit"
+            onClick={() => handleRedirect('random', 'Random')}
+          >
+            Starte hier!
+          </ChooseBoxRandom>
+        </ChooseField>
+      </Page>
+    )
   }
 
   return (
