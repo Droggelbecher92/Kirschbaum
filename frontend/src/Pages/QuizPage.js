@@ -112,7 +112,9 @@ export default function QuizPage() {
       newArray.push(thumbAnswer)
       setGivenAnswers(newArray)
     }
-
+    if (firstFilter === 'Special') {
+      score = score * 2
+    }
     const answer = {
       userName: user.userName,
       question: currentQuestion.question,
