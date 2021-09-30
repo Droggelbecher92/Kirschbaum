@@ -17,14 +17,14 @@ export default function QuizSingle({
   const [fourth, setFourth] = useState(false)
   return (
     <WrapperQuestion>
+      <Typography variant="h4" color="textPrimary" align="center">
+        {currentQuestion.question}
+      </Typography>
       <Typography
         variant="body1"
         color="textPrimary"
         align="center"
-      >{`Kategorie: ${currentQuestion.categoryName}  // Topic: ${currentQuestion.topicName} // Typ: ${currentQuestion.type}`}</Typography>
-      <Typography variant="h4" color="textPrimary" align="center">
-        {currentQuestion.question}
-      </Typography>
+      >{`Fragen-Typ: ${currentQuestion.type}-Choice`}</Typography>
       <ChooseFieldQuiz>
         <ChooseBoxQuiz
           value={currentQuestion.answer1}
@@ -118,5 +118,5 @@ const WrapperQuestion = styled.div`
   color: var(--neutral-dark);
   display: grid;
   place-items: center;
-  grid-template-rows: 10% 1fr 3fr;
+  grid-template-rows: 1fr 10% 3fr;
 `
