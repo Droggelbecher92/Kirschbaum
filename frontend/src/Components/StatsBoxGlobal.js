@@ -19,7 +19,7 @@ export default function StatsBoxGlobal({ all, rightPercent }) {
   )
 }
 const Wrapper = styled.div`
-  background-color: lightskyblue;
+  background-color: #b0dee8;
   border-radius: 10px;
   text-align: center;
 `

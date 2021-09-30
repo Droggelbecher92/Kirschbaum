@@ -35,8 +35,9 @@ export default function SolutionCard({ text, priotity }) {
   )
 }
 const Wrapper = styled.section`
+  background-color: #b0dee8;
   height: min-content;
   width: 100%;
   border-radius: 15px;
-  border: dodgerblue solid 4px;
+  box-shadow: 5px 3px 3px grey;
 `
