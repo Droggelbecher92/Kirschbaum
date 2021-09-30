@@ -101,3 +101,13 @@ export const getWorstTopic = token =>
   axios
     .get(`/api/kirschbaum/answer/worst/topic`, headers(token))
     .then(response => response.data)
+
+export const getCategoryAnswers = (token, category) =>
+  axios
+    .get(`/api/kirschbaum/answer/category/${category}`, headers(token))
+    .then(response => response.data)
+
+export const getTopicAnswers = (token, topic) =>
+  axios
+    .get(`/api/kirschbaum/answer/topic/${topic}`, headers(token))
+    .then(response => response.data)
