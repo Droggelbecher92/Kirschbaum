@@ -2,9 +2,9 @@ import styled from 'styled-components/macro'
 import ChooseBoxQuiz from './ChooseBoxQuiz'
 import { ThumbDown, ThumbUp } from '@material-ui/icons'
 import { Typography } from '@material-ui/core'
-import ChooseFieldQuiz from './ChooseFieldQuiz'
 import AnswerButton from './AnswerButton'
 import { useState } from 'react'
+import ChooseFieldThumb from './ChooseFieldThumb'
 
 export default function QuizThumb({
   currentQuestion,
@@ -24,7 +24,9 @@ export default function QuizThumb({
         color="textPrimary"
         align="center"
       >{`Fragen-Typ: ${currentQuestion.type}-Choice`}</Typography>
-      <ChooseFieldQuiz>
+      <ChooseFieldThumb>
+        <div></div>
+        <div></div>
         <ChooseBoxQuiz
           value="UP"
           type="submit"
@@ -55,7 +57,6 @@ export default function QuizThumb({
         </ChooseBoxQuiz>
         <div></div>
         <div></div>
-        <div></div>
         <AnswerButton
           disabled={!thumbAnswer}
           type="submit"
@@ -67,7 +68,7 @@ export default function QuizThumb({
         >
           Bestätigen
         </AnswerButton>
-      </ChooseFieldQuiz>
+      </ChooseFieldThumb>
     </WrapperQuestion>
   )
 }
@@ -81,5 +82,5 @@ const WrapperQuestion = styled.div`
   color: var(--neutral-dark);
   display: grid;
   place-items: center;
-  grid-template-rows: 10% 1fr 3fr;
+  grid-template-rows: 20% 0.5fr 3fr;
 `

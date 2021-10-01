@@ -11,25 +11,18 @@ export default function BottomNavAdmin() {
     <BottomNavi>
       <BottomNavigation value={location.pathname} showLabels>
         <BottomNavigationAction
-          label="Nutzer"
-          value="/admin/add"
-          icon={<Create />}
-          component={Link}
-          to="/admin/add"
-        />
-        <BottomNavigationAction
-          label="Statistiken"
-          value="/admin/stats"
-          icon={<Analytics />}
-          component={Link}
-          to="/admin/stats"
-        />
-        <BottomNavigationAction
           label="Home"
           value="/admin"
           icon={<Home />}
           component={Link}
           to="/admin"
+        />
+        <BottomNavigationAction
+          label="Stats"
+          value="/admin/stats"
+          icon={<Analytics />}
+          component={Link}
+          to="/admin/stats"
         />
         <BottomNavigationAction
           label="Bedarf"
@@ -38,6 +31,14 @@ export default function BottomNavAdmin() {
           component={Link}
           to="/admin/solution"
         />
+        <BottomNavigationAction
+          label="Nutzer"
+          value="/admin/add"
+          icon={<Create />}
+          component={Link}
+          to="/admin/add"
+        />
+
         <BottomNavigationAction
           label="Zurück"
           value="/"
@@ -52,4 +53,5 @@ export default function BottomNavAdmin() {
 const BottomNavi = styled.div`
   background-color: var(--background-light);
   width: 100%;
+  overflow-x: hidden;
 `

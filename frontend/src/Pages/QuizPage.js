@@ -185,6 +185,6 @@ export default function QuizPage() {
       />
     )
   } else {
-    return <h1>Doof....</h1>
+    return <Loading />
   }
 }

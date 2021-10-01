@@ -26,7 +26,7 @@ export default function NewQuestion() {
   }
 
   return (
-    <Card sx={{ width: '100%', height: 'min-content' }}>
+    <Card sx={{ width: '90%', height: 'min-content' }}>
       <CardActions>
         <ExpandMore
           expand={expanded}

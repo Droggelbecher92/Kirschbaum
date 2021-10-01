@@ -16,7 +16,7 @@ export default function ResultBox({ question, givenAnswer, correctAnswer }) {
       </Typography>
       <br />
       <Typography variant="body1">{'Deine Antwort: ' + givenAnswer}</Typography>
-      <br />
+
       <Typography variant="body1">
         {'Richtige Antwort: ' + correctAnswer}
       </Typography>
@@ -39,4 +39,5 @@ const Wrapper = styled.div`
   grid-column: span 2;
   border-radius: 10px;
   text-align: center;
+  height: auto;
 `
