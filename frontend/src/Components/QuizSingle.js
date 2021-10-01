@@ -118,5 +118,5 @@ const WrapperQuestion = styled.div`
   color: var(--neutral-dark);
   display: grid;
   place-items: center;
-  grid-template-rows: 1fr 10% 3fr;
+  grid-template-rows: 20% 0.5fr 3fr;
 `

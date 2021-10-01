@@ -119,5 +119,5 @@ export default function HomePage() {
 const Logo = styled.img`
   padding-top: var(--size-xl);
   grid-column: span 2;
-  padding-left: 37%;
+  padding-left: 40%;
 `
