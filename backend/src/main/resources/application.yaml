@@ -1,12 +1,12 @@
 spring:
   #profiles:
-    #active: local
+  #active: localHeroku
   application:
     name: kirschbaum
   datasource:
-    url: jdbc:${profile.datasource.url}
-    username: ${profile.datasource.user}
-    password: ${profile.datasource.pass}
+    url: jdbc:${profile.datasource.postgresurl}
+    username: ${profile.datasource.username}
+    password: ${profile.datasource.password}
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: true
