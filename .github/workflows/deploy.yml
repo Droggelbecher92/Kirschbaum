@@ -3,7 +3,7 @@ name: Deploy Kirschbaum to heroku
 on:
   push:
     branches:
-      - master
+      - currywurst
 
 jobs:
   build-frontend:
