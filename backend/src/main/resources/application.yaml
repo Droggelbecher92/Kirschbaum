@@ -1,10 +1,10 @@
 spring:
-  profiles:
-    active: local
+  #profiles:
+    #active: local
   application:
     name: kirschbaum
   datasource:
-    url: jdbc:${profile.datasource.url}
+    uri: ${profile.datasource.url}
     username: ${profile.datasource.user}
     password: ${profile.datasource.pass}
     driver-class-name: org.postgresql.Driver
