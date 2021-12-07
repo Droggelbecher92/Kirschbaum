@@ -4,7 +4,7 @@ spring:
   application:
     name: kirschbaum
   datasource:
-    uri: ${profile.datasource.url}
+    url: jdbc:${profile.datasource.url}
     username: ${profile.datasource.user}
     password: ${profile.datasource.pass}
     driver-class-name: org.postgresql.Driver
