@@ -106,7 +106,6 @@
       <artifactId>springfox-boot-starter</artifactId>
       <version>3.0.0</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-surefire-plugin</artifactId>
@@ -114,10 +113,12 @@
     </dependency>
 
 
-
   </dependencies>
 
   <build>
+    <finalName>
+      lowani
+    </finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
