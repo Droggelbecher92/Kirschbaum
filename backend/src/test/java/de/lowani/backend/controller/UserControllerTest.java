@@ -26,20 +26,21 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 
 @SpringBootTest(
         properties = "spring.profiles.active:h2",
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-class UserControllerTest{
+class UserControllerTest {
 
     @LocalServerPort
     private int port;
 
-    private String url(){
-        return "http://localhost:" + port + "/user";
+    private String url() {
+        return "http://localhost:" + port + "/api/user";
     }
 
     @Autowired
@@ -52,12 +53,12 @@ class UserControllerTest{
     private UserRepo userRepo;
 
     @AfterEach
-    public void clearUserRepo(){
+    public void clearUserRepo() {
         userRepo.deleteAll();
     }
 
     @BeforeEach
-    public void fillDB(){
+    public void fillDB() {
 
         UserEntity user1 = UserEntity.builder()
                 .name("Thomas")
@@ -81,35 +82,37 @@ class UserControllerTest{
 
     @Test
 
-    public void getAllUsersShouldReturnAllUsersAsAdmin(){
+    public void getAllUsersShouldReturnAllUsersAsAdmin() {
 
         //GiVEN
         int amountOfUsers = 3;
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "admin"));
         ResponseEntity<List<User>> response = restTemplate
-                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<User>>(){});
+                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<User>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        List<User> responseBody= response.getBody();
+        List<User> responseBody = response.getBody();
         assertThat(responseBody.size(), is(amountOfUsers));
         assertThat(responseBody.get(1).getName(), is("Kim"));
     }
 
     @Test
-    public void getAllUsersShouldNotWorkAsUser(){
+    public void getAllUsersShouldNotWorkAsUser() {
         //GiVEN
 
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "user"));
         ResponseEntity<List<User>> response = restTemplate
-                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<User>>(){});
+                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<User>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
-    public void createNewUserAsAdmin(){
+    public void createNewUserAsAdmin() {
         //GiVEN
         User userToAdd = User.builder().name("Fritz").build();
         //WHEN
@@ -127,7 +130,7 @@ class UserControllerTest{
     }
 
     @Test
-    public void createNewUserAsUserShouldFail(){
+    public void createNewUserAsUserShouldFail() {
         //GiVEN
         User userToAdd = User.builder().name("Fritz").build();
         //WHEN
@@ -139,11 +142,11 @@ class UserControllerTest{
     }
 
     @Test
-    public void createNewUserAsAdminWithNullShouldFail(){
+    public void createNewUserAsAdminWithNullShouldFail() {
         //GiVEN
         User userToAdd = User.builder().name("").build();
         //WHEN
-        HttpEntity<User> httpEntity = new HttpEntity<>(userToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<User> httpEntity = new HttpEntity<>(userToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<User> response = restTemplate
                 .exchange(url(), HttpMethod.POST, httpEntity, User.class);
         //THEN
@@ -151,13 +154,13 @@ class UserControllerTest{
     }
 
     @Test
-    public void userCanChangeHerPassword(){
+    public void userCanChangeHerPassword() {
         //GiVEN
         NewPassword newPassword = NewPassword.builder().password("blub").build();
         //WHEN
-        HttpEntity<NewPassword> httpEntity = new HttpEntity<>(newPassword,authorizedHeader("Kim", "user"));
+        HttpEntity<NewPassword> httpEntity = new HttpEntity<>(newPassword, authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/password", HttpMethod.PUT, httpEntity, User.class);
+                .exchange(url() + "/password", HttpMethod.PUT, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         User changedUser = response.getBody();
@@ -168,13 +171,13 @@ class UserControllerTest{
     }
 
     @Test
-    public void userCanChangeHerName(){
+    public void userCanChangeHerName() {
         //GiVEN
         NewUsername newUsername = NewUsername.builder().username("Kimchi").build();
         //WHEN
-        HttpEntity<NewUsername> httpEntity = new HttpEntity<>(newUsername,authorizedHeader("Kim", "user"));
+        HttpEntity<NewUsername> httpEntity = new HttpEntity<>(newUsername, authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/username", HttpMethod.PUT, httpEntity, User.class);
+                .exchange(url() + "/username", HttpMethod.PUT, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         User changedUser = response.getBody();
@@ -184,13 +187,13 @@ class UserControllerTest{
     }
 
     @Test
-    public void userCanNotChangeHerNameIfItAlreadyExists(){
+    public void userCanNotChangeHerNameIfItAlreadyExists() {
         //GiVEN
         NewUsername newUsername = NewUsername.builder().username("Thomas").build();
         //WHEN
-        HttpEntity<NewUsername> httpEntity = new HttpEntity<>(newUsername,authorizedHeader("Kim", "user"));
+        HttpEntity<NewUsername> httpEntity = new HttpEntity<>(newUsername, authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/username", HttpMethod.PUT, httpEntity, User.class);
+                .exchange(url() + "/username", HttpMethod.PUT, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.CONFLICT));
         UserEntity addedUser = userRepo.findByName("Kim").orElseThrow();
@@ -199,13 +202,13 @@ class UserControllerTest{
     }
 
     @Test
-    public void adminCanResetAUsersPassword(){
+    public void adminCanResetAUsersPassword() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas","admin"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Kim/password",HttpMethod.PUT,httpEntity,User.class);
+                .exchange(url() + "/Kim/password", HttpMethod.PUT, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         User changedUser = response.getBody();
@@ -215,13 +218,13 @@ class UserControllerTest{
     }
 
     @Test
-    public void onlyAdminCanResetAUsersPassword(){
+    public void onlyAdminCanResetAUsersPassword() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Kim","user"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Peter/password",HttpMethod.PUT,httpEntity,User.class);
+                .exchange(url() + "/Peter/password", HttpMethod.PUT, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
         UserEntity passwordChangedUser = userRepo.findByName("Peter").orElseThrow();
@@ -229,25 +232,25 @@ class UserControllerTest{
     }
 
     @Test
-    public void aUserCanNotDeleteAnyUser(){
+    public void aUserCanNotDeleteAnyUser() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Kim","user"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Kim", "user"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Peter",HttpMethod.DELETE,httpEntity,User.class);
+                .exchange(url() + "/Peter", HttpMethod.DELETE, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
-    public void adminCanDeleteAnyUser(){
+    public void adminCanDeleteAnyUser() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas","admin"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Peter",HttpMethod.DELETE,httpEntity,User.class);
+                .exchange(url() + "/Peter", HttpMethod.DELETE, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getName(), is("Peter"));
@@ -256,33 +259,33 @@ class UserControllerTest{
     }
 
     @Test
-    public void adminCanNotDeleteUserNotFound(){
+    public void adminCanNotDeleteUserNotFound() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas","admin"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Armin",HttpMethod.DELETE,httpEntity,User.class);
+                .exchange(url() + "/Armin", HttpMethod.DELETE, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 
     @Test
-    public void adminCanNotDeleteHerself(){
+    public void adminCanNotDeleteHerself() {
         //GiVEN
 
         //WHEN
-        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas","admin"));
+        HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Thomas", "admin"));
         ResponseEntity<User> response = restTemplate
-                .exchange(url()+"/Thomas",HttpMethod.DELETE,httpEntity,User.class);
+                .exchange(url() + "/Thomas", HttpMethod.DELETE, httpEntity, User.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     // Hilfsfunktionen
 
-    private HttpHeaders authorizedHeader(String username, String role){
-        Map<String,Object> claims = new HashMap<>();
+    private HttpHeaders authorizedHeader(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         Instant now = Instant.now();
         Date iat = Date.from(now);

@@ -1,11 +1,8 @@
 package de.lowani.backend.controller;
 
-import de.lowani.backend.api.Category;
 import de.lowani.backend.api.Topic;
 import de.lowani.backend.config.JwtConfig;
-import de.lowani.backend.entities.CategoryEntity;
 import de.lowani.backend.entities.TopicEntity;
-import de.lowani.backend.repo.CategoryRepo;
 import de.lowani.backend.repo.TopicRepo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -37,8 +34,8 @@ class TopicControllerTest {
     @LocalServerPort
     private int port;
 
-    private String url(){
-        return "http://localhost:" + port + "/topic";
+    private String url() {
+        return "http://localhost:" + port + "/api/topic";
     }
 
     @Autowired
@@ -51,12 +48,12 @@ class TopicControllerTest {
     private TopicRepo topicRepo;
 
     @AfterEach
-    public void clearRepo(){
+    public void clearRepo() {
         topicRepo.deleteAll();
     }
 
     @BeforeEach
-    public void fillDB(){
+    public void fillDB() {
 
         TopicEntity topic1 = TopicEntity.builder()
                 .name("Gin")
@@ -75,80 +72,81 @@ class TopicControllerTest {
     }
 
     @Test
-    public void getAllTopicsShouldReturnAll(){
+    public void getAllTopicsShouldReturnAll() {
 
         //GiVEN
         int amountOfTopics = 3;
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "admin"));
         ResponseEntity<List<Topic>> response = restTemplate
-                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Topic>>(){});
+                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Topic>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        List<Topic> responseBody= response.getBody();
+        List<Topic> responseBody = response.getBody();
         assertThat(responseBody.size(), is(amountOfTopics));
         assertThat(responseBody.get(1).getTopic(), is("Bier"));
     }
 
     @Test
-    public void postNewTopicAsUserNotPossible(){
+    public void postNewTopicAsUserNotPossible() {
 
         //GiVEN
         Topic topicToAdd = Topic.builder().topic("Suppen").build();
         //WHEN
-        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd,authorizedHeader("Bernd", "user"));
+        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd, authorizedHeader("Bernd", "user"));
         ResponseEntity<Topic> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Topic.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Topic.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
-    public void postNewCategoryAsUAdminPossible(){
+    public void postNewCategoryAsUAdminPossible() {
 
         //GiVEN
         Topic topicToAdd = Topic.builder().topic("Suppen").build();
         //WHEN
-        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Topic> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Topic.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Topic.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        Topic responseBody= response.getBody();
+        Topic responseBody = response.getBody();
         assertThat(responseBody.getTopic(), is("Suppen"));
 
     }
 
     @Test
-    public void postNewCategoryWithEmptyNotPossible(){
+    public void postNewCategoryWithEmptyNotPossible() {
 
         //GiVEN
         Topic topicToAdd = Topic.builder().topic("").build();
         //WHEN
-        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Topic> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Topic.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Topic.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     @Test
-    public void postNewCategoryThatAlreadyExistsNotPossible(){
+    public void postNewCategoryThatAlreadyExistsNotPossible() {
 
         //GiVEN
         Topic topicToAdd = Topic.builder().topic("Bier").build();
         //WHEN
-        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Topic> httpEntity = new HttpEntity<>(topicToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Topic> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Topic.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Topic.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.CONFLICT));
     }
 
     // Hilfsfunktionen
 
-    private HttpHeaders authorizedHeader(String username, String role){
-        Map<String,Object> claims = new HashMap<>();
+    private HttpHeaders authorizedHeader(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         Instant now = Instant.now();
         Date iat = Date.from(now);

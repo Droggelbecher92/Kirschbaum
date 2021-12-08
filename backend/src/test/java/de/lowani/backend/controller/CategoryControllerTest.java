@@ -1,7 +1,6 @@
 package de.lowani.backend.controller;
 
 import de.lowani.backend.api.Category;
-import de.lowani.backend.api.User;
 import de.lowani.backend.config.JwtConfig;
 import de.lowani.backend.entities.CategoryEntity;
 import de.lowani.backend.repo.CategoryRepo;
@@ -36,8 +35,8 @@ class CategoryControllerTest {
     @LocalServerPort
     private int port;
 
-    private String url(){
-        return "http://localhost:" + port + "/category";
+    private String url() {
+        return "http://localhost:" + port + "/api/category";
     }
 
     @Autowired
@@ -50,12 +49,12 @@ class CategoryControllerTest {
     private CategoryRepo categoryRepo;
 
     @AfterEach
-    public void clearRepo(){
+    public void clearRepo() {
         categoryRepo.deleteAll();
     }
 
     @BeforeEach
-    public void fillDB(){
+    public void fillDB() {
 
         CategoryEntity category1 = CategoryEntity.builder()
                 .name("Bar")
@@ -74,80 +73,81 @@ class CategoryControllerTest {
     }
 
     @Test
-    public void getAllCategoriesShouldReturnAll(){
+    public void getAllCategoriesShouldReturnAll() {
 
         //GiVEN
         int amountOfCategories = 3;
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "admin"));
         ResponseEntity<List<Category>> response = restTemplate
-                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Category>>(){});
+                .exchange(url(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Category>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        List<Category> responseBody= response.getBody();
+        List<Category> responseBody = response.getBody();
         assertThat(responseBody.size(), is(amountOfCategories));
         assertThat(responseBody.get(1).getCategory(), is("Küche"));
     }
 
     @Test
-    public void postNewCategoryAsUserNotPossible(){
+    public void postNewCategoryAsUserNotPossible() {
 
         //GiVEN
         Category categoryToAdd = Category.builder().category("HSK").build();
         //WHEN
-        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd,authorizedHeader("Bernd", "user"));
+        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd, authorizedHeader("Bernd", "user"));
         ResponseEntity<Category> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Category.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Category.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
-    public void postNewCategoryAsUAdminPossible(){
+    public void postNewCategoryAsUAdminPossible() {
 
         //GiVEN
         Category categoryToAdd = Category.builder().category("HSK").build();
         //WHEN
-        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Category> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Category.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Category.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        Category responseBody= response.getBody();
+        Category responseBody = response.getBody();
         assertThat(responseBody.getCategory(), is("HSK"));
 
     }
 
     @Test
-    public void postNewCategoryWithEmptyNotPossible(){
+    public void postNewCategoryWithEmptyNotPossible() {
 
         //GiVEN
         Category categoryToAdd = Category.builder().category("").build();
         //WHEN
-        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Category> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Category.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Category.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     @Test
-    public void postNewCategoryThatAlreadyExistsNotPossible(){
+    public void postNewCategoryThatAlreadyExistsNotPossible() {
 
         //GiVEN
         Category categoryToAdd = Category.builder().category("Bar").build();
         //WHEN
-        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd,authorizedHeader("Bernd", "admin"));
+        HttpEntity<Category> httpEntity = new HttpEntity<>(categoryToAdd, authorizedHeader("Bernd", "admin"));
         ResponseEntity<Category> response = restTemplate
-                .exchange(url()+"/new", HttpMethod.POST, httpEntity, Category.class);
+                .exchange(url() + "/new", HttpMethod.POST, httpEntity, Category.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.CONFLICT));
     }
 
     // Hilfsfunktionen
 
-    private HttpHeaders authorizedHeader(String username, String role){
-        Map<String,Object> claims = new HashMap<>();
+    private HttpHeaders authorizedHeader(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         Instant now = Instant.now();
         Date iat = Date.from(now);

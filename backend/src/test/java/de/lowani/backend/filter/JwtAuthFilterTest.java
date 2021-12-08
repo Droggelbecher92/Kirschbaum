@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(
         properties = "spring.profiles.active:h2",
@@ -38,7 +38,7 @@ class JwtAuthFilterTest extends SpringBootTests {
     private JwtConfig jwtConfig;
 
     private String url() {
-        return "http://localhost:" + port + "/auth/me";
+        return "http://localhost:" + port + "/api/auth/me";
     }
 
     @Test
@@ -81,7 +81,7 @@ class JwtAuthFilterTest extends SpringBootTests {
         String wrongSecret = jwtConfig.getSecret() + "Wrong!!";
         String token = Jwts.builder()
                 .setClaims(new HashMap<>(
-                        Map.of("role", "user","password","blub")
+                        Map.of("role", "user", "password", "blub")
                 ))
                 .setIssuedAt(iat)
                 .setExpiration(exp)

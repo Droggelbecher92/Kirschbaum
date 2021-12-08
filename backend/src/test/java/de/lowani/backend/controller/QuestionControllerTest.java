@@ -1,6 +1,5 @@
 package de.lowani.backend.controller;
 
-import de.lowani.backend.api.Category;
 import de.lowani.backend.api.Question;
 import de.lowani.backend.config.JwtConfig;
 import de.lowani.backend.entities.CategoryEntity;
@@ -32,8 +31,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest(
         properties = "spring.profiles.active:h2",
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -42,8 +40,8 @@ class QuestionControllerTest {
     @LocalServerPort
     private int port;
 
-    private String url(){
-        return "http://localhost:" + port + "/question";
+    private String url() {
+        return "http://localhost:" + port + "/api/question";
     }
 
     @Autowired
@@ -62,7 +60,7 @@ class QuestionControllerTest {
     private QuestionRepo questionRepo;
 
     @AfterEach
-    public void clearUserRepo(){
+    public void clearUserRepo() {
         questionRepo.deleteAll();
         topicRepo.deleteAll();
         categoryRepo.deleteAll();
@@ -70,7 +68,7 @@ class QuestionControllerTest {
     }
 
     @BeforeEach
-    public void fillDB(){
+    public void fillDB() {
 
         UserEntity user1 = UserEntity.builder()
                 .name("Thomas")
@@ -133,63 +131,66 @@ class QuestionControllerTest {
     }
 
     @Test
-    public void getRandomShouldReturn3Questions(){
+    public void getRandomShouldReturn3Questions() {
 
         //GiVEN
 
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "user"));
         ResponseEntity<List<Question>> response = restTemplate
-                .exchange(url()+"/random", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>(){});
+                .exchange(url() + "/random", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         List<Question> actual = response.getBody();
         assert actual != null;
         assertThat(actual.size(), is(3));
-        assertThat(actual.get(0).getCategoryName(),is("Bar"));
-        assertThat(actual.get(0).getTopicName(),is("Gin"));
+        assertThat(actual.get(0).getCategoryName(), is("Bar"));
+        assertThat(actual.get(0).getTopicName(), is("Gin"));
     }
 
     @Test
-    public void getCategoryShouldReturn3Questions(){
+    public void getCategoryShouldReturn3Questions() {
 
         //GiVEN
 
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "user"));
         ResponseEntity<List<Question>> response = restTemplate
-                .exchange(url()+"/category/Bar", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>(){});
+                .exchange(url() + "/category/Bar", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         List<Question> actual = response.getBody();
         assert actual != null;
         assertThat(actual.size(), is(3));
-        assertThat(actual.get(0).getCategoryName(),is("Bar"));
-        assertThat(actual.get(0).getTopicName(),is("Gin"));
+        assertThat(actual.get(0).getCategoryName(), is("Bar"));
+        assertThat(actual.get(0).getTopicName(), is("Gin"));
     }
 
     @Test
-    public void getTopicShouldReturn3Questions(){
+    public void getTopicShouldReturn3Questions() {
 
         //GiVEN
 
         //WHEN
         HttpEntity<Void> httpEntity = new HttpEntity<>(authorizedHeader("Bernd", "user"));
         ResponseEntity<List<Question>> response = restTemplate
-                .exchange(url()+"/topic/Gin", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>(){});
+                .exchange(url() + "/topic/Gin", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Question>>() {
+                });
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         List<Question> actual = response.getBody();
         assert actual != null;
         assertThat(actual.size(), is(3));
-        assertThat(actual.get(0).getCategoryName(),is("Bar"));
-        assertThat(actual.get(0).getTopicName(),is("Gin"));
+        assertThat(actual.get(0).getCategoryName(), is("Bar"));
+        assertThat(actual.get(0).getTopicName(), is("Gin"));
     }
 
     // Hilfsfunktionen
 
-    private HttpHeaders authorizedHeader(String username, String role){
-        Map<String,Object> claims = new HashMap<>();
+    private HttpHeaders authorizedHeader(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         Instant now = Instant.now();
         Date iat = Date.from(now);

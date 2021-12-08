@@ -1,7 +1,6 @@
 package de.lowani.backend.controller;
 
 import de.lowani.backend.api.Answer;
-import de.lowani.backend.api.Question;
 import de.lowani.backend.config.JwtConfig;
 import de.lowani.backend.entities.*;
 import de.lowani.backend.repo.*;
@@ -14,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,8 +32,8 @@ class AnswerHistoryControllerTest {
     @LocalServerPort
     private int port;
 
-    private String url(){
-        return "http://localhost:" + port + "/answer";
+    private String url() {
+        return "http://localhost:" + port + "/api/answer";
     }
 
     @Autowired
@@ -57,7 +54,7 @@ class AnswerHistoryControllerTest {
     private AnswerHistoryRepo answerRepo;
 
     @AfterEach
-    public void clearRepos(){
+    public void clearRepos() {
         answerRepo.deleteAll();
         questionRepo.deleteAll();
         topicRepo.deleteAll();
@@ -66,7 +63,7 @@ class AnswerHistoryControllerTest {
     }
 
     @BeforeEach
-    public void fillDB(){
+    public void fillDB() {
 
         UserEntity user1 = UserEntity.builder()
                 .name("Thomas")
@@ -129,7 +126,7 @@ class AnswerHistoryControllerTest {
     }
 
     @Test
-    public void saveGivenAnswer(){
+    public void saveGivenAnswer() {
 
         //GiVEN
         Answer givenAnswer = Answer.builder()
@@ -146,12 +143,12 @@ class AnswerHistoryControllerTest {
         Answer actual = response.getBody();
         assertThat(answerRepo.findAll().size(), is(1));
         AnswerHistoryEntity answerInDB = answerRepo.findAll().get(0);
-        assertThat(answerInDB.getQuestion().getQuestion(),is("Bier ist...?"));
-        assertThat(answerInDB.getUser().getName(),is("Kim"));
+        assertThat(answerInDB.getQuestion().getQuestion(), is("Bier ist...?"));
+        assertThat(answerInDB.getUser().getName(), is("Kim"));
     }
 
     @Test
-    public void saveWithoutQuestionShouldFail(){
+    public void saveWithoutQuestionShouldFail() {
 
         //GiVEN
         Answer givenAnswer = Answer.builder()
@@ -168,7 +165,7 @@ class AnswerHistoryControllerTest {
     }
 
     @Test
-    public void saveWithoutUserShouldFail(){
+    public void saveWithoutUserShouldFail() {
 
         //GiVEN
         Answer givenAnswer = Answer.builder()
@@ -186,8 +183,8 @@ class AnswerHistoryControllerTest {
 
     // Hilfsfunktionen
 
-    private HttpHeaders authorizedHeader(String username, String role){
-        Map<String,Object> claims = new HashMap<>();
+    private HttpHeaders authorizedHeader(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         Instant now = Instant.now();
         Date iat = Date.from(now);
