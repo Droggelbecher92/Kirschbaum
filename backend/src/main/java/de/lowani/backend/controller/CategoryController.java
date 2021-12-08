@@ -30,7 +30,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 )
 @CrossOrigin
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController {
 
     public static final String CATEGORY_CONTROLLER_TAG = "Category";
@@ -48,7 +48,7 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No categories found")
     })
-    public ResponseEntity<List<Category>> getAllCategories(){
+    public ResponseEntity<List<Category>> getAllCategories() {
         List<CategoryEntity> allEntities = categoryService.findAll();
         if (allEntities.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -57,20 +57,20 @@ public class CategoryController {
         return ok(categories);
     }
 
-    @PostMapping(value="/new" ,produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE )
+    @PostMapping(value = "/new", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_BAD_REQUEST, message = "Category must not be empty"),
             @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not add new Category"),
             @ApiResponse(code = SC_CONFLICT, message = "Category already present")
     })
-    public ResponseEntity<Category> postNewCategory(@AuthenticationPrincipal UserEntity authUser, @RequestBody Category newCategory){
-        if (!authUser.getRole().equals("admin")){
+    public ResponseEntity<Category> postNewCategory(@AuthenticationPrincipal UserEntity authUser, @RequestBody Category newCategory) {
+        if (!authUser.getRole().equals("admin")) {
             throw new UnauthorizedUserException("Only Admin can add a Category");
         }
-        if (newCategory.getCategory().isEmpty()||newCategory.getCategory().length()<1){
+        if (newCategory.getCategory().isEmpty() || newCategory.getCategory().length() < 1) {
             throw new IllegalArgumentException("No valid Category name");
         }
-        if (categoryService.findByName(newCategory.getCategory()).isPresent()){
+        if (categoryService.findByName(newCategory.getCategory()).isPresent()) {
             throw new EntityExistsException("Category already in use");
         }
         CategoryEntity categoryEntity = mapperService.map(newCategory);

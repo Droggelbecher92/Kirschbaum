@@ -20,7 +20,6 @@ import java.util.List;
 
 import static de.lowani.backend.controller.TopicController.TOPIC_CONTROLLER_TAG;
 import static javax.servlet.http.HttpServletResponse.*;
-import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -31,7 +30,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 )
 @CrossOrigin
 @RestController
-@RequestMapping("/topic")
+@RequestMapping("/api/topic")
 public class TopicController {
 
     public static final String TOPIC_CONTROLLER_TAG = "topic";
@@ -49,7 +48,7 @@ public class TopicController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No topics found")
     })
-    public ResponseEntity<List<Topic>> getAllCTopics(){
+    public ResponseEntity<List<Topic>> getAllCTopics() {
         List<TopicEntity> allEntities = topicService.findAll();
         if (allEntities.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -58,20 +57,20 @@ public class TopicController {
         return ok(topics);
     }
 
-    @PostMapping(value="/new" ,produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE )
+    @PostMapping(value = "/new", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_BAD_REQUEST, message = "Category must not be empty"),
             @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not add new Category"),
             @ApiResponse(code = SC_CONFLICT, message = "Category already present")
     })
-    public ResponseEntity<Topic> postNewTopic(@AuthenticationPrincipal UserEntity authUser, @RequestBody Topic newTopic){
-        if (!authUser.getRole().equals("admin")){
+    public ResponseEntity<Topic> postNewTopic(@AuthenticationPrincipal UserEntity authUser, @RequestBody Topic newTopic) {
+        if (!authUser.getRole().equals("admin")) {
             throw new UnauthorizedUserException("Only Admin can add a Category");
         }
-        if (newTopic.getTopic().isEmpty()||newTopic.getTopic().length()<1){
+        if (newTopic.getTopic().isEmpty() || newTopic.getTopic().length() < 1) {
             throw new IllegalArgumentException("No valid Topic name");
         }
-        if (topicService.findByName(newTopic.getTopic()).isPresent()){
+        if (topicService.findByName(newTopic.getTopic()).isPresent()) {
             throw new EntityExistsException("Topic already in use");
         }
         TopicEntity topicEntity = mapperService.map(newTopic);

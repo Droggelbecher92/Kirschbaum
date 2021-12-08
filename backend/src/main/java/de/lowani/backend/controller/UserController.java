@@ -33,7 +33,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 )
 @CrossOrigin
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     public static final String USER_CONTROLLER_TAG = "User";
@@ -52,8 +52,8 @@ public class UserController {
             @ApiResponse(code = SC_NO_CONTENT, message = "No users found"),
             @ApiResponse(code = SC_UNAUTHORIZED, message = "Users can not search for users")
     })
-    public ResponseEntity<List<User>> getAllUsers(@AuthenticationPrincipal UserEntity authUser){
-        if (!authUser.getRole().equals("admin")){
+    public ResponseEntity<List<User>> getAllUsers(@AuthenticationPrincipal UserEntity authUser) {
+        if (!authUser.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         List<UserEntity> allEntities = userService.findAll();
@@ -70,8 +70,8 @@ public class UserController {
             @ApiResponse(code = SC_CONFLICT, message = "Unable to create User, user already exists"),
             @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not create a user")
     })
-    public ResponseEntity<User> postNewUser(@AuthenticationPrincipal UserEntity authUser, @RequestBody User user){
-        if (!authUser.getRole().equals("admin")){
+    public ResponseEntity<User> postNewUser(@AuthenticationPrincipal UserEntity authUser, @RequestBody User user) {
+        if (!authUser.getRole().equals("admin")) {
             throw new UnauthorizedUserException("Only an Admin can create new user");
         }
         UserEntity newUser = mapperService.mapNew(user);
@@ -106,10 +106,10 @@ public class UserController {
     })
     public ResponseEntity<User> changePassword(@AuthenticationPrincipal UserEntity authUser, @RequestBody NewPassword newPassword) {
         String password = newPassword.getPassword();
-        if (password.length()<1){
+        if (password.length() < 1) {
             throw new IllegalArgumentException("Password must not be empty");
         }
-        UserEntity changedUserEntity = userService.updatePassword(authUser.getName(),password);
+        UserEntity changedUserEntity = userService.updatePassword(authUser.getName(), password);
 
         User changedUser = mapperService.map(changedUserEntity);
         changedUser.setPassword(password);
@@ -122,7 +122,7 @@ public class UserController {
             @ApiResponse(code = SC_UNAUTHORIZED, message = "Only Admin can reset passwords")
     })
     public ResponseEntity<User> resetUserPassword(@AuthenticationPrincipal UserEntity authUser, @PathVariable String username) {
-        if (!authUser.getRole().equals("admin")){
+        if (!authUser.getRole().equals("admin")) {
             throw new UnauthorizedUserException("Only an Admin can reset password");
         }
         UserEntity changedUserEntity = userService.resetPassword(username);
@@ -139,27 +139,27 @@ public class UserController {
     })
     public ResponseEntity<User> changeUsername(@AuthenticationPrincipal UserEntity authUser, @RequestBody NewUsername newUsername) {
         String username = newUsername.getUsername();
-        if (username.length()<3){
+        if (username.length() < 3) {
             throw new IllegalArgumentException("Username must not be empty or less then 3 letters");
         }
-        UserEntity changedUserEntity = userService.updateUsername(authUser.getName(),username);
+        UserEntity changedUserEntity = userService.updateUsername(authUser.getName(), username);
 
         User changedUser = mapperService.map(changedUserEntity);
         return ok(changedUser);
     }
 
-    @DeleteMapping(value="/{username}", produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{username}", produces = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_NOT_FOUND, message = "User not found"),
             @ApiResponse(code = SC_UNAUTHORIZED, message = "User can not delete a user"),
             @ApiResponse(code = SC_BAD_REQUEST, message = "Admin cannot be deleted")
     })
     public ResponseEntity<User> deleteUser(@AuthenticationPrincipal UserEntity authUser, @PathVariable String username) {
-       if (!authUser.getRole().equals("admin")){
-           throw new UnauthorizedUserException("Admin only operation");
-       }
-       UserEntity deletedUserEntity = userService.deleteUser(username);
-       User deletedUser = mapperService.map(deletedUserEntity);
-       return ok(deletedUser);
+        if (!authUser.getRole().equals("admin")) {
+            throw new UnauthorizedUserException("Admin only operation");
+        }
+        UserEntity deletedUserEntity = userService.deleteUser(username);
+        User deletedUser = mapperService.map(deletedUserEntity);
+        return ok(deletedUser);
     }
 }

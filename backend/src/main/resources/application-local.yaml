@@ -1,7 +1,7 @@
 profile:
   datasource:
-    url: postgresql://localhost:5432/kirschbaum
-    user: admin
-    pass: 12345
+    postgresurl: postgresql://localhost:5432/kirschbaum
+    username: admin
+    password: 12345
 
 

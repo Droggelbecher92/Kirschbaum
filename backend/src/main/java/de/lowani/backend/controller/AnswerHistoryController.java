@@ -3,7 +3,6 @@ package de.lowani.backend.controller;
 
 import de.lowani.backend.api.Answer;
 import de.lowani.backend.entities.AnswerHistoryEntity;
-import de.lowani.backend.entities.UserEntity;
 import de.lowani.backend.service.AnswerHistoryService;
 import de.lowani.backend.service.MapperService;
 import de.lowani.backend.service.UserService;
@@ -13,13 +12,13 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static de.lowani.backend.controller.AnswerHistoryController.ANSWER_CONTROLLER_TAG;
-import static javax.servlet.http.HttpServletResponse.*;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -29,7 +28,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 )
 @CrossOrigin
 @RestController
-@RequestMapping("/answer")
+@RequestMapping("/api/answer")
 public class AnswerHistoryController {
 
     public static final String ANSWER_CONTROLLER_TAG = "Answer";
@@ -45,15 +44,15 @@ public class AnswerHistoryController {
         this.mapperService = mapperService;
     }
 
-    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE )
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ApiResponses(value = {
             @ApiResponse(code = SC_BAD_REQUEST, message = "Answer not complete")
     })
-    public ResponseEntity<Answer> postNewAnswer(@RequestBody Answer givenAnswer){
-        if (givenAnswer.getQuestion().isEmpty()||givenAnswer.getQuestion().length()<2||givenAnswer.getUserName().isEmpty()||givenAnswer.getUserName().length()<2){
+    public ResponseEntity<Answer> postNewAnswer(@RequestBody Answer givenAnswer) {
+        if (givenAnswer.getQuestion().isEmpty() || givenAnswer.getQuestion().length() < 2 || givenAnswer.getUserName().isEmpty() || givenAnswer.getUserName().length() < 2) {
             throw new IllegalArgumentException("Name and Question must be filled");
         }
-        userService.updateScore(givenAnswer.getScore(),givenAnswer.getUserName());
+        userService.updateScore(givenAnswer.getScore(), givenAnswer.getUserName());
         AnswerHistoryEntity answerToSave = mapperService.map(givenAnswer);
         AnswerHistoryEntity savedAnswerEnt = answerHistoryService.save(answerToSave);
         Answer savedAnswer = mapperService.map(savedAnswerEnt);
@@ -64,7 +63,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getAllAnswers(){
+    public ResponseEntity<List<Answer>> getAllAnswers() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAll();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -74,7 +73,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getAllAnswersByTopic(@PathVariable String topic){
+    public ResponseEntity<List<Answer>> getAllAnswersByTopic(@PathVariable String topic) {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAllByTopic(topic);
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -84,7 +83,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getAllAnswersByCategory(@PathVariable String category){
+    public ResponseEntity<List<Answer>> getAllAnswersByCategory(@PathVariable String category) {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findAllByCategory(category);
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -94,7 +93,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getAllCorrectAnswers(){
+    public ResponseEntity<List<Answer>> getAllCorrectAnswers() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findRight();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -104,7 +103,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getAllWrongAnswers(){
+    public ResponseEntity<List<Answer>> getAllWrongAnswers() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWrong();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -114,7 +113,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getBestCategory(){
+    public ResponseEntity<List<Answer>> getBestCategory() {
         List<AnswerHistoryEntity> allAnswersBestCategoryEnt = answerHistoryService.findBestCategory();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersBestCategoryEnt);
         return ok(allAnswers);
@@ -124,7 +123,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getBestTopic(){
+    public ResponseEntity<List<Answer>> getBestTopic() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findBestTopic();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -134,7 +133,7 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getWorstCategory(){
+    public ResponseEntity<List<Answer>> getWorstCategory() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWorstCategory();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
@@ -144,12 +143,11 @@ public class AnswerHistoryController {
     @ApiResponses(value = {
             @ApiResponse(code = SC_NO_CONTENT, message = "No Answers found")
     })
-    public ResponseEntity<List<Answer>> getWorstTopic(){
+    public ResponseEntity<List<Answer>> getWorstTopic() {
         List<AnswerHistoryEntity> allAnswersEnt = answerHistoryService.findWorstTopic();
         List<Answer> allAnswers = mapperService.mapListOfAnswers(allAnswersEnt);
         return ok(allAnswers);
     }
-
 
 
 }

@@ -50,7 +50,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Get logged in authentication principal.")
-    @GetMapping(value = "/auth/me", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "api/auth/me", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getLoggedInUser(@AuthenticationPrincipal UserEntity user) {
         return ok(
                 User.builder().name(user.getName()).build()
