@@ -22,7 +22,7 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String[] SWAGGER_URLS = {"/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**"};
+    private final String[] SWAGGER_URLS = {"api/v2/api-docs/**", "api/swagger-ui/**", "api/swagger-resources/**"};
 
     private final UserEntityDetailsService detailsService;
     private final JwtAuthFilter jwtAuthFilter;
