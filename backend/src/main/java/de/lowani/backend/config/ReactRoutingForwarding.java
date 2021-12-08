@@ -8,6 +8,6 @@ public class ReactRoutingForwarding {
 
     @RequestMapping(value = "api/**/{[path:[^\\.]*}")
     public String forwardToRoutUrl() {
-        return "forward:/login";
+        return "forward:/";
     }
 }
