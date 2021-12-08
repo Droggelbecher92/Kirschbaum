@@ -1,27 +1,6 @@
 package de.lowani.backend.filter;
 
-import de.lowani.backend.SpringBootTests;
-import de.lowani.backend.api.User;
-import de.lowani.backend.config.JwtConfig;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+/*
 @SpringBootTest(
         properties = "spring.profiles.active:h2",
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -123,4 +102,4 @@ class JwtAuthFilterTest extends SpringBootTests {
         // Then
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
     }
-}
+}*/
