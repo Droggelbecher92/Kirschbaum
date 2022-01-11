@@ -1,6 +1,6 @@
 spring:
-  #profiles:
-  #active: local
+  profiles:
+    active: local
   application:
     name: kirschbaum
   datasource:
@@ -17,9 +17,9 @@ spring:
         format_sql: false
     hibernate:
       ddl-auto: update
-    #server:
-    #servlet:
-    #context-path: "/api/${spring.application.name}"
+    server:
+      servlet:
+        context-path: "/api/${spring.application.name}"
 
 security:
   jwt:
